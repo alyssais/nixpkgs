@@ -19,9 +19,7 @@ makeScope newScope (self: with self; {
 
   libxfce4ui = callPackage ./libxfce4ui { };
 
-  mousepad = callPackage ./mousepad {
-    inherit (gnome3) gtksourceview;
-  };
+  mousepad = callPackage ./mousepad { };
 
   orage = callPackage ./orage { };
 
@@ -45,6 +43,8 @@ makeScope newScope (self: with self; {
   xfdesktop = callPackage ./xfdesktop { };
 
   xfce4-appfinder = callPackage ./xfce4-appfinder { };
+
+  xfce4-battery-plugin = callPackage ./xfce4-battery-plugin { };
 
   xfce4-dev-tools = callPackage ./xfce4-dev-tools {
     mkXfceDerivation = mkXfceDerivation.override {

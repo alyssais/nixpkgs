@@ -49,6 +49,7 @@ let
     ${lib.concatMapStringsSep "\n" (p: lib.optionalString (p ? extraEnv) p.extraEnv) plugins}
     exec ${weechat}/bin/weechat "$@"
   '') // {
+    name = "weechat";
     unwrapped = weechat;
     meta = weechat.meta;
   };

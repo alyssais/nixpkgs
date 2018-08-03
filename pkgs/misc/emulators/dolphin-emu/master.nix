@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, makeWrapper, makeDesktopItem, pkgconfig, cmake, qt5
 , bluez, ffmpeg, libao, libGLU_combined, pcre, gettext, libXrandr, libusb, lzo
 , libpthreadstubs, libXext, libXxf86vm, libXinerama, libSM, libXdmcp, readline
-, openal, libudev, libevdev, portaudio, curl, alsaLib, miniupnpc, enet, polarssl
+, openal, udev, libevdev, portaudio, curl, alsaLib, miniupnpc, enet, mbedtls
 , soundtouch, sfml, vulkan-loader ? null, libpulseaudio ? null
 
 # - Inputs used for Darwin
@@ -20,13 +20,13 @@ let
   };
 in stdenv.mkDerivation rec {
   name = "dolphin-emu-${version}";
-  version = "2018-07-02";
+  version = "2018-07-22";
 
   src = fetchFromGitHub {
     owner = "dolphin-emu";
     repo = "dolphin";
-    rev = "87c5d00e2085090e51c1d44e4fd271437123c722";
-    sha256 = "04f0my5k1vrj3pcg07m6wy4in4cs95db8367bp7zkraparmj1mjk";
+    rev = "7c2d2548a88abf9a5fa0bff52e00c57d093a9e19";
+    sha256 = "0x9h8s6fa04vcdwaqgrd5jpbgadgpkj3m4g2w1mp97libvr7hpy4";
   };
 
   enableParallelBuilding = true;
@@ -36,10 +36,10 @@ in stdenv.mkDerivation rec {
   buildInputs = [
     curl ffmpeg libao libGLU_combined pcre gettext libpthreadstubs libpulseaudio
     libXrandr libXext libXxf86vm libXinerama libSM readline openal libXdmcp lzo
-    portaudio libusb libpng hidapi miniupnpc enet polarssl soundtouch sfml
+    portaudio libusb libpng hidapi miniupnpc enet mbedtls soundtouch sfml
     qt5.qtbase
   ] ++ stdenv.lib.optionals stdenv.isLinux [
-    bluez libudev libevdev alsaLib vulkan-loader
+    bluez udev libevdev alsaLib vulkan-loader
   ] ++ stdenv.lib.optionals stdenv.isDarwin [
     CoreBluetooth cf-private OpenGL ForceFeedback IOKit
   ];
