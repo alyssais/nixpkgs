@@ -104,6 +104,7 @@
 , "svgo"
 , "tern"
 , "titanium"
+, "triton"
 , "typescript"
 , "typings"
 , "uglify-js"

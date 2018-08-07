@@ -5515,6 +5515,8 @@ with pkgs;
 
   trickle = callPackage ../tools/networking/trickle {};
 
+  inherit (nodePackages) triton;
+
   triggerhappy = callPackage ../tools/inputmethods/triggerhappy {};
 
   trousers = callPackage ../tools/security/trousers { };
