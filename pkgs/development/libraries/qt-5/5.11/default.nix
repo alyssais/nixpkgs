@@ -17,7 +17,7 @@ top-level attribute to `top-level/all-packages.nix`.
 
 {
   newScope,
-  stdenv, fetchurl, fetchFromGitHub, makeSetupHook, makeWrapper,
+  stdenv, fetchurl, fetchFromGitHub, makeSetupHook,
   bison, cups ? null, harfbuzz, libGL, perl,
   gstreamer, gst-plugins-base, gtk3, dconf,
 
@@ -41,6 +41,8 @@ let
       ./qtbase.patch
       ./qtbase-darwin.patch
       ./qtbase-revert-no-macos10.10.patch
+    ] ++ optionals stdenv.isDarwin [
+      ./qtbase-darwin-nseventtype.patch
     ];
     qtdeclarative = [ ./qtdeclarative.patch ];
     qtscript = [ ./qtscript.patch ];

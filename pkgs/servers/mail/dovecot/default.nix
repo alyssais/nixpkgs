@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, fetchpatch, perl, pkgconfig, systemd, openssl
+{ stdenv, lib, fetchurl, perl, pkgconfig, systemd, openssl
 , bzip2, zlib, lz4, inotify-tools, pam, libcap
 , clucene_core_2, icu, openldap, libsodium, libstemmer
 # Auth modules
@@ -8,7 +8,7 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "dovecot-2.3.2";
+  name = "dovecot-2.3.2.1";
 
   nativeBuildInputs = [ perl pkgconfig ];
   buildInputs =
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://dovecot.org/releases/2.3/${name}.tar.gz";
-    sha256 = "14z3vbva1inck2lrrgdj5fbrpqhs7pls7c1m63q2g13nc3xg0j3f";
+    sha256 = "0d2ffbicgl3wswbnyjbw6qigz7r1aqzprpchbwp5cynw122i2raa";
   };
 
   preConfigure = ''
@@ -72,7 +72,7 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = https://dovecot.org/;
     description = "Open source IMAP and POP3 email server written with security primarily in mind";
-    maintainers = with stdenv.lib.maintainers; [ viric peti rickynils fpletz ];
+    maintainers = with stdenv.lib.maintainers; [ peti rickynils fpletz ];
     platforms = stdenv.lib.platforms.unix;
   };
 }

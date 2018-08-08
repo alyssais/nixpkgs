@@ -98,11 +98,6 @@ let
   allSubservices = mainSubservices ++ concatMap subservicesFor mainCfg.virtualHosts;
 
 
-  # !!! should be in lib
-  writeTextInDir = name: text:
-    pkgs.runCommand name {inherit text;} "mkdir -p $out; echo -n \"$text\" > $out/$name";
-
-
   enableSSL = any (vhost: vhost.enableSSL) allHosts;
 
 
@@ -656,7 +651,7 @@ in
                      message = "SSL is enabled for httpd, but sslServerCert and/or sslServerKey haven't been specified."; }
                  ];
 
-    warnings = map (cfg: ''apache-httpd's port option is deprecated. Use listen = [{/*ip = "*"; */ port = ${toString cfg.port}";}]; instead'' ) (lib.filter (cfg: cfg.port != 0) allHosts);
+    warnings = map (cfg: ''apache-httpd's port option is deprecated. Use listen = [{/*ip = "*"; */ port = ${toString cfg.port};}]; instead'' ) (lib.filter (cfg: cfg.port != 0) allHosts);
 
     users.users = optionalAttrs (mainCfg.user == "wwwrun") (singleton
       { name = "wwwrun";

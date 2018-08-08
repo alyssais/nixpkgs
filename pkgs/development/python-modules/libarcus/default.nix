@@ -1,9 +1,10 @@
-{ stdenv, lib, buildPythonPackage, fetchFromGitHub
-, python, cmake, sip, protobuf, pythonOlder }:
+{ stdenv, buildPythonPackage, fetchFromGitHub
+, cmake, sip, protobuf, pythonOlder }:
 
 buildPythonPackage rec {
   pname = "libarcus";
-  version = "3.3.0";
+  version = "3.4.1";
+  format = "other";
 
   src = fetchFromGitHub {
     owner = "Ultimaker";

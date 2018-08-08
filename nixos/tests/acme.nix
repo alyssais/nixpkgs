@@ -1,5 +1,5 @@
 let
-  commonConfig = { config, lib, pkgs, nodes, ... }: {
+  commonConfig = { lib, nodes, ... }: {
     networking.nameservers = [
       nodes.letsencrypt.config.networking.primaryIPAddress
     ];
@@ -29,7 +29,7 @@ in import ./make-test.nix {
   name = "acme";
 
   nodes = {
-    letsencrypt = ./common/letsencrypt.nix;
+    letsencrypt = ./common/letsencrypt;
 
     webserver = { config, pkgs, ... }: {
       imports = [ commonConfig ];

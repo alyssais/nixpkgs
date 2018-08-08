@@ -1,4 +1,4 @@
-{ stdenv, buildEnv, hostPlatform, lib, fetchurl, fetchFromGitHub, cmake, writeScriptBin, callPackage
+{ stdenv, buildEnv, lib, fetchFromGitHub, cmake, writeScriptBin
 , perl, XMLLibXML, XMLLibXSLT, zlib
 , enableStoneSense ? false,  allegro5, libGLU_combined
 , enableTWBT ? true, twbt
@@ -46,6 +46,7 @@ let
       fetchSubmodules = true;
     };
 
+    patches = [ ./fix-stonesense.patch ];
     nativeBuildInputs = [ cmake perl XMLLibXML XMLLibXSLT fakegit ];
     # We don't use system libraries because dfhack needs old C++ ABI.
     buildInputs = [ zlib SDL ]

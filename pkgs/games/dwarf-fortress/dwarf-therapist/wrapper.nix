@@ -1,4 +1,4 @@
-{ stdenv, symlinkJoin, lib, dwarf-therapist, dwarf-fortress, makeWrapper }:
+{ stdenv, symlinkJoin, dwarf-therapist, dwarf-fortress, makeWrapper }:
 
 let
   platformSlug = if stdenv.targetPlatform.is32bit then
@@ -19,6 +19,7 @@ in symlinkJoin {
     # therefore uses many relative paths.
     wrapProgram $out/bin/dwarftherapist \
       --run "cd $out/share/dwarftherapist"
+    ln -s $out/bin/dwarftherapist $out/bin/DwarfTherapist
 
     rm -rf $out/share/dwarftherapist/memory_layouts/linux
     mkdir -p $out/share/dwarftherapist/memory_layouts/linux

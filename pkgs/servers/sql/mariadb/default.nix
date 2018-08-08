@@ -1,6 +1,6 @@
 { stdenv, fetchurl, cmake, pkgconfig, ncurses, zlib, xz, lzo, lz4, bzip2, snappy
 , libiconv, openssl, pcre, boost, judy, bison, libxml2
-, libaio, libevent, groff, jemalloc, cracklib, systemd, numactl, perl
+, libaio, libevent, jemalloc, cracklib, systemd, numactl, perl
 , fixDarwinDylibNames, cctools, CoreServices
 , asio, buildEnv, check, scons
 }:
@@ -22,14 +22,14 @@ galeraLibs = buildEnv {
 };
 
 common = rec { # attributes common to both builds
-  version = "10.2.15";
+  version = "10.2.16";
 
   src = fetchurl {
     urls = [
       "https://downloads.mariadb.org/f/mariadb-${version}/source/mariadb-${version}.tar.gz"
       "https://downloads.mariadb.com/MariaDB/mariadb-${version}/source/mariadb-${version}.tar.gz"
     ];
-    sha256 = "04ds6vkb7k2lqpcdz663z4ll1jx1zz2hqxz5nj7gs8pwb18j1pik";
+    sha256 = "1i2dwpp96ywjk147qqpcad8vqcy4rxmfbv2cb8ww3sffpa9yx0n1";
     name   = "mariadb-${version}.tar.gz";
   };
 

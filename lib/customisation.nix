@@ -1,9 +1,4 @@
 { lib }:
-let
-
-  inherit (builtins) attrNames;
-
-in
 
 rec {
 
@@ -202,7 +197,7 @@ rec {
           callPackage = self.newScope {};
           overrideScope = g:
             makeScope newScope
-            (lib.fixed-points.extends f g);
+            (self_: let super = f self_; in super // g super self_);
           packages = f;
         };
     in self;

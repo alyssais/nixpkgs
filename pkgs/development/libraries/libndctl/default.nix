@@ -1,8 +1,8 @@
-{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, autoconf, automake, asciidoc, docbook_xsl, docbook_xml_dtd_45, libxslt, xmlto, pkgconfig, json_c, kmod, which, systemd, utillinux
+{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, asciidoc, docbook_xsl, docbook_xml_dtd_45, libxslt, xmlto, pkgconfig, json_c, kmod, which, systemd, utillinux
 }:
 
 let
-  version = "61.1";
+  version = "61.2";
 in stdenv.mkDerivation rec {
   name = "libndctl-${version}";
 
@@ -10,7 +10,7 @@ in stdenv.mkDerivation rec {
     owner = "pmem";
     repo = "ndctl";
     rev = "v${version}";
-    sha256 = "1k996p757nwvkg86firx0yh39dsa9jx5w14rlfl4hlg2h9kkivnx";
+    sha256 = "0vid78jzhmzh505bpwn8mvlamfhcvl6rlfjc29y4yn7zslpydxl7";
   };
 
   outputs = [ "out" "man" "dev" ];

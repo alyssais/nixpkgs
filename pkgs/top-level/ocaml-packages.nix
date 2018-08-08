@@ -71,6 +71,8 @@ let
 
     batteries = callPackage ../development/ocaml-modules/batteries { };
 
+    bigstringaf = callPackage ../development/ocaml-modules/bigstringaf { };
+
     bitstring = callPackage ../development/ocaml-modules/bitstring { };
 
     bitv = callPackage ../development/ocaml-modules/bitv { };
@@ -242,9 +244,7 @@ let
 
     estring = callPackage ../development/ocaml-modules/estring { };
 
-    ezjsonm = callPackage ../development/ocaml-modules/ezjsonm {
-      lwt = ocaml_lwt;
-    };
+    ezjsonm = callPackage ../development/ocaml-modules/ezjsonm { };
 
     facile = callPackage ../development/ocaml-modules/facile { };
 
@@ -319,6 +319,8 @@ let
 
     hex = callPackage ../development/ocaml-modules/hex { };
 
+    httpaf = callPackage ../development/ocaml-modules/httpaf { };
+
     inifiles = callPackage ../development/ocaml-modules/inifiles { };
 
     iri = callPackage ../development/ocaml-modules/iri { };
@@ -368,6 +370,8 @@ let
       gtkmathview = callPackage ../development/libraries/gtkmathview { };
     };
 
+    labltk = callPackage ../development/ocaml-modules/labltk { };
+
     lambdaTerm-1_6 = callPackage ../development/ocaml-modules/lambda-term/1.6.nix { lwt = lwt2; };
     lambdaTerm =
       if lib.versionOlder "4.02" ocaml.version
@@ -393,6 +397,10 @@ let
       else throw "lwt3 is not available for OCaml ${ocaml.version}";
 
     ocaml_lwt = if lib.versionOlder "4.02" ocaml.version then lwt3 else lwt2;
+
+    lwt_log = callPackage ../development/ocaml-modules/lwt_log {
+      lwt = lwt3;
+    };
 
     lwt_ppx = callPackage ../development/ocaml-modules/lwt/ppx.nix {
       lwt = lwt3;
@@ -638,7 +646,11 @@ let
 
     ppx_deriving_yojson = callPackage ../development/ocaml-modules/ppx_deriving_yojson {};
 
+    ppx_gen_rec = callPackage ../development/ocaml-modules/ppx_gen_rec {};
+
     ppx_import = callPackage ../development/ocaml-modules/ppx_import {};
+
+    ppx_sqlexpr = callPackage ../development/ocaml-modules/sqlexpr/ppx.nix {};
 
     ppx_tools =
       if lib.versionAtLeast ocaml.version "4.02"
@@ -677,9 +689,7 @@ let
 
     ssl = callPackage ../development/ocaml-modules/ssl { };
 
-    stog = callPackage ../applications/misc/stog {
-      ocaml_lwt = lwt2;
-    };
+    stog = callPackage ../applications/misc/stog { };
 
     stringext = callPackage ../development/ocaml-modules/stringext { };
 
@@ -746,14 +756,14 @@ let
     # Jane Street
 
     janePackage = callPackage ../development/ocaml-modules/janestreet/janePackage.nix {};
-    
+
     janeStreet = import ../development/ocaml-modules/janestreet {
-      inherit lib janePackage ocaml ocamlbuild angstrom ctypes cryptokit;
+      inherit janePackage ocamlbuild angstrom ctypes cryptokit;
       inherit magic-mime num ocaml-migrate-parsetree octavius ounit;
       inherit ppx_deriving re zarith ppxlib;
       inherit (pkgs) stdenv openssl;
     };
-    
+
     janeStreet_0_9_0 = import ../development/ocaml-modules/janestreet/old.nix {
       janePackage = callPackage ../development/ocaml-modules/janestreet/janePackage.nix { defaultVersion = "0.9.0"; };
       inherit lib ocaml ocamlbuild ctypes cryptokit;
@@ -1065,7 +1075,7 @@ in rec
 
   ocamlPackages_4_07 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.07.nix { }) (self: super: { });
 
-  ocamlPackages_latest = ocamlPackages_4_06;
+  ocamlPackages_latest = ocamlPackages_4_07;
 
   ocamlPackages =
     # OCaml 4.05 is broken on aarch64

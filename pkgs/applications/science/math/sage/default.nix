@@ -3,7 +3,7 @@
 }:
 
 let
-  inherit (nixpkgs) fetchpatch fetchurl symlinkJoin fetchFromGitHub callPackage nodePackages_8_x;
+  inherit (nixpkgs) fetchpatch fetchurl symlinkJoin callPackage nodePackages_8_x;
 
   # https://trac.sagemath.org/ticket/15980 for tracking of python3 support
   python = nixpkgs.python2.override {
@@ -11,18 +11,6 @@ let
       cypari2 = super.cypari2.override { inherit pari; };
 
       cysignals = super.cysignals.override { inherit pari; };
-
-      cvxopt = super.cvxopt.override { inherit glpk; };
-
-      # https://github.com/sagemath/sagenb/issues/437
-      flask-babel = super.flask-babel.overridePythonAttrs (attrs: rec {
-        version = "0.9";
-        src = attrs.src.override {
-          inherit version;
-          sha256 = "0k7vk4k54y55ma0nx2k5s0phfqbriwslhy5shh3b0d046q7ibzaa";
-        };
-        doCheck = false;
-      });
 
       # python packages that appear unmaintained and were not accepted into the nixpkgs
       # tree because of that. These packages are only dependencies of the more-or-less
@@ -36,7 +24,7 @@ let
       pybrial = self.callPackage ./pybrial.nix {};
 
       sagelib = self.callPackage ./sagelib.nix {
-        inherit flint ecl pari glpk eclib;
+        inherit flint ecl pari eclib ntl arb;
         inherit sage-src openblas-blas-pc openblas-cblas-pc openblas-lapack-pc pynac singular;
         linbox = nixpkgs.linbox.override { withSage = true; };
       };
@@ -57,13 +45,13 @@ let
       };
 
       sage-env = self.callPackage ./sage-env.nix {
-        inherit sage-src python rWrapper openblas-cblas-pc glpk ecl singular eclib pari palp flint pynac pythonEnv;
+        inherit sage-src python rWrapper openblas-cblas-pc ecl singular eclib pari palp flint pynac pythonEnv giac ntl;
         pkg-config = nixpkgs.pkgconfig; # not to confuse with pythonPackages.pkgconfig
       };
 
       sage-with-env = self.callPackage ./sage-with-env.nix {
-        inherit pari eclib pythonEnv;
-        inherit sage-src openblas-blas-pc openblas-cblas-pc openblas-lapack-pc pynac singular;
+        inherit pari eclib pythonEnv ntl;
+        inherit sage-src openblas-blas-pc openblas-cblas-pc openblas-lapack-pc pynac singular giac;
         pkg-config = nixpkgs.pkgconfig; # not to confuse with pythonPackages.pkgconfig
         three = nodePackages_8_x.three;
       };
@@ -118,10 +106,23 @@ let
     });
   };
 
+  # https://trac.sagemath.org/ticket/25532
+  ntl = nixpkgs.ntl.overrideAttrs (oldAttrs: rec {
+    name = "ntl-10.5.0";
+    sourceRoot = "${name}/src";
+    src = fetchurl {
+      url = "http://www.shoup.net/ntl/${name}.tar.gz";
+      sha256 = "1lmldaldgfr2b2a6585m3np5ds8bq1bis2s1ajycjm49vp4kc2xr";
+    };
+  });
+
+  giac = nixpkgs.giac.override { inherit ntl; };
+  arb = nixpkgs.arb.override { inherit flint; };
+
   # update causes issues
   # https://groups.google.com/forum/#!topic/sage-packaging/cS3v05Q0zso
   # https://trac.sagemath.org/ticket/24735
-  singular = nixpkgs.singular.overrideAttrs (oldAttrs: {
+  singular = (nixpkgs.singular.override { inherit ntl flint; }).overrideAttrs (oldAttrs: {
     name = "singular-4.1.0p3";
     src = fetchurl {
       url = "http://www.mathematik.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-1-0/singular-4.1.0p3.tar.gz";
@@ -131,15 +132,15 @@ let
 
   # *not* to confuse with the python package "pynac"
   # https://trac.sagemath.org/ticket/24838 (depends on arb update)
-  pynac = nixpkgs.pynac.override { inherit singular; };
+  pynac = nixpkgs.pynac.override { inherit singular flint; };
 
-  eclib = nixpkgs.eclib.override { inherit pari; };
+  eclib = nixpkgs.eclib.override { inherit pari ntl; };
 
   # With openblas (64 bit), the tests fail the same way as when sage is build with
   # openblas instead of openblasCompat. Apparently other packages somehow use flints
   # blas when it is available. Alternative would be to override flint to use
   # openblasCompat.
-  flint = nixpkgs.flint.override { withBlas = false; };
+  flint = nixpkgs.flint.override { withBlas = false; inherit ntl; };
 
   # Multiple palp dimensions need to be available and sage expects them all to be
   # in the same folder.
@@ -172,37 +173,6 @@ let
       url = "mirror://sageupstream/pari/pari-${version}.tar.gz";
       sha256 = "19gbsm8jqq3hraanbmsvzkbh88iwlqbckzbnga3y76r7k42akn7m";
     };
-  });
-
-  # https://trac.sagemath.org/ticket/24824
-  glpk = nixpkgs.glpk.overrideAttrs (attrs: rec {
-    version = "4.63";
-    name = "glpk-${version}";
-    src = fetchurl {
-      url = "mirror://gnu/glpk/${name}.tar.gz";
-      sha256 = "1xp7nclmp8inp20968bvvfcwmz3mz03sbm0v3yjz8aqwlpqjfkci";
-    };
-    patches = (attrs.patches or []) ++ [
-      # Alternatively patch sage with debians
-      # https://sources.debian.org/data/main/s/sagemath/8.1-7/debian/patches/t-version-glpk-4.60-extra-hack-fixes.patch
-      # The header of that debian patch contains a good description of the issue. The gist of it:
-      # > If GLPK in Sage causes one error, and this is caught by Sage and recovered from, then
-      # > later (because upstream GLPK does not clear the "error" flag) Sage will append
-      # > all subsequent terminal output of GLPK into the error_message string but not
-      # > actually forward it to the user's terminal. This breaks some doctests.
-      (fetchpatch {
-        name = "error_recovery.patch";
-        url = "https://git.sagemath.org/sage.git/plain/build/pkgs/glpk/patches/error_recovery.patch?id=07d6c37d18811e2b377a9689790a7c5e24da16ba";
-        sha256 = "0z99z9gd31apb6x5n5n26411qzx0ma3s6dnznc4x61x86bhq31qf";
-      })
-
-      # Allow setting a exact verbosity level (OFF|ERR|ON|ALL|DBG)
-      (fetchpatch {
-        name = "exact_verbosity.patch";
-        url = "https://git.sagemath.org/sage.git/plain/build/pkgs/glpk/patches/glp_exact_verbosity.patch?id=07d6c37d18811e2b377a9689790a7c5e24da16ba";
-        sha256 = "15gm5i2alqla3m463i1qq6jx6c0ns6lip7njvbhp37pgxg4s9hx8";
-      })
-    ];
   });
 in
   python.pkgs.sage-wrapper // {

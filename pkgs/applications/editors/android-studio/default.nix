@@ -1,4 +1,4 @@
-{ stdenv, callPackage, fetchurl, makeFontsConf, gnome2 }:
+{ stdenv, callPackage, makeFontsConf, gnome2 }:
 
 let
   mkStudio = opts: callPackage (import ./common.nix opts) {
@@ -13,9 +13,9 @@ let
     sha256Hash = "196yaswbxh2nd83gimjxr8ggr5xkdxq7n3xlh6ax73v59pj4hryq";
   };
   latestVersion = {
-    version = "3.3.0.1"; # "Android Studio 3.3 Canary 2"
-    build = "181.4869471";
-    sha256Hash = "1v2v09gd5vxh4nzbnrjfh0blpzz71i3i7lq5bkjsfl0g82r8j512";
+    version = "3.3.0.2"; # "Android Studio 3.3 Canary 3"
+    build = "181.4884283";
+    sha256Hash = "0r93yzw87cgzz60p60gknij5vaqmv1a1kyd4cr9gx8cbxw46lhwh";
   };
 in rec {
   # Old alias
@@ -43,9 +43,9 @@ in rec {
   beta = mkStudio (latestVersion // {
     pname = "android-studio-preview";
     #pname = "android-studio-beta"; # TODO: Rename and provide symlink
-    version = "3.2.0.19"; # "Android Studio 3.2 Beta 2"
-    build = "181.4860949";
-    sha256Hash = "1v1h42xp2fxj8366q9l9b0shk0y1vz9kny0rf7y48kyr5h9glnwr";
+    version = "3.2.0.22"; # "Android Studio 3.2 Beta 5"
+    build = "181.4913314";
+    sha256Hash = "016nyn1pqviy089hg0dq7m4cqb39fdxdcy4zknkaq7dmgv1dj6x9";
 
     meta = stable.meta // {
       description = "The Official IDE for Android (beta channel)";

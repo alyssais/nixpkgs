@@ -36,9 +36,6 @@ let
     })}
   '';
 
-  skipAttrs = attrs: map (filterAttrs (k: v: k != "enable"))
-    (filter (v: !(hasAttr "enable" v) || v.enable) attrs);
-
   infraContainer = pkgs.dockerTools.buildImage {
     name = "pause";
     tag = "latest";
@@ -841,6 +838,8 @@ in {
         path = with pkgs; [ gitMinimal openssh docker utillinux iproute ethtool thin-provisioning-tools iptables socat ] ++ cfg.path;
         serviceConfig = {
           Slice = "kubernetes.slice";
+          CPUAccounting = true;
+          MemoryAccounting = true;
           ExecStart = ''${cfg.package}/bin/kubelet \
             ${optionalString (taints != "")
               "--register-with-taints=${taints}"} \
@@ -1116,6 +1115,7 @@ in {
         wantedBy = [ "kubernetes.target" ];
         after = [ "kube-apiserver.service" ];
         environment.ADDON_PATH = "/etc/kubernetes/addons/";
+        path = [ pkgs.gawk ];
         serviceConfig = {
           Slice = "kubernetes.slice";
           ExecStart = "${cfg.package}/bin/kube-addons";
