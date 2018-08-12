@@ -807,6 +807,11 @@
     github = "coroa";
     name = "Jonas Hörsch";
   };
+  costrouc = {
+    email = "chris.ostrouchov@gmail.com";
+    github = "costrouc";
+    name = "Chris Ostrouchov";
+  };
   couchemar = {
     email = "couchemar@yandex.ru";
     github = "couchemar";
@@ -935,6 +940,11 @@
     email = "demindf@gmail.com";
     github = "demin-dmitriy";
     name = "Dmitriy Demin";
+  };
+  demize = {
+    email = "johannes@kyriasis.com";
+    github = "kyrias";
+    name = "Johannes Löthberg";
   };
   demyanrogozhin = {
     email = "demyan.rogozhin@gmail.com";
@@ -1684,6 +1694,11 @@
     github = "imalsogreg";
     name = "Greg Hale";
   };
+  imuli = {
+    email = "i@imu.li";
+    github = "imuli";
+    name = "Imuli";
+  };
   infinisil = {
     email = "infinisil@icloud.com";
     github = "infinisil";
@@ -1831,6 +1846,11 @@
     email = "jaakko.luttinen@iki.fi";
     github = "jluttine";
     name = "Jaakko Luttinen";
+  };
+  jmettes = {
+    email = "jonathan@jmettes.com";
+    github = "jmettes";
+    name = "Jonathan Mettes";
   };
   Jo = {
     email = "0x4A6F@shackspace.de";
@@ -2089,6 +2109,11 @@
     github = "kuznero";
     name = "Roman Kuznetsov";
   };
+  kylewlacy = {
+    email = "kylelacy+nix@pm.me";
+    github = "kylewlacy";
+    name = "Kyle Lacy";
+  };
   lasandell = {
     email = "lasandell@gmail.com";
     github = "lasandell";
@@ -2173,6 +2198,11 @@
     email = "nathaniel.baxter@gmail.com";
     github = "nathanielbaxter";
     name = "Nathaniel Baxter";
+  };
+  lightdiscord = {
+    email = "root@arnaud.sh";
+    github = "lightdiscord";
+    name = "Arnaud Pascal";
   };
   lihop = {
     email = "nixos@leroy.geek.nz";
@@ -3197,6 +3227,11 @@
     email = "patrick.callahan@latitudeengineering.com";
     name = "Patrick Callahan";
   };
+  q3k = {
+    email = "q3k@q3k.org";
+    github = "q3k";
+    name = "Serge Bazanski";
+  };
   qknight = {
     email = "js@lastlog.de";
     github = "qknight";
@@ -3677,6 +3712,11 @@
     email = "abouzahra.9@wright.edu";
     github = "s-na";
     name = "S. Nordin Abouzahra";
+  };
+  snaar = {
+    email = "snaar@snaar.net";
+    github = "snaar";
+    name = "Serguei Narojnyi";
   };
   snyh = {
     email = "snyh@snyh.org";
