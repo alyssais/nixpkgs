@@ -1588,13 +1588,13 @@ let
         sha1 = "853cfa0f7cbe2fed5de20326b8dd581035f6e2f0";
       };
     };
-    "dat-dns-3.0.2" = {
+    "dat-dns-3.0.1" = {
       name = "dat-dns";
       packageName = "dat-dns";
-      version = "3.0.2";
+      version = "3.0.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/dat-dns/-/dat-dns-3.0.2.tgz";
-        sha512 = "TqkWQ03NvdLK9Rm9n11UCy59KnIsu82A0lPQYcMG02pYTU4xTxShzDryGO2orvmcT5063olmI1R9vKil0jw0Lw==";
+        url = "https://registry.npmjs.org/dat-dns/-/dat-dns-3.0.1.tgz";
+        sha512 = "OBolbMJNk7Uknw8po7Yv4XGNewH6VbuPQNrcf57EwtvgR8ScNUBDporU+DiCXYh2F7GwOcsCyVkSb++guR+OoA==";
       };
     };
     "dat-doctor-2.0.0" = {
@@ -1660,13 +1660,13 @@ let
         sha512 = "oK6R74WV8TdhGR9VCLym7D/vlN8lXND5AyhJhrjtm1WNDrg/6Clx1Tk7k3Dt8quy2AmmGO7vbIk7iwFtzTAJfA==";
       };
     };
-    "dat-node-3.5.12" = {
+    "dat-node-3.5.11" = {
       name = "dat-node";
       packageName = "dat-node";
-      version = "3.5.12";
+      version = "3.5.11";
       src = fetchurl {
-        url = "https://registry.npmjs.org/dat-node/-/dat-node-3.5.12.tgz";
-        sha512 = "XYxdkeNYk8gM6nb125XrOQKAXLZlICLYZUk7bZAktpQUrSjAQnc9qPY2a/KCvHSbdoJf//PwyB00K0UiBTqawQ==";
+        url = "https://registry.npmjs.org/dat-node/-/dat-node-3.5.11.tgz";
+        sha512 = "8vDc4XwOtOdZgtw/YSb5k/8KIu0+jByaZCsWv5gY5RbrnCouh0Qa7CvIWezZyl0FFke5LIvHuzme2iRiEYIdOw==";
       };
     };
     "dat-registry-4.0.0" = {
@@ -3118,13 +3118,13 @@ let
         sha512 = "LTgbsJ+9ZrdQfLaXXc01kQMttaicHhSOtUM3v/k7ORwXJziqQ2eMQ80+8Tfg67ja+w6zrdl5HYOK+mnlwQpCww==";
       };
     };
-    "hyperdrive-http-4.3.3" = {
+    "hyperdrive-http-4.3.2" = {
       name = "hyperdrive-http";
       packageName = "hyperdrive-http";
-      version = "4.3.3";
+      version = "4.3.2";
       src = fetchurl {
-        url = "https://registry.npmjs.org/hyperdrive-http/-/hyperdrive-http-4.3.3.tgz";
-        sha512 = "YRAjbCCRefLK9EMcgDXRgDx/sZksWf85iLtGl9JMVrzFSIfUx0//DpUJ6k0m0eG4KHJJM+dBwORxFPNi29EQHg==";
+        url = "https://registry.npmjs.org/hyperdrive-http/-/hyperdrive-http-4.3.2.tgz";
+        sha512 = "dVEtiPiaoR0BNtO8SBvBqRJQMVMV1zzXLIWBBGjVefhISfybfyOBuGi7xzhGnHj+4oK7E8Wwt2Bo5W/J5ecpIg==";
       };
     };
     "hyperdrive-network-speed-2.1.0" = {
@@ -5350,13 +5350,13 @@ let
         sha1 = "411cadb574c5a140d3a4b1910d40d80cc9f40b40";
       };
     };
-    "path-loader-1.0.6" = {
+    "path-loader-1.0.5" = {
       name = "path-loader";
       packageName = "path-loader";
-      version = "1.0.6";
+      version = "1.0.5";
       src = fetchurl {
-        url = "https://registry.npmjs.org/path-loader/-/path-loader-1.0.6.tgz";
-        sha512 = "vAtndQsgWS0s2JOjT+NWtJyP5Gc940SlQQ55j0+qSj/SJQ4dmt/L8gLeW9wJF0rM32qEts+3NDvKjs6TUxwFtg==";
+        url = "https://registry.npmjs.org/path-loader/-/path-loader-1.0.5.tgz";
+        sha512 = "Z035QVNks3y577Jsi6+IaFXeQ2O7rDlWCkIfECu0Rn8rcJLRDYDv+MyZ9cE9fIzudlz86AgQKgntSY1rEVprdg==";
       };
     };
     "path-to-regexp-1.7.0" = {
@@ -5710,13 +5710,13 @@ let
         sha512 = "pdS9Mcb9TB7oICypPRALlheaSuszuAKmLVEPKJMuYor7R/zDuHh5ALuQoS+ox31XRwQUL+tDwWH2GPdyspwelA==";
       };
     };
-    "randomatic-3.1.0" = {
+    "randomatic-3.0.0" = {
       name = "randomatic";
       packageName = "randomatic";
-      version = "3.1.0";
+      version = "3.0.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/randomatic/-/randomatic-3.1.0.tgz";
-        sha512 = "KnGPVE0lo2WoXxIZ7cPR8YBpiol4gsSuOwDSg410oHh80ZMp5EiypNqL2K4Z77vJn6lB5rap7IkAmcUlalcnBQ==";
+        url = "https://registry.npmjs.org/randomatic/-/randomatic-3.0.0.tgz";
+        sha512 = "VdxFOIEY3mNO5PtSRkkle/hPJDHvQhK21oa73K4yAc9qmp6N429gAyF1gZMOTMeS0/AYzaV/2Trcef+NaIonSA==";
       };
     };
     "randombytes-2.0.6" = {
@@ -7977,7 +7977,7 @@ in
       sources."crypto-random-string-1.0.0"
       sources."cycle-1.0.3"
       sources."dashdash-1.14.1"
-      (sources."dat-dns-3.0.2" // {
+      (sources."dat-dns-3.0.1" // {
         dependencies = [
           sources."debug-2.6.9"
         ];
@@ -7992,7 +7992,7 @@ in
       })
       sources."dat-link-resolve-2.2.0"
       sources."dat-log-1.2.0"
-      sources."dat-node-3.5.12"
+      sources."dat-node-3.5.11"
       sources."dat-registry-4.0.0"
       sources."dat-secret-storage-4.0.1"
       sources."dat-storage-1.0.4"
@@ -8073,7 +8073,7 @@ in
         ];
       })
       sources."hyperdrive-9.14.0"
-      sources."hyperdrive-http-4.3.3"
+      sources."hyperdrive-http-4.3.2"
       sources."hyperdrive-network-speed-2.1.0"
       sources."i-0.3.6"
       sources."import-lazy-2.1.0"
@@ -8210,7 +8210,7 @@ in
       sources."random-access-file-2.0.1"
       sources."random-access-memory-3.0.0"
       sources."random-access-storage-1.3.0"
-      (sources."randomatic-3.1.0" // {
+      (sources."randomatic-3.0.0" // {
         dependencies = [
           sources."is-number-4.0.0"
           sources."kind-of-6.0.2"
@@ -9459,7 +9459,7 @@ in
       sources."path-is-absolute-1.0.1"
       sources."path-is-inside-1.0.2"
       sources."path-key-2.0.1"
-      (sources."path-loader-1.0.6" // {
+      (sources."path-loader-1.0.5" // {
         dependencies = [
           sources."debug-3.1.0"
           sources."qs-6.5.2"
