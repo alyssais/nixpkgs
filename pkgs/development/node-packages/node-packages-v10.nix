@@ -213,10 +213,10 @@ in
   pnpm = nodeEnv.buildNodePackage {
     name = "pnpm";
     packageName = "pnpm";
-    version = "2.13.1";
+    version = "2.13.3";
     src = fetchurl {
-      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.13.1.tgz";
-      sha512 = "xwIluOOA+GV6Rz5jvVS2hcGlrqjEWaaU7/PUECdG8H/Eo9I4xban/XhedQ8jIrqt1P7KLDV0/+ENlmYusdL/Zw==";
+      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.13.3.tgz";
+      sha512 = "GMF/vkYiXy21Vi5ngFhPT+EX4phFHse15N4WdHYyWuGeafVqydISsOHcReKiXZVbxrkNtOJItOfFv8HQvMMSfA==";
     };
     buildInputs = globalBuildInputs;
     meta = {

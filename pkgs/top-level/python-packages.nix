@@ -69,8 +69,6 @@ let
   # See build-setupcfg/default.nix for documentation.
   buildSetupcfg = import ../build-support/build-setupcfg self;
 
-  graphiteVersion = "1.0.2";
-
   fetchPypi = makeOverridable( {format ? "setuptools", ... } @attrs:
     let
       fetchWheel = {pname, version, sha256, python ? "py2.py3", abi ? "none", platform ? "any"}:
@@ -252,6 +250,8 @@ in {
 
   diff_cover = callPackage ../development/python-modules/diff_cover { };
 
+  docrep = callPackage ../development/python-modules/docrep { };
+
   emcee = callPackage ../development/python-modules/emcee { };
 
   email_validator = callPackage ../development/python-modules/email-validator { };
@@ -279,6 +279,8 @@ in {
   diff-match-patch = callPackage ../development/python-modules/diff-match-patch { };
 
   fido2 = callPackage ../development/python-modules/fido2 {  };
+
+  fire = callPackage ../development/python-modules/fire { };
 
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
 
@@ -340,13 +342,19 @@ in {
 
   outcome = callPackage ../development/python-modules/outcome {};
 
+  palettable = callPackage ../development/python-modules/palettable { };
+
   pdf2image = callPackage ../development/python-modules/pdf2image { };
 
   pdfminer = callPackage ../development/python-modules/pdfminer_six { };
 
   pdfx = callPackage ../development/python-modules/pdfx { };
 
+  phonopy = callPackage ../development/python-modules/phonopy { };
+
   plantuml = callPackage ../tools/misc/plantuml { };
+
+  pymysql = callPackage ../development/python-modules/pymysql { };
 
   Pmw = callPackage ../development/python-modules/Pmw { };
 
@@ -421,6 +429,8 @@ in {
 
   pykerberos = callPackage ../development/python-modules/pykerberos { };
 
+  pymatgen = callPackage ../development/python-modules/pymatgen { };
+
   pynisher = callPackage ../development/python-modules/pynisher { };
 
   pyparser = callPackage ../development/python-modules/pyparser { };
@@ -491,11 +501,19 @@ in {
 
   simpleeval = callPackage ../development/python-modules/simpleeval { };
 
+  singledispatch = callPackage ../development/python-modules/singledispatch { };
+
   sip = callPackage ../development/python-modules/sip { };
+
+  sortedcontainers = callPackage ../development/python-modules/sortedcontainers { };
 
   sklearn-deap = callPackage ../development/python-modules/sklearn-deap { };
 
+  slackclient = callPackage ../development/python-modules/slackclient { };
+
   spglib = callPackage ../development/python-modules/spglib { };
+
+  sumo = callPackage ../development/python-modules/sumo { };
 
   supervise_api = callPackage ../development/python-modules/supervise_api { };
 
@@ -917,26 +935,8 @@ in {
 
   babelfish = callPackage ../development/python-modules/babelfish {};
 
-  basiciw = buildPythonPackage rec {
-    name = "${pname}-${version}";
-    version = "0.2.2";
-    pname = "basiciw";
-    disabled = isPy27 || isPyPy;
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/b/${pname}/${name}.tar.gz";
-      sha256 = "1ajmflvvlkflrcmqmkrx0zaira84z8kv4ssb2jprfwvjh8vfkysb";
-    };
-
-    buildInputs = [ pkgs.gcc ];
-    propagatedBuildInputs = [ pkgs.wirelesstools ];
-
-    meta = {
-      description = "Get info about wireless interfaces using libiw";
-      homepage = https://github.com/enkore/basiciw;
-      platforms = platforms.linux;
-      license = licenses.gpl2;
-    };
+  basiciw = callPackage ../development/python-modules/basiciw {
+    inherit (pkgs) gcc wirelesstools;
   };
 
   batinfo = callPackage ../development/python-modules/batinfo {};
@@ -947,37 +947,7 @@ in {
 
   beautifulsoup4 = callPackage ../development/python-modules/beautifulsoup4 { };
 
-  beaker = buildPythonPackage rec {
-    name = "Beaker-${version}";
-    version = "1.8.0";
-
-    # The pypy release do not contains the tests
-    src = pkgs.fetchFromGitHub {
-      owner = "bbangert";
-      repo = "beaker";
-      rev = "${version}";
-      sha256 = "17yfr7a307n8rdl09was4j60xqk2s0hk0hywdkigrpj4qnw0is7g";
-    };
-
-    buildInputs =
-      [ self.nose
-        self.mock
-        self.webtest
-      ];
-    propagatedBuildInputs = [
-      self.sqlalchemy
-      self.pycrypto
-    ] ++ optionals (isPy27) [
-      self.funcsigs
-      self.pycryptopp
-    ];
-
-    meta = {
-      description = "A Session and Caching library with WSGI Middleware";
-      maintainers = with maintainers; [ garbas domenkozar ];
-      platforms = platforms.all;
-    };
-  };
+  beaker = callPackage ../development/python-modules/beaker { };
 
   betamax = callPackage ../development/python-modules/betamax {};
 
@@ -1142,6 +1112,8 @@ in {
 
   cheroot = callPackage ../development/python-modules/cheroot {};
 
+  cli-helpers = callPackage ../development/python-modules/cli-helpers {};
+
   cmarkgfm = callPackage ../development/python-modules/cmarkgfm { };
 
   circus = callPackage ../development/python-modules/circus {};
@@ -1238,46 +1210,11 @@ in {
 
   blaze = callPackage ../development/python-modules/blaze { };
 
-  # Needed for bleach 1.5.0
-  html5lib_0_9999999 = self.html5lib.overridePythonAttrs rec {
-    name = "html5lib-${version}";
-    disabled = isPy3k && pythonAtLeast "3.6";
-    buildInputs = with self; [ nose flake8 ];
-    propagatedBuildInputs = with self; [ six ];
-    checkPhase = ''
-      nosetests
-    '';
-
-    version = "0.9999999";
-    src = pkgs.fetchurl {
-      url = "https://github.com/html5lib/html5lib-python/archive/0.9999999.tar.gz";
-      sha256 = "1s6wdbrjzw5jhyfbskf4nj1i5bjpjqq9f89a7r1rl59rhpwmfhhq";
-    };
-  };
-
   html5-parser = callPackage ../development/python-modules/html5-parser {};
 
   httpserver = callPackage ../development/python-modules/httpserver {};
 
   bleach = callPackage ../development/python-modules/bleach { };
-
-  # needed for tensorflow-tensorboard
-  bleach_1_5_0 = self.bleach.overridePythonAttrs rec {
-    version = "1.5.0";
-    pname = "bleach";
-    name = "${pname}-${version}";
-
-    propagatedBuildInputs = with self; [ six html5lib_0_9999999 ];
-
-    preCheck = ''
-      sed -i 's,pytest==[0-9.]*,pytest,' setup.py
-    '';
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "0rdwb3piwwl30wfqg4ywm07276w7090xfq71lb5d6k5mk62pb3lp";
-    };
-  };
 
   blinker = callPackage ../development/python-modules/blinker { };
 
@@ -2513,22 +2450,6 @@ in {
 
   flit = callPackage ../development/python-modules/flit { };
 
-  Flootty = buildPythonPackage rec {
-    name = "Flootty-3.2.0";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/F/Flootty/${name}.tar.gz";
-      sha256 = "14n2q2k388xbmp5rda5ss879bg5cbibk4zzz7c8mrjsmxhgagmmg";
-    };
-
-    meta = with pkgs.stdenv.lib; {
-      description = "Floobits collaborative terminal";
-      homepage = "https://github.com/Floobits/flootty/";
-      maintainers = with maintainers; [ garbas ];
-      license = licenses.asl20;
-    };
-  };
-
   flowlogs_reader = buildPythonPackage rec {
     name = "flowlogs_reader-1.0.0";
 
@@ -2611,21 +2532,6 @@ in {
       homepage = https://code.google.com/p/funcparserlib/;
       license = licenses.mit;
       platforms = platforms.unix;
-    };
-  };
-
-  singledispatch = buildPythonPackage rec {
-    name = "singledispatch-3.4.0.3";
-
-    propagatedBuildInputs = with self; [ six ];
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/singledispatch/${name}.tar.gz";
-      sha256 = "5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c";
-    };
-
-    meta = {
-      homepage = https://docs.python.org/3/library/functools.html;
     };
   };
 
@@ -3953,6 +3859,8 @@ in {
 
   pydotplus = callPackage ../development/python-modules/pydotplus { };
 
+  pyfxa = callPackage ../development/python-modules/pyfxa { };
+
   pyhomematic = callPackage ../development/python-modules/pyhomematic { };
 
   pylama = callPackage ../development/python-modules/pylama { };
@@ -4178,6 +4086,8 @@ in {
   pyroute2 = callPackage ../development/python-modules/pyroute2 { };
 
   pyspf = callPackage ../development/python-modules/pyspf { };
+
+  pysrim = callPackage ../development/python-modules/pysrim { };
 
   pysrt = callPackage ../development/python-modules/pysrt { };
 
@@ -4772,13 +4682,14 @@ in {
   django_tagging = callPackage ../development/python-modules/django_tagging { };
 
   django_tagging_0_4_3 = if
-       self.django != self.django_1_8
+       self.django.version != "1.8.18"
   then throw "django_tagging_0_4_3 should be build with django_1_8"
   else (callPackage ../development/python-modules/django_tagging {}).overrideAttrs (attrs: rec {
-    name = "django-tagging-0.4.3";
+    pname = "django-tagging";
+    version = "0.4.3";
 
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/d/django-tagging/${name}.tar.gz";
+    src = fetchPypi {
+      inherit pname version;
       sha256 = "0617azpmp6jpg3d88v2ir97qrc9aqcs2s9gyvv9bgf2cp55khxhs";
     };
     propagatedBuildInputs = with self; [ django ];
@@ -5288,6 +5199,8 @@ in {
   };
 
   fastimport = callPackage ../development/python-modules/fastimport { };
+
+  fastpair = callPackage ../development/python-modules/fastpair { };
 
   fastrlock = callPackage ../development/python-modules/fastrlock {};
 
@@ -6504,6 +6417,8 @@ in {
     };
   };
 
+  imgaug = callPackage ../development/python-modules/imgaug { };
+
   inflection = callPackage ../development/python-modules/inflection { };
 
   influxdb = buildPythonPackage rec {
@@ -7621,26 +7536,6 @@ in {
 
   brotlipy = callPackage ../development/python-modules/brotlipy { };
 
-  sortedcontainers = buildPythonPackage rec {
-    name = "sortedcontainers-${version}";
-    version = "1.5.7";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/sortedcontainers/${name}.tar.gz";
-      sha256 = "1sjh8lccbmvwna91mlhl5m3z4320p07h063b8x8br4p4cll49w0g";
-    };
-
-    # tries to run tests for all python versions and uses virtualenv weirdly
-    doCheck = false;
-    #buildInputs = with self; [ tox nose ];
-
-    meta = {
-      description = "Python Sorted Container Types: SortedList, SortedDict, and SortedSet";
-      homepage = "http://www.grantjenks.com/docs/sortedcontainers/";
-      license = licenses.asl20;
-    };
-  };
-
   sortedcollections = buildPythonPackage rec {
     name = "sortedcollections-${version}";
     version = "0.4.2";
@@ -8126,25 +8021,6 @@ in {
       homepage = https://pythonhosted.org/Pympler/;
       license = licenses.asl20;
     };
-  };
-
-  pymysql = buildPythonPackage rec {
-    name = "pymysql-${version}";
-    version = "0.6.6";
-    src = pkgs.fetchgit {
-      url = https://github.com/PyMySQL/PyMySQL.git;
-      rev = "refs/tags/pymysql-${version}";
-      sha256 = "0kpw11rxpyyhs9b139hxhbnx9n5kzjjw10wgwvhnf9m3mv7j4n71";
-    };
-
-    buildInputs = with self; [ unittest2 ];
-
-    checkPhase = ''
-      ${python.interpreter} runtests.py
-    '';
-
-    # Wants to connect to MySQL
-    doCheck = false;
   };
 
   pymysqlsa = self.buildPythonPackage rec {
@@ -11111,9 +10987,11 @@ in {
 
   python-language-server = callPackage ../development/python-modules/python-language-server {};
 
-  pyls-mypy = callPackage ../development/python-modules/pyls-mypy {};
+  pyls-black = callPackage ../development/python-modules/pyls-black {};
 
   pyls-isort = callPackage ../development/python-modules/pyls-isort {};
+
+  pyls-mypy = callPackage ../development/python-modules/pyls-mypy {};
 
   pyudev = callPackage ../development/python-modules/pyudev {
     inherit (pkgs) systemd;
@@ -12438,6 +12316,8 @@ in {
     };
   };
 
+  shippai = callPackage ../development/python-modules/shippai {};
+
   simanneal = callPackage ../development/python-modules/simanneal { };
 
   simplebayes = buildPythonPackage rec {
@@ -12703,37 +12583,7 @@ in {
 
   thespian = callPackage ../development/python-modules/thespian { };
 
-  tidylib = buildPythonPackage rec {
-    version = "0.2.4";
-    name = "pytidylib-${version}";
-
-    propagatedBuildInputs = [ pkgs.html-tidy ];
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pytidylib/pytidylib-${version}.tar.gz";
-      sha256 = "0af07bd8ebd256af70ca925ada9337faf16d85b3072624f975136a5134150ab6";
-    };
-
-    # Judging from SyntaxError in tests
-    disabled = isPy3k;
-
-    checkPhase = ''
-      ${python.interpreter} -m unittest discover
-    '';
-
-    # Bunch of tests fail
-    # https://github.com/countergram/pytidylib/issues/13
-    doCheck = false;
-
-    patchPhase = ''
-      sed -i 's#load_library(name)#load_library("${pkgs.html-tidy}/lib/libtidy.so")#' tidylib/__init__.py
-    '';
-
-    meta = {
-      homepage = " http://countergram.com/open-source/pytidylib/";
-      maintainers = with maintainers; [ layus ];
-    };
-  };
+  tidylib = callPackage ../development/python-modules/pytidylib { };
 
   tilestache = self.buildPythonPackage rec {
     name = "tilestache-${version}";
@@ -15389,24 +15239,7 @@ EOF
 
   whichcraft = callPackage ../development/python-modules/whichcraft { };
 
-  whisper = buildPythonPackage rec {
-    name = "whisper-${version}";
-    version = graphiteVersion;
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/w/whisper/${name}.tar.gz";
-      sha256 = "1v1bi3fl1i6p4z4ki692bykrkw6907dn3mfq0151f70lvi3zpns3";
-    };
-
-    # error: invalid command 'test'
-    doCheck = false;
-
-    meta = {
-      homepage = http://graphite.wikidot.com/;
-      description = "Fixed size round-robin style database";
-      maintainers = with maintainers; [ rickynils offline ];
-    };
-  };
+  whisper = callPackage ../development/python-modules/whisper { };
 
   worldengine = buildPythonPackage rec {
     name = "worldengine-${version}";
@@ -15456,27 +15289,7 @@ EOF
     };
   };
 
-  carbon = buildPythonPackage rec {
-    name = "carbon-${version}";
-    version = graphiteVersion;
-
-    disabled = isPy3k;
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/c/carbon/${name}.tar.gz";
-      sha256 = "142smpmgbnjinvfb6s4ijazish4vfgzyd8zcmdkh55y051fkixkn";
-    };
-
-    propagatedBuildInputs = with self; [ whisper txamqp zope_interface twisted ];
-
-    meta = {
-      homepage = http://graphite.wikidot.com/;
-      description = "Backend data caching and persistence daemon for Graphite";
-      maintainers = with maintainers; [ rickynils offline ];
-      license = licenses.asl20;
-    };
-  };
-
+  carbon = callPackage ../development/python-modules/carbon { };
 
   ujson = buildPythonPackage rec {
     name = "ujson-1.35";
@@ -15604,126 +15417,15 @@ EOF
     };
   };
 
-  graphite_web = if
-          self.django != self.django_1_8
-       || self.django_tagging != self.django_tagging_0_4_3
-  then throw "graphite_web should be build with django_1_8 and django_tagging_0_4_3"
-  else buildPythonPackage rec {
-    name = "graphite-web-${version}";
-    disabled = isPy3k;
-    version = graphiteVersion;
-
-    src = pkgs.fetchurl rec {
-      url = "mirror://pypi/g/graphite-web/${name}.tar.gz";
-      sha256 = "0q8bwlj75jqyzmazfsi5sa26xl58ssa8wdxm2l4j0jqyn8xpfnmc";
-    };
-
-    propagatedBuildInputs = with self; [
-      django django_tagging whisper pycairo cairocffi
-      ldap memcached pytz urllib3 scandir
-    ];
-
-    postInstall = ''
-      wrapProgram $out/bin/run-graphite-devel-server.py \
-        --prefix PATH : ${pkgs.which}/bin
-    '';
-
-    preConfigure = ''
-      # graphite is configured by storing a local_settings.py file inside the
-      # graphite python package. Since that package is stored in the immutable
-      # Nix store we can't modify it. So how do we configure graphite?
-      #
-      # First of all we rename "graphite.local_settings" to
-      # "graphite_local_settings" so that the settings are not looked up in the
-      # graphite package anymore. Secondly we place a directory containing a
-      # graphite_local_settings.py on the PYTHONPATH in the graphite module
-      # <nixpkgs/nixos/modules/services/monitoring/graphite.nix>.
-      substituteInPlace webapp/graphite/settings.py \
-        --replace "graphite.local_settings" " graphite_local_settings"
-
-      substituteInPlace webapp/graphite/settings.py \
-        --replace "join(WEBAPP_DIR, 'content')" "join('$out', 'webapp', 'content')"
-    '';
-
-    # error: invalid command 'test'
-    doCheck = false;
-
-    meta = {
-      homepage = http://graphite.wikidot.com/;
-      description = "Enterprise scalable realtime graphing";
-      maintainers = with maintainers; [ rickynils offline ];
-    };
-  };
+  graphite-web = callPackage ../development/python-modules/graphite-web { };
 
   graphite_api = callPackage ../development/python-modules/graphite-api { };
 
-  graphite_beacon = buildPythonPackage rec {
-    name = "graphite_beacon-0.27.0";
+  graphite_beacon = callPackage ../development/python-modules/graphite_beacon { };
 
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/g/graphite_beacon/${name}.tar.gz";
-      sha256 = "03bp4wyfn3xhcqyvs5hnk1n87m4smsmm1p7qp459m7j8hwpbq2ks";
-    };
+  influxgraph = callPackage ../development/python-modules/influxgraph { };
 
-    propagatedBuildInputs = [ self.tornado self.pyyaml self.funcparserlib ];
-
-    preBuild = "> requirements.txt";
-
-    meta = {
-      description = "A simple alerting application for Graphite metrics";
-      homepage = https://github.com/klen/graphite-beacon;
-      maintainers = [ maintainers.offline ];
-      license = licenses.mit;
-    };
-  };
-
-  graphite_influxdb = buildPythonPackage rec {
-    name = "graphite-influxdb-0.3";
-
-    src = pkgs.fetchgit {
-      url = "https://github.com/vimeo/graphite-influxdb.git";
-      rev = "2273d12a24e1d804685a36debfd4224b7416b62f";
-      sha256 = "1v00fgrnmsd9c0ahggyw9sia5m7dyzz16i5pa4vy6w2sbfyrmm4v";
-    };
-
-    propagatedBuildInputs = with self; [ influxdb graphite_api ];
-
-    passthru.moduleName = "graphite_influxdb.InfluxdbFinder";
-
-    meta = {
-      description = "An influxdb backend for Graphite-web and graphite-api";
-      homepage = https://github.com/vimeo/graphite-influxdb;
-      license = licenses.asl20;
-    };
-  };
-
-  graphite_pager = buildPythonPackage rec {
-    name = "graphite-pager-${version}";
-    version = "2bbfe91220ec1e0ca1cdf4b5564386482a44ed7d";
-
-    src = pkgs.fetchgit {
-      url = "https://github.com/offlinehacker/graphite-pager.git";
-      sha256 = "0ylal0vkc2yrjvssfz1gls84yk9vkvvkx3pyv4lx15jm2qqzdmxd";
-      rev = version;
-    };
-
-    buildInputs = with self; [ nose mock ];
-    propagatedBuildInputs = with self; [
-      jinja2 pyyaml redis requests pagerduty
-      python-simple-hipchat pushbullet
-    ];
-
-    patchPhase = "> requirements.txt";
-    checkPhase = "nosetests";
-
-    meta = {
-      description = "A simple alerting application for Graphite metrics";
-      homepage = https://github.com/seatgeek/graphite-pager;
-      maintainers = with maintainers; [ offline ];
-      license = licenses.bsd2;
-    };
-  };
-
+  graphitepager = callPackage ../development/python-modules/graphitepager { };
 
   pyspotify = buildPythonPackage rec {
     name = "pyspotify-${version}";
@@ -17078,6 +16780,10 @@ EOF
 
   Keras = callPackage ../development/python-modules/keras { };
 
+  keras-applications = callPackage ../development/python-modules/keras-applications { };
+
+  keras-preprocessing = callPackage ../development/python-modules/keras-preprocessing { };
+
   Lasagne = buildPythonPackage rec {
     name = "Lasagne-${version}";
     version = "0.1";
@@ -17496,18 +17202,6 @@ EOF
     propagatedBuildInputs = with self; [ six ];
   };
 
-  slackclient = buildPythonPackage rec {
-    name = "slackclient-${version}";
-    version = "1.0.0";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/slackclient/${name}.tar.gz";
-      sha256 = "063cbzp1fbdipv53gb0hnban1pg80pls0lbld98lhnykzkcb6vf0";
-    };
-
-    propagatedBuildInputs = with self; [ websocket_client requests ];
-  };
-
   tempora= callPackage ../development/python-modules/tempora { };
 
   hypchat = callPackage ../development/python-modules/hypchat { };
@@ -17743,6 +17437,22 @@ EOF
   })).python;
 
   rfc7464 = callPackage ../development/python-modules/rfc7464 { };
+
+  foundationdb51 = (toPythonModule (pkgs.fdbPackages.override {
+    inherit python;
+  }).foundationdb51).python;
+
+  foundationdb52 = (toPythonModule (pkgs.fdbPackages.override {
+    inherit python;
+  }).foundationdb52).python;
+
+  foundationdb60 = (toPythonModule (pkgs.fdbPackages.override {
+    inherit python;
+  }).foundationdb60).python;
+
+  libtorrentRasterbar = (toPythonModule (pkgs.libtorrentRasterbar.override {
+    inherit python;
+  })).python;
 });
 
 in fix' (extends overrides packages)
