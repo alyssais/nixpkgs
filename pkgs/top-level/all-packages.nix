@@ -569,6 +569,8 @@ with pkgs;
 
   avfs = callPackage ../tools/filesystems/avfs { };
 
+  aws-iam-authenticator = callPackage ../tools/security/aws-iam-authenticator {};
+
   awscli = callPackage ../tools/admin/awscli { };
 
   awsebcli = callPackage ../tools/virtualization/awsebcli {};
@@ -1118,6 +1120,8 @@ with pkgs;
   cpulimit = callPackage ../tools/misc/cpulimit { };
 
   codesearch = callPackage ../tools/text/codesearch { };
+
+  codec2 = callPackage ../development/libraries/codec2 { };
 
   contacts = callPackage ../tools/misc/contacts {
     inherit (darwin.apple_sdk.frameworks) Foundation AddressBook;
@@ -7858,6 +7862,7 @@ with pkgs;
 
   bazel_0_4 = callPackage ../development/tools/build-managers/bazel/0.4.nix { };
   bazel = callPackage ../development/tools/build-managers/bazel {
+    inherit (darwin) cctools;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices Foundation;
   };
 
@@ -10677,6 +10682,8 @@ with pkgs;
 
   libpgf = callPackage ../development/libraries/libpgf { };
 
+  libphonenumber = callPackage ../development/libraries/libphonenumber { };
+
   libpng = callPackage ../development/libraries/libpng { };
   libpng_apng = libpng.override { apngSupport = true; };
   libpng12 = callPackage ../development/libraries/libpng/12.nix { };
@@ -11756,6 +11763,8 @@ with pkgs;
   lv2Unstable = callPackage ../development/libraries/audio/lv2/unstable.nix { };
 
   lvtk = callPackage ../development/libraries/audio/lvtk { };
+
+  qradiolink = callPackage ../applications/misc/qradiolink { };
 
   qrupdate = callPackage ../development/libraries/qrupdate { };
 
@@ -13869,6 +13878,16 @@ with pkgs;
       ];
   };
 
+  linux_4_18 = callPackage ../os-specific/linux/kernel/linux-4.18.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        # See pkgs/os-specific/linux/kernel/cpu-cgroup-v2-patches/README.md
+        # when adding a new linux version
+        # kernelPatches.cpu-cgroup-v2."4.11"
+        kernelPatches.modinst_arg_list_too_long
+      ];
+  };
+
   linux_testing = callPackage ../os-specific/linux/kernel/linux-testing.nix {
     kernelPatches = [
       kernelPatches.bridge_stp_helper
@@ -14019,7 +14038,7 @@ with pkgs;
     sch_cake = callPackage ../os-specific/linux/sch_cake { };
 
     inherit (callPackage ../os-specific/linux/spl {})
-      splStable splUnstable splLegacyCrypto;
+      splStable splUnstable;
 
     spl = splStable;
 
@@ -14052,7 +14071,7 @@ with pkgs;
     inherit (callPackage ../os-specific/linux/zfs {
       configFile = "kernel";
       inherit kernel spl;
-     }) zfsStable zfsUnstable zfsLegacyCrypto;
+     }) zfsStable zfsUnstable;
 
      zfs = zfsStable;
   });
@@ -14062,7 +14081,7 @@ with pkgs;
   linux = linuxPackages.kernel;
 
   # Update this when adding the newest kernel major version!
-  linuxPackages_latest = linuxPackages_4_17;
+  linuxPackages_latest = linuxPackages_4_18;
   linux_latest = linuxPackages_latest.kernel;
 
   # Build the kernel modules for the some of the kernels.
@@ -14073,6 +14092,7 @@ with pkgs;
   linuxPackages_4_9 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_9);
   linuxPackages_4_14 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_14);
   linuxPackages_4_17 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_17);
+  linuxPackages_4_18 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_18);
   # Don't forget to update linuxPackages_latest!
 
   # Intentionally lacks recurseIntoAttrs, as -rc kernels will quite likely break out-of-tree modules and cause failed Hydra builds.
@@ -14599,7 +14619,7 @@ with pkgs;
 
   inherit (callPackage ../os-specific/linux/zfs {
     configFile = "user";
-  }) zfsStable zfsUnstable zfsLegacyCrypto;
+  }) zfsStable zfsUnstable;
 
   zfs = zfsStable;
 
@@ -16875,6 +16895,10 @@ with pkgs;
 
   jalv = callPackage ../applications/audio/jalv { };
 
+  jameica = callPackage ../applications/office/jameica {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
+
   jamin = callPackage ../applications/audio/jamin { };
 
   japa = callPackage ../applications/audio/japa { };
@@ -18950,7 +18974,9 @@ with pkgs;
     inherit (luaPackages) cjson;
   };
 
-  weechat-xmpp = callPackage ../applications/networking/instant-messengers/weechat-xmpp {};
+  weechat-xmpp = callPackage ../applications/networking/instant-messengers/weechat-xmpp {
+    inherit (pythonPackages) pydns;
+  };
 
   westonLite = weston.override {
     pango = null;

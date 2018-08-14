@@ -727,7 +727,7 @@ self: super: {
           owner = "haskell-servant";
           repo = "servant";
           rev = "v${ver}";
-          sha256 = "0bwd5dy3crn08dijn06dr3mdsww98kqxfp8v5mvrdws5glvcxdsg";
+          sha256 = "0kqglih3rv12nmkzxvalhfaaafk4b2irvv9x5xmc48i1ns71y23l";
         }}/doc";
         buildInputs = with pkgs.pythonPackages; [ sphinx recommonmark sphinx_rtd_theme ];
         makeFlags = "html";
@@ -1129,4 +1129,5 @@ self: super: {
 
   # Can be removed once yi-language >= 0.18 is in the LTS
   yi-core = super.yi-core.override { yi-language = self.yi-language_0_18_0; };
-}
+
+} // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super
