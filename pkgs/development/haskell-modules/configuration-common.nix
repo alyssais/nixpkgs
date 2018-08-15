@@ -858,9 +858,6 @@ self: super: {
   fluid-idl-http-client = markBroken super.fluid-idl-http-client;
   fluid-idl-scotty = markBroken super.fluid-idl-scotty;
 
-  # missing dependencies: Glob >=0.7.14 && <0.8, data-fix ==0.0.4
-  stack2nix = doJailbreak super.stack2nix;
-
   # Work around https://github.com/haskell/c2hs/issues/192.
   c2hs = dontCheck super.c2hs;
 
@@ -1080,19 +1077,18 @@ self: super: {
   haddock-library = doJailbreak (dontCheck super.haddock-library);
   haddock-library_1_6_0 = doJailbreak (dontCheck super.haddock-library_1_6_0);
 
+  # cabal2nix requires hpack >= 0.29.6 but the LTS has hpack-0.28.2.
+  # Lets remove this once the LTS has upraded to 0.29.6.
+  hpack = super.hpack_0_29_6;
+
   cabal2nix =
-    let
-      # The test suite does not know how to find the 'cabal2nix' binary.
-      drv1 = overrideCabal super.cabal2nix (drv: {
-               preCheck = ''
-                 export PATH="$PWD/dist/build/cabal2nix:$PATH"
-                 export HOME="$TMPDIR/home"
-               '';
-             });
-       # cabal2nix requires hpack >= 0.29.6 but the LTS has hpack-0.28.2.
-       # Lets remove this once the LTS has upraded to 0.29.6.
-       drv2 = drv1.override { hpack = self.hpack_0_29_6; };
-    in drv2;
+    # The test suite does not know how to find the 'cabal2nix' binary.
+    overrideCabal super.cabal2nix (drv: {
+      preCheck = ''
+        export PATH="$PWD/dist/build/cabal2nix:$PATH"
+        export HOME="$TMPDIR/home"
+      '';
+    });
 
   # Break out of "aeson <1.3, temporary <1.3".
   stack = doJailbreak super.stack;

@@ -1013,7 +1013,7 @@ with pkgs;
     executableToolDepends = [ makeWrapper ];
     postInstall = ''
       wrapProgram $out/bin/stack2nix \
-        --prefix PATH ":" "${git}/bin:${cabal2nix}/bin:${cabal-install}/bin:${stack}/bin"
+        --prefix PATH ":" "${git}/bin:${cabal-install}/bin"
     '';
   });
 
@@ -6839,6 +6839,8 @@ with pkgs;
 
   oraclejdk10distro = packageType: _:
       (callPackage ../development/compilers/oraclejdk/jdk10-linux.nix { inherit packageType; });
+
+  javacard-devkit = pkgsi686Linux.callPackage ../development/compilers/javacard-devkit { };
 
   jikes = callPackage ../development/compilers/jikes { };
 
@@ -14037,10 +14039,7 @@ with pkgs;
 
     sch_cake = callPackage ../os-specific/linux/sch_cake { };
 
-    inherit (callPackage ../os-specific/linux/spl {})
-      splStable splUnstable;
-
-    spl = splStable;
+    spl = callPackage ../os-specific/linux/spl { };
 
     sysdig = callPackage ../os-specific/linux/sysdig {};
 
