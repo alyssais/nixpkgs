@@ -58,13 +58,13 @@ let
         sha1 = "cbc4b9a68981bf0b501ccd06a9058acd65309bf7";
       };
     };
-    "@types/node-10.5.8" = {
+    "@types/node-10.7.1" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
-      version = "10.5.8";
+      version = "10.7.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/node/-/node-10.5.8.tgz";
-        sha512 = "sWSjw+bYW/2W+1V3m8tVsm9PKJcxk3NHN7oRqNUfEdofKg0Imbdu1dQbFvLKjZQXEDXRN6IfSMACjJ7Wv4NGCQ==";
+        url = "https://registry.npmjs.org/@types/node/-/node-10.7.1.tgz";
+        sha512 = "EGoI4ylB/lPOaqXqtzAyL8HcgOuCtH2hkEaLmkueOYufsTFWBn4VCvlCDC2HW8Q+9iF+QVC3sxjDKQYjHQeZ9w==";
       };
     };
     "@types/superagent-3.5.6" = {
@@ -976,13 +976,13 @@ let
         sha1 = "e2a75042a9551908bebd25b8523d5f9769d79181";
       };
     };
-    "ci-info-1.1.3" = {
+    "ci-info-1.3.0" = {
       name = "ci-info";
       packageName = "ci-info";
-      version = "1.1.3";
+      version = "1.3.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/ci-info/-/ci-info-1.1.3.tgz";
-        sha512 = "SK/846h/Rcy8q9Z9CAwGBLfCJ6EkjJWdpelWDufQpqVDYq2Wnnv8zlSO6AMQap02jvhVruKKpEtQOufo3pFhLg==";
+        url = "https://registry.npmjs.org/ci-info/-/ci-info-1.3.0.tgz";
+        sha512 = "mPdvoljUhH3Feai3dakD3bwYl/8I0tSo16Ge2W+tY88yfYDKGVnXV2vFxZC8VGME01CYp+DaAZnE93VHYVapnA==";
       };
     };
     "circular-append-file-1.0.1" = {
@@ -2056,13 +2056,13 @@ let
         sha512 = "1MkrZNvWTKCaigbn+W15elq2BB/L22nqrSY5DKlo3X6+vclJm8Bb5djXJBmEX6fS3+zCh/F4VBK5Z2KxJt4s2Q==";
       };
     };
-    "es5-ext-0.10.45" = {
+    "es5-ext-0.10.46" = {
       name = "es5-ext";
       packageName = "es5-ext";
-      version = "0.10.45";
+      version = "0.10.46";
       src = fetchurl {
-        url = "https://registry.npmjs.org/es5-ext/-/es5-ext-0.10.45.tgz";
-        sha512 = "FkfM6Vxxfmztilbxxz5UKSD4ICMf5tSpRFtDNtkAhOxZ0EKtX6qwmXNyH/sFyIbX2P/nU5AMiA9jilWsUGJzCQ==";
+        url = "https://registry.npmjs.org/es5-ext/-/es5-ext-0.10.46.tgz";
+        sha512 = "24XxRvJXNFwEMpJb3nOkiRJKRoupmjYmOPVlI65Qy2SrtxwOTB+g6ODjBKOtwEHbYrhWRty9xxOWLNdClT2djw==";
       };
     };
     "es6-iterator-2.0.3" = {
@@ -4666,13 +4666,13 @@ let
         sha1 = "6462f1b204109ccc644601650110a828443d66e2";
       };
     };
-    "multicast-dns-7.0.0" = {
+    "multicast-dns-7.0.1" = {
       name = "multicast-dns";
       packageName = "multicast-dns";
-      version = "7.0.0";
+      version = "7.0.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/multicast-dns/-/multicast-dns-7.0.0.tgz";
-        sha512 = "BqB5TtIXHo+8gN33N1CA1clsvPsAJlnc6D49SzfQA0xq75cxj15g2y9NaRdf4x2u4v1P66PBC+Wg6YgPO5Bc/g==";
+        url = "https://registry.npmjs.org/multicast-dns/-/multicast-dns-7.0.1.tgz";
+        sha512 = "jx8bO2QZvx5oJXWhiuEb6I8XgufpPXvKFSAoSvurD2nECVhbQQTilY33IfChreWqhqPgzKZbpgsyHapjnRTnlw==";
       };
     };
     "multicb-1.2.2" = {
@@ -7610,7 +7610,7 @@ in
       })
       sources."@cycle/run-3.4.0"
       sources."@cycle/time-0.10.1"
-      sources."@types/node-10.5.8"
+      sources."@types/node-10.7.1"
       sources."@types/superagent-3.5.6"
       sources."ansi-escapes-3.1.0"
       sources."ansi-regex-2.1.1"
@@ -7639,7 +7639,7 @@ in
       sources."d-1.0.0"
       sources."debug-3.1.0"
       sources."delayed-stream-1.0.0"
-      sources."es5-ext-0.10.45"
+      sources."es5-ext-0.10.46"
       sources."es6-iterator-2.0.3"
       sources."es6-map-0.1.5"
       sources."es6-set-0.1.5"
@@ -7800,7 +7800,7 @@ in
       sources."capture-stack-trace-1.0.0"
       sources."caseless-0.12.0"
       sources."chalk-2.4.1"
-      sources."ci-info-1.1.3"
+      sources."ci-info-1.3.0"
       sources."circular-append-file-1.0.1"
       sources."cli-boxes-1.0.0"
       sources."cli-spinners-1.3.1"
@@ -8003,7 +8003,7 @@ in
       })
       sources."ms-2.0.0"
       sources."multi-random-access-2.1.1"
-      sources."multicast-dns-7.0.0"
+      sources."multicast-dns-7.0.1"
       sources."multicb-1.2.2"
       sources."multistream-2.1.1"
       sources."mute-stream-0.0.7"
@@ -8500,10 +8500,10 @@ in
   pnpm = nodeEnv.buildNodePackage {
     name = "pnpm";
     packageName = "pnpm";
-    version = "2.13.3";
+    version = "2.13.4";
     src = fetchurl {
-      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.13.3.tgz";
-      sha512 = "GMF/vkYiXy21Vi5ngFhPT+EX4phFHse15N4WdHYyWuGeafVqydISsOHcReKiXZVbxrkNtOJItOfFv8HQvMMSfA==";
+      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.13.4.tgz";
+      sha512 = "2MGaO+HR+UDWfJWRcvYqibGi9wXUd8icW8uiZTd+ZtH/txQfWV/SabK3OlE8FsVvCVHqe+jPPB6DiGvcld6jfg==";
     };
     buildInputs = globalBuildInputs;
     meta = {
@@ -8955,7 +8955,7 @@ in
       sources."chalk-1.1.3"
       sources."charenc-0.0.2"
       sources."chokidar-2.0.4"
-      sources."ci-info-1.1.3"
+      sources."ci-info-1.3.0"
       (sources."class-utils-0.3.6" // {
         dependencies = [
           sources."define-property-0.2.5"
@@ -9532,10 +9532,10 @@ in
   npm = nodeEnv.buildNodePackage {
     name = "npm";
     packageName = "npm";
-    version = "6.3.0";
+    version = "6.4.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/npm/-/npm-6.3.0.tgz";
-      sha512 = "oDtLFo3wXue/xe3pU/oks9VHS5501OAWlYrZrApZkFv7l2LXk+9CfPMbjbfZWK7Jqlc1jbNcJMkB6KZC7K/vEA==";
+      url = "https://registry.npmjs.org/npm/-/npm-6.4.0.tgz";
+      sha512 = "k0VteQaxRuI1mREBxCtLUksesD2ZmX5gxjXNEjTmTrxQ3SHW22InkCKyX4NzoeGAYtgmDg5MuE7rcXYod7xgug==";
     };
     buildInputs = globalBuildInputs;
     meta = {
