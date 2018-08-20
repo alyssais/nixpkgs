@@ -1117,6 +1117,8 @@ with pkgs;
     flex = flex_2_5_35;
   };
 
+  cplex = callPackage ../applications/science/math/cplex { releasePath = config.cplex.releasePath or null; };
+
   cpulimit = callPackage ../tools/misc/cpulimit { };
 
   codesearch = callPackage ../tools/text/codesearch { };
@@ -1486,6 +1488,10 @@ with pkgs;
 
   syslogng_incubator = callPackage ../tools/system/syslog-ng-incubator { };
 
+  inherit (callPackages ../servers/rainloop { })
+    rainloop-community
+    rainloop-standard;
+
   ring-daemon = callPackage ../applications/networking/instant-messengers/ring-daemon { };
 
   riot-web = callPackage ../applications/networking/instant-messengers/riot/riot-web.nix {
@@ -1820,6 +1826,10 @@ with pkgs;
   m17n_db = callPackage ../tools/inputmethods/m17n-db { };
 
   m17n_lib = callPackage ../tools/inputmethods/m17n-lib { };
+
+  libotf = callPackage ../tools/inputmethods/m17n-lib/otf.nix {
+    inherit (xorg) libXaw;
+  };
 
   skktools = callPackage ../tools/inputmethods/skk/skktools { };
   skk-dicts = callPackage ../tools/inputmethods/skk/skk-dicts { };
@@ -7016,6 +7026,11 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   };
 
+  mono514 = callPackage ../development/compilers/mono/5.14.nix {
+    inherit (darwin) libobjc;
+    inherit (darwin.apple_sdk.frameworks) Foundation;
+  };
+
   monoDLLFixer = callPackage ../build-support/mono-dll-fixer { };
 
   mosml = callPackage ../development/compilers/mosml { };
@@ -7027,6 +7042,8 @@ with pkgs;
   nrpl = callPackage ../development/tools/nrpl { };
 
   neko = callPackage ../development/compilers/neko { };
+
+  nextpnr = libsForQt5.callPackage ../development/compilers/nextpnr { };
 
   nasm = callPackage ../development/compilers/nasm { };
 
@@ -7461,7 +7478,6 @@ with pkgs;
 
   ocropus = callPackage ../applications/misc/ocropus { };
 
-  perl = perl524;
   inherit (callPackages ../development/interpreters/perl {}) perl522 perl524 perl526 perl528;
 
   pachyderm = callPackage ../applications/networking/cluster/pachyderm { };
@@ -8092,6 +8108,8 @@ with pkgs;
 
   ddd = callPackage ../development/tools/misc/ddd { };
 
+  lattice-diamond = callPackage ../development/tools/lattice-diamond { };
+
   distcc = callPackage ../development/tools/misc/distcc { };
 
   # distccWrapper: wrapper that works as gcc or g++
@@ -8646,9 +8664,13 @@ with pkgs;
   texinfo5 = callPackage ../development/tools/misc/texinfo/5.2.nix { };
   texinfo6 = callPackage ../development/tools/misc/texinfo/6.5.nix { };
   texinfo = texinfo6;
-  texinfoInteractive = appendToName "interactive" (
-    texinfo.override { interactive = true; }
-  );
+  texinfoInteractive = appendToName "interactive" (texinfo.override {
+    interactive = true;
+    # doCheck = true -> some xlocale.h problem with perl 5.28.0
+    # (it's mistakenly trying to include the non-existent header)
+    perl = perl526;
+    buildPackages = buildPackages // { perl = buildPackages.perl526; };
+  });
 
   texi2html = callPackage ../development/tools/misc/texi2html { };
 
@@ -9177,7 +9199,12 @@ with pkgs;
 
   ffcast = callPackage ../tools/X11/ffcast { };
 
-  fflas-ffpack = callPackage ../development/libraries/fflas-ffpack {};
+  fflas-ffpack = callPackage ../development/libraries/fflas-ffpack {
+    # We need to use blas instead of openblas on darwin,
+    # see https://github.com/NixOS/nixpkgs/pull/45013.
+    blas = if stdenv.isDarwin then blas else openblas;
+  };
+
   fflas-ffpack_1 = callPackage ../development/libraries/fflas-ffpack/1.nix {};
   linbox = callPackage ../development/libraries/linbox {};
 
@@ -9657,7 +9684,6 @@ with pkgs;
 
   gtk2 = callPackage ../development/libraries/gtk+/2.x.nix {
     cupsSupport = config.gtk2.cups or stdenv.isLinux;
-    gdktarget = if stdenv.isDarwin then "quartz" else "x11";
     inherit (darwin.apple_sdk.frameworks) AppKit Cocoa;
   };
 
@@ -9665,7 +9691,9 @@ with pkgs;
     gdktarget = "x11";
   };
 
-  gtk3 = callPackage ../development/libraries/gtk+/3.x.nix { };
+  gtk3 = callPackage ../development/libraries/gtk+/3.x.nix {
+    inherit (darwin.apple_sdk.frameworks) AppKit Cocoa;
+  };
 
   gtkmm2 = callPackage ../development/libraries/gtkmm/2.x.nix { };
   gtkmm3 = callPackage ../development/libraries/gtkmm/3.x.nix { };
@@ -9948,6 +9976,8 @@ with pkgs;
   leveldb = callPackage ../development/libraries/leveldb { };
 
   lmdb = callPackage ../development/libraries/lmdb { };
+
+  lmdbxx = callPackage ../development/libraries/lmdbxx { };
 
   levmar = callPackage ../development/libraries/levmar { };
 
@@ -10421,8 +10451,6 @@ with pkgs;
   libmodbus = callPackage ../development/libraries/libmodbus {};
 
   libmtp = callPackage ../development/libraries/libmtp { };
-
-  libmsgpack = callPackage ../development/libraries/libmsgpack { };
 
   libmypaint = callPackage ../development/libraries/libmypaint { };
 
@@ -11102,6 +11130,8 @@ with pkgs;
   mpeg2dec = libmpeg2;
 
   mqtt-bench = callPackage ../applications/misc/mqtt-bench {};
+
+  msgpack = callPackage ../development/libraries/msgpack { };
 
   msilbc = callPackage ../development/libraries/msilbc { };
 
@@ -12619,11 +12649,25 @@ with pkgs;
 
   ### DEVELOPMENT / PERL MODULES
 
-  buildPerlPackage = callPackage ../development/perl-modules/generic perl;
-
-  perlPackages = recurseIntoAttrs (callPackage ./perl-packages.nix {
+  perl522Packages = recurseIntoAttrs (callPackage ./perl-packages.nix {
+    perl = perl522;
     overrides = (config.perlPackageOverrides or (p: {})) pkgs;
   });
+  perl524Packages = recurseIntoAttrs (callPackage ./perl-packages.nix {
+    perl = perl524;
+    overrides = (config.perlPackageOverrides or (p: {})) pkgs;
+  });
+  perl526Packages = recurseIntoAttrs (callPackage ./perl-packages.nix {
+    perl = perl526;
+    overrides = (config.perlPackageOverrides or (p: {})) pkgs;
+  });
+  perl528Packages = recurseIntoAttrs (callPackage ./perl-packages.nix {
+    perl = perl528;
+    overrides = (config.perlPackageOverrides or (p: {})) pkgs;
+  });
+
+  perlPackages = perl528Packages;
+  inherit (perlPackages) perl buildPerlPackage;
 
   perlXMLParser = perlPackages.XMLParser;
 
@@ -13489,6 +13533,8 @@ with pkgs;
   microcodeAmd = callPackage ../os-specific/linux/microcode/amd.nix { };
 
   microcodeIntel = callPackage ../os-specific/linux/microcode/intel.nix { };
+
+  iucode-tool = callPackage ../os-specific/linux/microcode/iucode-tool.nix { };
 
   inherit (callPackages ../os-specific/linux/apparmor { python = python3; })
     libapparmor apparmor-utils apparmor-bin-utils apparmor-parser apparmor-pam
@@ -15113,6 +15159,8 @@ with pkgs;
 
   vdrsymbols = callPackage ../data/fonts/vdrsymbols { };
 
+  vegur = callPackage ../data/fonts/vegur { };
+
   vistafonts = callPackage ../data/fonts/vista-fonts { };
 
   vistafonts-chs = callPackage ../data/fonts/vista-fonts-chs { };
@@ -15656,7 +15704,14 @@ with pkgs;
 
   dbvisualizer = callPackage ../applications/misc/dbvisualizer {};
 
-  dd-agent = callPackage ../tools/networking/dd-agent { };
+  dd-agent = callPackage ../tools/networking/dd-agent/5.nix { };
+  datadog-agent = callPackage ../tools/networking/dd-agent/6.nix {
+    pythonPackages = datadog-integrations-core {};
+  };
+  datadog-integrations-core = extras: callPackage ../tools/networking/dd-agent/integrations-core.nix {
+    python = python27;
+    extraIntegrations = extras;
+  };
 
   ddgr = callPackage ../applications/misc/ddgr { };
 
@@ -17283,6 +17338,10 @@ with pkgs;
 
   minitube = libsForQt5.callPackage ../applications/video/minitube { };
 
+  mimic = callPackage ../applications/audio/mimic {
+    pulseaudioSupport = config.pulseaudio or false;
+  };
+
   mimms = callPackage ../applications/audio/mimms {};
 
   meh = callPackage ../applications/graphics/meh {};
@@ -18009,6 +18068,8 @@ with pkgs;
     qt = qt4;
   };
 
+  qsstv = qt5.callPackage ../applications/misc/qsstv { };
+
   qsyncthingtray = libsForQt5.callPackage ../applications/misc/qsyncthingtray { };
 
   qstopmotion = libsForQt5.callPackage ../applications/video/qstopmotion { };
@@ -18160,6 +18221,8 @@ with pkgs;
 
   rofi-menugen = callPackage ../applications/misc/rofi-menugen { };
 
+  rofi-systemd = callPackage ../tools/system/rofi-systemd { };
+
   rpcs3 = libsForQt5.callPackage ../misc/emulators/rpcs3 { };
 
   rstudio = libsForQt5.callPackage ../applications/editors/rstudio {
@@ -18308,6 +18371,8 @@ with pkgs;
   tecoc = callPackage ../applications/editors/tecoc { };
 
   viber = callPackage ../applications/networking/instant-messengers/viber { };
+
+  wavebox = callPackage ../applications/networking/instant-messengers/wavebox { };
 
   sonic-pi = callPackage ../applications/audio/sonic-pi {
     ruby = ruby_2_3;
@@ -18844,7 +18909,6 @@ with pkgs;
   virtualbox = callPackage ../applications/virtualization/virtualbox {
     stdenv = stdenv_32bit;
     inherit (gnome2) libIDL;
-    enableExtensionPack = config.virtualbox.enableExtensionPack or false;
     pulseSupport = config.pulseaudio or true;
   };
 
@@ -18855,6 +18919,12 @@ with pkgs;
   virtualboxHeadless = lowPrio (virtualbox.override {
     enableHardening = true;
     headless = true;
+  });
+
+  virtualboxExtpack = callPackage ../applications/virtualization/virtualbox/extpack.nix { };
+
+  virtualboxWithExtpack = lowPrio (virtualbox.override {
+    extensionPack = virtualboxExtpack;
   });
 
   virtualglLib = callPackage ../tools/X11/virtualgl/lib.nix {
@@ -19595,6 +19665,8 @@ with pkgs;
   enyo-doom = libsForQt5.callPackage ../games/enyo-doom { };
 
   eternity = callPackage ../games/eternity-engine { };
+
+  eureka-editor = callPackage ../applications/misc/eureka-editor { };
 
   extremetuxracer = callPackage ../games/extremetuxracer {
     libpng = libpng12;
@@ -20406,6 +20478,8 @@ with pkgs;
 
   kallisto = callPackage ../applications/science/biology/kallisto { };
 
+  mirtk = callPackage ../development/libraries/science/biology/mirtk { };
+
   muscle = callPackage ../applications/science/biology/muscle { };
 
   n3 = callPackage ../applications/science/biology/N3 {
@@ -20506,6 +20580,8 @@ with pkgs;
   };
 
   cliquer = callPackage ../development/libraries/science/math/cliquer { };
+
+  ecos = callPackage ../development/libraries/science/math/ecos { };
 
   flintqs = callPackage ../development/libraries/science/math/flintqs { };
 
@@ -20827,14 +20903,17 @@ with pkgs;
   tlaps = callPackage ../applications/science/logic/tlaplus/tlaps.nix {};
   tlaplusToolbox = callPackage ../applications/science/logic/tlaplus/toolbox.nix {gtk = gtk2;};
 
-
   aiger = callPackage ../applications/science/logic/aiger {};
 
   avy = callPackage ../applications/science/logic/avy {};
 
+  btor2tools = callPackage ../applications/science/logic/btor2tools {};
+
   boolector = callPackage ../applications/science/logic/boolector {};
 
   symbiyosys = callPackage ../applications/science/logic/symbiyosys {};
+
+  lingeling = callPackage ../applications/science/logic/lingeling {};
 
   ### SCIENCE / ELECTRONICS
 
@@ -20882,6 +20961,7 @@ with pkgs;
     cudnnSupport = cudaSupport;
     # Used only for image loading.
     opencv3 = opencv3WithoutCuda;
+    inherit (darwin.apple_sdk.frameworks) Accelerate CoreGraphics CoreVideo;
   };
 
   caffe2 = callPackage ../development/libraries/science/math/caffe2 {
