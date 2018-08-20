@@ -81,6 +81,10 @@ in
     buildInputs = [ curl ];
   };
 
+  curses = attrs: {
+    buildInputs = [ ncurses ];
+  };
+
   dep-selector-libgecode = attrs: {
     USE_SYSTEM_GECODE = true;
     postInstall = ''
