@@ -180,6 +180,8 @@ with pkgs;
 
   fetchMavenArtifact = callPackage ../build-support/fetchmavenartifact { };
 
+  global-platform-pro = callPackage ../development/tools/global-platform-pro/default.nix { };
+
   graph-easy = callPackage ../tools/graphics/graph-easy { };
 
   packer = callPackage ../development/tools/packer { };
@@ -1216,6 +1218,8 @@ with pkgs;
     pythonPackages = python3Packages;
   };
 
+  dozenal = callPackage ../applications/misc/dozenal { };
+
   dpic = callPackage ../tools/graphics/dpic { };
 
   dragon-drop = callPackage ../tools/X11/dragon-drop {
@@ -1361,6 +1365,8 @@ with pkgs;
   grobi = callPackage ../tools/X11/grobi { };
 
   gti = callPackage ../tools/misc/gti { };
+
+  hdate = callPackage ../applications/misc/hdate { };
 
   heatseeker = callPackage ../tools/misc/heatseeker { };
 
@@ -13740,9 +13746,7 @@ with pkgs;
   nmon = callPackage ../os-specific/linux/nmon { };
 
   # GNU/Hurd core packages.
-  gnu = recurseIntoAttrs (callPackage ../os-specific/gnu {
-    inherit platform;
-  });
+  gnu = recurseIntoAttrs (callPackage ../os-specific/gnu { });
 
   hwdata = callPackage ../os-specific/linux/hwdata { };
 
@@ -13863,7 +13867,7 @@ with pkgs;
         kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
       ]
-      ++ lib.optionals ((platform.kernelArch or null) == "mips")
+      ++ lib.optionals ((stdenv.hostPlatform.platform.kernelArch or null) == "mips")
       [ kernelPatches.mips_fpureg_emu
         kernelPatches.mips_fpu_sigill
         kernelPatches.mips_ext3_n32
