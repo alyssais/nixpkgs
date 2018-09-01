@@ -2389,6 +2389,10 @@ with pkgs;
 
   ext4magic = callPackage ../tools/filesystems/ext4magic { };
 
+  extract_url = callPackage ../applications/misc/extract_url {
+    inherit (perlPackages) PodChecker MIMEtools HTMLParser CursesUI URIFind;
+  };
+
   extundelete = callPackage ../tools/filesystems/extundelete { };
 
   expect = callPackage ../tools/misc/expect { };
@@ -7721,6 +7725,7 @@ with pkgs;
     inherit (darwin) libiconv libobjc libunwind;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   })
+    ruby_1_9
     ruby_2_3
     ruby_2_4
     ruby_2_5;
