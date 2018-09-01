@@ -254,6 +254,8 @@ in {
 
   docrep = callPackage ../development/python-modules/docrep { };
 
+  dominate = callPackage ../development/python-modules/dominate { };
+
   emcee = callPackage ../development/python-modules/emcee { };
 
   email_validator = callPackage ../development/python-modules/email-validator { };
@@ -379,6 +381,8 @@ in {
   pycairo = callPackage ../development/python-modules/pycairo { };
 
   pycangjie = disabledIf (!isPy3k) (callPackage ../development/python-modules/pycangjie { });
+
+  pycrc = callPackage ../development/python-modules/pycrc { };
 
   pycrypto = callPackage ../development/python-modules/pycrypto { };
 
@@ -1379,7 +1383,7 @@ in {
       sha256 = "1aqmy3psn12lxgp659d0zsxkirxzy5lnbnzxf9xjq1a93s3qm704";
     };
 
-    buildInputs = with self; [ pkgs.libev cython ] ++ optionals doCheck [ scales eventlet twisted mock gevent nose pytz pyyaml sure ];
+    buildInputs = with self; [ pkgs.libev cython ];
 
     propagatedBuildInputs = with self; [ futures six ];
 
@@ -1391,6 +1395,8 @@ in {
       ${python.interpreter} setup.py gevent_nosetests
       ${python.interpreter} setup.py eventlet_nosetests
     '';
+
+    checkInputs = [ scales eventlet twisted mock gevent nose pytz pyyaml sure ];
 
     # Could not get tests running
     doCheck = false;
@@ -2003,6 +2009,8 @@ in {
 
   requests-unixsocket = callPackage ../development/python-modules/requests-unixsocket {};
 
+  requests-aws4auth = callPackage ../development/python-modules/requests-aws4auth { };
+
   howdoi = callPackage ../development/python-modules/howdoi {};
 
   neurotools = callPackage ../development/python-modules/neurotools {};
@@ -2442,6 +2450,11 @@ in {
     doCheck = (!isPyPy);  # https://github.com/fabric/fabric/issues/11891
     propagatedBuildInputs = with self; [ paramiko pycrypto ];
     buildInputs = with self; [ fudge_9 nose ];
+    meta = {
+      description = "Pythonic remote execution";
+      homepage    = https://www.fabfile.org/;
+      license     = licenses.bsd2;
+    };
   };
 
   faulthandler = if ! isPy3k
@@ -4570,6 +4583,10 @@ in {
     gdal = self.gdal;
   };
 
+  django_2_1 = callPackage ../development/python-modules/django/2_1.nix {
+    gdal = self.gdal;
+  };
+
   django_1_8 = buildPythonPackage rec {
     name = "Django-${version}";
     version = "1.8.18";
@@ -5363,11 +5380,15 @@ in {
 
   flask = callPackage ../development/python-modules/flask { };
 
+  flask-api = callPackage ../development/python-modules/flask-api { };
+
   flask_assets = callPackage ../development/python-modules/flask-assets { };
 
   flask-autoindex = callPackage ../development/python-modules/flask-autoindex { };
 
   flask-babel = callPackage ../development/python-modules/flask-babel { };
+
+  flask-bootstrap = callPackage ../development/python-modules/flask-bootstrap { };
 
   flask-caching = callPackage ../development/python-modules/flask-caching { };
 
@@ -5392,6 +5413,8 @@ in {
   flask_migrate = callPackage ../development/python-modules/flask-migrate { };
 
   flask_oauthlib = callPackage ../development/python-modules/flask-oauthlib { };
+
+  flask-paginate = callPackage ../development/python-modules/flask-paginate { };
 
   flask_principal = callPackage ../development/python-modules/flask-principal { };
 
@@ -6910,6 +6933,8 @@ in {
     inherit (pkgs.linuxPackages) nvidia_x11;
   };
 
+  libkeepass = callPackage ../development/python-modules/libkeepass { };
+
   librepo = toPythonModule (pkgs.librepo.override {
     inherit python;
   });
@@ -7865,6 +7890,8 @@ in {
   mysqlclient = callPackage ../development/python-modules/mysqlclient { };
 
   mypy = callPackage ../development/python-modules/mypy { };
+
+  mypy-protobuf = callPackage ../development/python-modules/mypy-protobuf { };
 
   mwclient = buildPythonPackage rec {
     version = "0.8.3";
@@ -10657,35 +10684,7 @@ in {
     };
   };
 
-  pyjwt = buildPythonPackage rec {
-    version = "1.5.3";
-    name = "pyjwt-${version}";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "progrium";
-      repo = "pyjwt";
-      rev = version;
-      sha256 = "109zb3ka2lvp00r9nawa0lmljfikvhcj5yny19kcipz8mqia1gs8";
-    };
-
-    buildInputs = with self; [ pytestrunner pytestcov pytest coverage ];
-    propagatedBuildInputs = with self; [ cryptography ecdsa ];
-
-    # We don't need this specific version
-    postPatch = ''
-      substituteInPlace setup.py --replace "pytest==2.7.3" "pytest"
-    '';
-
-    meta = {
-      description = "JSON Web Token implementation in Python";
-      longDescription = "A Python implementation of JSON Web Token draft 01";
-      homepage = https://github.com/progrium/pyjwt;
-      downloadPage = https://github.com/progrium/pyjwt/releases;
-      license = licenses.mit;
-      maintainers = with maintainers; [ prikhi ];
-      platforms = platforms.unix;
-    };
-  };
+  pyjwt = callPackage ../development/python-modules/pyjwt { };
 
   pykickstart = buildPythonPackage rec {
     name = "pykickstart-${version}";
@@ -17287,6 +17286,8 @@ EOF
   versioneer = callPackage ../development/python-modules/versioneer { };
 
   vine = callPackage ../development/python-modules/vine { };
+
+  visitor = callPackage ../development/python-modules/visitor { };
 
   whitenoise = callPackage ../development/python-modules/whitenoise { };
 

@@ -129,10 +129,12 @@ rec {
 
          > haskell.lib.appendConfigureFlag haskellPackages.servant "--profiling-detail=all-functions"
    */
-  appendConfigureFlag = drv: x: overrideCabal drv (drv: { configureFlags = (drv.configureFlags or []) ++ [x]; });
+  appendConfigureFlag = drv: x: appendConfigureFlags drv [x];
+  appendConfigureFlags = drv: xs: overrideCabal drv (drv: { configureFlags = (drv.configureFlags or []) ++ xs; });
 
   appendBuildFlag = drv: x: overrideCabal drv (drv: { buildFlags = (drv.buildFlags or []) ++ [x]; });
   appendBuildFlags = drv: xs: overrideCabal drv (drv: { buildFlags = (drv.buildFlags or []) ++ xs; });
+
   /* removeConfigureFlag drv x is a Haskell package like drv, but with
      all cabal configure arguments that are equal to x removed.
 
@@ -232,6 +234,7 @@ rec {
    */
   justStaticExecutables = drv: overrideCabal drv (drv: {
     enableSharedExecutables = false;
+    enableLibraryProfiling = false;
     isLibrary = false;
     doHaddock = false;
     postFixup = "rm -rf $out/lib $out/nix-support $out/share/doc";

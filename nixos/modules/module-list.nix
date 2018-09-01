@@ -250,6 +250,7 @@
   ./services/desktops/zeitgeist.nix
   ./services/development/bloop.nix
   ./services/development/hoogle.nix
+  ./services/development/jupyter/default.nix
   ./services/editors/emacs.nix
   ./services/editors/infinoted.nix
   ./services/games/factorio.nix
@@ -281,6 +282,7 @@
   ./services/hardware/upower.nix
   ./services/hardware/usbmuxd.nix
   ./services/hardware/thermald.nix
+  ./services/hardware/undervolt.nix
   ./services/logging/SystemdJournal2Gelf.nix
   ./services/logging/awstats.nix
   ./services/logging/fluentd.nix
@@ -622,6 +624,7 @@
   ./services/scheduling/fcron.nix
   ./services/scheduling/marathon.nix
   ./services/search/elasticsearch.nix
+  ./services/search/elasticsearch-curator.nix
   ./services/search/hound.nix
   ./services/search/kibana.nix
   ./services/search/solr.nix

@@ -7,13 +7,16 @@
 
 {config, pkgs, fetchurl, fetchFromGitHub, stdenv, gnused, perl, overrides}:
 
-let self = _self // overrides; _self = with self; {
+let
+  inherit (stdenv.lib) maintainers;
+  self = _self // overrides;
+  _self = with self; {
 
   inherit perl;
 
-  inherit (pkgs) buildPerlPackage;
+  callPackage = pkgs.newScope self;
 
-  inherit (stdenv.lib) maintainers;
+  buildPerlPackage = callPackage ../development/perl-modules/generic { };
 
   # Helper functions for packages that use Module::Build to build.
   buildPerlModule = { buildInputs ? [], ... } @ args:
@@ -751,10 +754,7 @@ let self = _self // overrides; _self = with self; {
     };
   };
 
-  BerkeleyDB = import ../development/perl-modules/BerkeleyDB {
-    inherit buildPerlPackage fetchurl;
-    inherit (pkgs) db;
-  };
+  BerkeleyDB = callPackage ../development/perl-modules/BerkeleyDB { };
 
   BHooksEndOfScope = buildPerlPackage rec {
     name = "B-Hooks-EndOfScope-0.24";
@@ -2424,10 +2424,7 @@ let self = _self // overrides; _self = with self; {
     };
   };
 
-  CompressRawZlib = import ../development/perl-modules/Compress-Raw-Zlib {
-    inherit fetchurl buildPerlPackage stdenv;
-    inherit (pkgs) zlib;
-  };
+  CompressRawZlib = callPackage ../development/perl-modules/Compress-Raw-Zlib { };
 
   CompressUnLZMA = buildPerlPackage rec {
     name = "Compress-unLZMA-0.05";
@@ -4064,30 +4061,15 @@ let self = _self // overrides; _self = with self; {
     buildInputs = [ TestException ];
   };
 
-  DBDSQLite = import ../development/perl-modules/DBD-SQLite {
-    inherit stdenv fetchurl buildPerlPackage DBI;
-    inherit (pkgs) sqlite;
-  };
+  DBDSQLite = callPackage ../development/perl-modules/DBD-SQLite { };
 
-  DBDmysql = import ../development/perl-modules/DBD-mysql {
-    inherit fetchurl buildPerlPackage DBI;
-    inherit (pkgs) mysql;
-  };
+  DBDmysql = callPackage ../development/perl-modules/DBD-mysql { };
 
-  DBDPg = import ../development/perl-modules/DBD-Pg {
-    inherit stdenv fetchurl buildPerlPackage DBI;
-    inherit (pkgs) postgresql;
-  };
+  DBDPg = callPackage ../development/perl-modules/DBD-Pg { };
 
-  DBDsybase = import ../development/perl-modules/DBD-sybase {
-    inherit fetchurl buildPerlPackage DBI;
-    inherit (pkgs) freetds;
-  };
+  DBDsybase = callPackage ../development/perl-modules/DBD-sybase { };
 
-  DBFile = import ../development/perl-modules/DB_File {
-    inherit fetchurl buildPerlPackage;
-    inherit (pkgs) db;
-  };
+  DBFile = callPackage ../development/perl-modules/DB_File { };
 
   DBI = buildPerlPackage rec {
     name = "DBI-${version}";
@@ -8111,6 +8093,7 @@ let self = _self // overrides; _self = with self; {
     preConfigure = ''
       substituteInPlace Makefile.PL --replace "exit 0;" ""
     '';
+    buildInputs = [ TestPod ];
     meta = {
       description = "JSON (JavaScript Object Notation) encoder/decoder";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
@@ -9066,9 +9049,7 @@ let self = _self // overrides; _self = with self; {
     propagatedBuildInputs = [ LWP NetDNS ];
   };
 
-  maatkit = import ../development/perl-modules/maatkit {
-    inherit fetchurl buildPerlPackage stdenv DBDmysql;
-  };
+  maatkit = callPackage ../development/perl-modules/maatkit { };
 
   MacPasteboard = buildPerlPackage rec {
     name = "Mac-Pasteboard-0.009";
@@ -9573,7 +9554,7 @@ let self = _self // overrides; _self = with self; {
     };
   };
 
-  MNI-Perllib = pkgs.callPackage ../development/perl-modules/MNI {};
+  MNI-Perllib = callPackage ../development/perl-modules/MNI {};
 
   Mo = buildPerlPackage rec {
      name = "Mo-0.40";
@@ -11213,8 +11194,9 @@ let self = _self // overrides; _self = with self; {
       url = "mirror://cpan/authors/id/D/DA/DANBERR/${name}.tar.gz";
       sha256 = "8391696db9e96c374b72984c0bad9c7d1c9f3b4efe68f9ddf429a77548e0e269";
     };
-    buildInputs = [ TestPod TestPodCoverage ];
-    propagatedBuildInputs = [ pkgs.pkgconfig pkgs.dbus XMLTwig ];
+    nativeBuildInputs = [ pkgs.pkgconfig ];
+    buildInputs = [ TestPod TestPodCoverage pkgs.dbus ];
+    propagatedBuildInputs = [ XMLTwig ];
     meta = {
       homepage = http://www.freedesktop.org/wiki/Software/dbus;
       description = "Extension for the DBus bindings";
@@ -11386,6 +11368,22 @@ let self = _self // overrides; _self = with self; {
     doCheck = false; # seems to hang waiting for connections
     meta = {
       description = "Extensible, general Perl server engine";
+    };
+  };
+
+  NetSFTPForeign = buildPerlPackage rec {
+    name = "Net-SFTP-Foreign-1.89";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SA/SALVA/${name}.tar.gz";
+      sha256 = "9bd33e130581c1fc3eb6108eaf9056c1507428cace04a572f7afe816d83b08a7";
+    };
+    propagatedBuildInputs = [ pkgs.openssl ];
+    patchPhase = ''
+      sed -i "s|$ssh_cmd = 'ssh'|$ssh_cmd = '${pkgs.openssh}/bin/ssh'|" lib/Net/SFTP/Foreign/Backend/Unix.pm
+    '';
+    meta = {
+      description = "Secure File Transfer Protocol client";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
 
@@ -14402,12 +14400,12 @@ let self = _self // overrides; _self = with self; {
   };
 
   SysVirt = buildPerlModule rec {
-    version = "4.6.0";
+    version = "4.5.0";
     name = "Sys-Virt-${version}";
     src = assert version == pkgs.libvirt.version; pkgs.fetchgit {
       url = git://libvirt.org/libvirt-perl.git;
       rev = "v${version}";
-      sha256 = "0qs84sdrq85i3xc0drbk71jjm9vq1n8izdwy5zsd5r7dqays5slf";
+      sha256 = "18ns94i29c9x0j50pz9r1vcif6baayz769sa7b51v8kcvam9j52s";
     };
     nativeBuildInputs = [ pkgs.pkgconfig ];
     buildInputs = [ pkgs.libvirt CPANChanges TestPod TestPodCoverage XMLXPath ];
@@ -16166,7 +16164,7 @@ let self = _self // overrides; _self = with self; {
       install_name_tool -change "$oldPath" "$newPath" "$out/bin/biblex"
       install_name_tool -change "$oldPath" "$newPath" "$out/bin/bibparse"
       install_name_tool -change "$oldPath" "$newPath" "$out/bin/dumpnames"
-      install_name_tool -change "$oldPath" "$newPath" "$out/lib/perl5/site_perl/5.24.4/darwin-2level/auto/Text/BibTeX/BibTeX.bundle"
+      install_name_tool -change "$oldPath" "$newPath" "$out/lib/perl5/site_perl/${perl.version}/darwin-2level/auto/Text/BibTeX/BibTeX.bundle"
     '';
     meta = {
       description = "Interface to read and parse BibTeX files";
