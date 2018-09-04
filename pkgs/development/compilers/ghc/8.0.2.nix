@@ -1,5 +1,4 @@
 { stdenv, targetPackages
-, buildPlatform, hostPlatform, targetPlatform
 
 # build-tools
 , bootPkgs, hscolour
@@ -7,7 +6,7 @@
 
 , libiconv ? null, ncurses
 
-, useLLVM ? !targetPlatform.isx86
+, useLLVM ? !stdenv.targetPlatform.isx86
 , # LLVM is conceptually a run-time-only depedendency, but for
   # non-x86, we need LLVM to bootstrap later stages, so it becomes a
   # build-time dependency too.
@@ -18,7 +17,7 @@
   enableIntegerSimple ? !(gmp.meta.available or false), gmp
 
 , # If enabled, use -fPIC when compiling static libs.
-  enableRelocatedStaticLibs ? targetPlatform != hostPlatform
+  enableRelocatedStaticLibs ? stdenv.targetPlatform != stdenv.hostPlatform
 
 , # Whether to build dynamic libs for the standard library (on the target
   # platform). Static libs are always built.
@@ -26,12 +25,14 @@
 
 , # What flavour to build. An empty string indicates no
   # specific flavour and falls back to ghc default values.
-  ghcFlavour ? stdenv.lib.optionalString (targetPlatform != hostPlatform) "perf-cross"
+  ghcFlavour ? stdenv.lib.optionalString (stdenv.targetPlatform != stdenv.hostPlatform) "perf-cross"
 }:
 
 assert !enableIntegerSimple -> gmp != null;
 
 let
+  inherit (stdenv) buildPlatform hostPlatform targetPlatform;
+
   inherit (bootPkgs) ghc;
 
   # TODO(@Ericson2314) Make unconditional
@@ -102,16 +103,15 @@ stdenv.mkDerivation rec {
     done
     # GHC is a bit confused on its cross terminology, as these would normally be
     # the *host* tools.
-    export CC="$CC_FOR_TARGET"
-    export CXX="$CXX_FOR_TARGET"
-    # Use gold to work around https://sourceware.org/bugzilla/show_bug.cgi?id=16177
-    export LD="${targetCC.bintools}/bin/${targetCC.bintools.targetPrefix}ld${stdenv.lib.optionalString targetPlatform.isAarch32 ".gold"}"
-    export AS="$AS_FOR_TARGET"
-    export AR="$AR_FOR_TARGET"
-    export NM="$NM_FOR_TARGET"
-    export RANLIB="$RANLIB_FOR_TARGET"
-    export READELF="$READELF_FOR_TARGET"
-    export STRIP="$STRIP_FOR_TARGET"
+    export CC="${targetCC}/bin/${targetCC.targetPrefix}cc"
+    export CXX="${targetCC}/bin/${targetCC.targetPrefix}cxx"
+    export LD="${targetCC.bintools}/bin/${targetCC.bintools.targetPrefix}ld"
+    export AS="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}as"
+    export AR="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}ar"
+    export NM="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}nm"
+    export RANLIB="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}ranlib"
+    export READELF="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}readelf"
+    export STRIP="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}strip"
 
     echo -n "${buildMK}" > mk/build.mk
     sed -i -e 's|-isysroot /Developer/SDKs/MacOSX10.5.sdk||' configure

@@ -25,7 +25,7 @@ let
     sha256 = "1h9vcbvf8wgds6i2z20y7krpys0mqsqhv1ijyfljanp6vyll9fvi";
   };
 
-  xulrunner = if stdenv.system == "x86_64-linux"
+  xulrunner = if stdenv.hostPlatform.system == "x86_64-linux"
               then { tar = xulrunner64_tar; sdk = xulrunnersdk64_tar; }
               else { tar = xulrunner32_tar; sdk = xulrunnersdk32_tar; };
 
@@ -79,11 +79,6 @@ stdenv.mkDerivation rec {
     tar -xf ${xulrunner.sdk}
 
     cd ../../..
-  '';
-
-  preConfigure = ''
-    CC=${stdenv.cc.targetPrefix}cc
-    CXX=${stdenv.cc.targetPrefix}c++
   '';
 
   configureFlags = [

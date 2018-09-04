@@ -1,4 +1,4 @@
-{ stdenvNoLibs, buildPackages, buildPlatform, hostPlatform
+{ stdenvNoLibs, buildPackages
 , gcc, glibc
 , libiberty
 }:
@@ -29,8 +29,8 @@ stdenvNoLibs.mkDerivation rec {
   # Drop in libiberty, as external builds are not expected
   + ''
     (
-      mkdir -p build-${buildPlatform.config}/libiberty/
-      cd build-${buildPlatform.config}/libiberty/
+      mkdir -p build-${stdenvNoLibs.buildPlatform.config}/libiberty/
+      cd build-${stdenvNoLibs.buildPlatform.config}/libiberty/
       ln -s ${buildPackages.libiberty}/lib/libiberty.a ./
     )
   ''
@@ -46,16 +46,22 @@ stdenvNoLibs.mkDerivation rec {
     mkdir -p "$buildRoot/gcc"
     cd "$buildRoot/gcc"
     (
+      export AS_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$AS_FOR_BUILD
+      export CC_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CC_FOR_BUILD
+      export CPP_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CPP_FOR_BUILD
+      export CXX_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CXX_FOR_BUILD
+      export LD_FOR_BUILD=${buildPackages.stdenv.cc.bintools}/bin/$LD_FOR_BUILD
+
       export AS=$AS_FOR_BUILD
       export CC=$CC_FOR_BUILD
       export CPP=$CPP_FOR_BUILD
       export CXX=$CXX_FOR_BUILD
       export LD=$LD_FOR_BUILD
 
-      export AS_FOR_TARGET=$AS
-      export CC_FOR_TARGET=$CC
-      export CPP_FOR_TARGET=$CPP
-      export LD_FOR_TARGET=$LD
+      export AS_FOR_TARGET=${stdenvNoLibs.cc}/bin/$AS
+      export CC_FOR_TARGET=${stdenvNoLibs.cc}/bin/$CC
+      export CPP_FOR_TARGET=${stdenvNoLibs.cc}/bin/$CPP
+      export LD_FOR_TARGET=${stdenvNoLibs.cc.bintools}/bin/$LD
 
       export NIX_BUILD_CFLAGS_COMPILE+=' -DGENERATOR_FILE=1'
 
@@ -77,16 +83,33 @@ stdenvNoLibs.mkDerivation rec {
   ''
   # Preparing to configure + build libgcc itself
   + ''
-    mkdir -p "$buildRoot/gcc/${hostPlatform.config}/libgcc"
-    cd "$buildRoot/gcc/${hostPlatform.config}/libgcc"
+    mkdir -p "$buildRoot/gcc/${stdenvNoLibs.hostPlatform.config}/libgcc"
+    cd "$buildRoot/gcc/${stdenvNoLibs.hostPlatform.config}/libgcc"
     configureScript=$sourceRoot/configure
     chmod +x "$configureScript"
+
+    export AS_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$AS_FOR_BUILD
+    export CC_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CC_FOR_BUILD
+    export CPP_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CPP_FOR_BUILD
+    export CXX_FOR_BUILD=${buildPackages.stdenv.cc}/bin/$CXX_FOR_BUILD
+    export LD_FOR_BUILD=${buildPackages.stdenv.cc.bintools}/bin/$LD_FOR_BUILD
+
+    export AS=${stdenvNoLibs.cc}/bin/$AS
+    export CC=${stdenvNoLibs.cc}/bin/$CC
+    export CPP=${stdenvNoLibs.cc}/bin/$CPP
+    export CXX=${stdenvNoLibs.cc}/bin/$CXX
+    export LD=${stdenvNoLibs.cc.bintools}/bin/$LD
+
+    export AS_FOR_TARGET=${stdenvNoLibs.cc}/bin/$AS_FOR_TARGET
+    export CC_FOR_TARGET=${stdenvNoLibs.cc}/bin/$CC_FOR_TARGET
+    export CPP_FOR_TARGET=${stdenvNoLibs.cc}/bin/$CPP_FOR_TARGET
+    export LD_FOR_TARGET=${stdenvNoLibs.cc.bintools}/bin/$LD_FOR_TARGET
   '';
 
   gccConfigureFlags = [
-    "--build=${buildPlatform.config}"
-    "--host=${buildPlatform.config}"
-    "--target=${hostPlatform.config}"
+    "--build=${stdenvNoLibs.buildPlatform.config}"
+    "--host=${stdenvNoLibs.buildPlatform.config}"
+    "--target=${stdenvNoLibs.hostPlatform.config}"
 
     "--disable-bootstrap"
     "--disable-multilib" "--with-multilib-list="
@@ -105,7 +128,7 @@ stdenvNoLibs.mkDerivation rec {
     "--disable-vtable-verify"
 
     "--with-system-zlib"
-  ] ++ stdenvNoLibs.lib.optional (hostPlatform.libc == "glibc")
+  ] ++ stdenvNoLibs.lib.optional (stdenvNoLibs.hostPlatform.libc == "glibc")
        "--with-glibc-version=${glibc.version}";
 
   configurePlatforms = [ "build" "host" ];
@@ -121,9 +144,9 @@ stdenvNoLibs.mkDerivation rec {
   makeFlags = [ "MULTIBUILDTOP:=../" ];
 
   postInstall = ''
-    moveToOutput "lib/gcc/${hostPlatform.config}/${version}/include" "$dev"
+    moveToOutput "lib/gcc/${stdenvNoLibs.hostPlatform.config}/${version}/include" "$dev"
     mkdir -p "$out/lib" "$dev/include"
-    ln -s "$out/lib/gcc/${hostPlatform.config}/${version}"/* "$out/lib"
-    ln -s "$dev/lib/gcc/${hostPlatform.config}/${version}/include"/* "$dev/include/"
+    ln -s "$out/lib/gcc/${stdenvNoLibs.hostPlatform.config}/${version}"/* "$out/lib"
+    ln -s "$dev/lib/gcc/${stdenvNoLibs.hostPlatform.config}/${version}/include"/* "$dev/include/"
   '';
 }
