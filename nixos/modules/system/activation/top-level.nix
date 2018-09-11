@@ -115,6 +115,7 @@ let
 
       inherit (pkgs) utillinux coreutils;
       systemd = config.systemd.package;
+      inherit (pkgs.stdenv) shell;
 
       inherit children;
       kernelParams = config.boot.kernelParams;
@@ -162,6 +163,13 @@ in
       description = ''
         Additional configurations to build based on the current
         configuration which then has a lower priority.
+
+        To switch to a cloned configuration (e.g. <literal>child-1</literal>)
+        at runtime, run
+
+        <programlisting>
+        # sudo /run/current-system/fine-tune/child-1/bin/switch-to-configuration test
+        </programlisting>
       '';
     };
 

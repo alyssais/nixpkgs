@@ -1570,6 +1570,11 @@
     github = "grburst";
     name = "Julius Elias";
   };
+  greydot = {
+    email = "lanablack@amok.cc";
+    github = "greydot";
+    name = "Lana Black";
+  };
   gridaphobe = {
     email = "eric@seidel.io";
     github = "gridaphobe";
@@ -1639,6 +1644,11 @@
     email = "parizhskiy@gmail.com";
     github = "heel";
     name = "Sergii Paryzhskyi";
+  };
+  helkafen = {
+    email = "arnaudpourseb@gmail.com";
+    github = "Helkafen";
+    name = "Sébastian Méric de Bellefon";
   };
   henrytill = {
     email = "henrytill@gmail.com";
@@ -1866,6 +1876,11 @@
     email = "jakob@gillich.me";
     github = "jgillich";
     name = "Jakob Gillich";
+  };
+  jglukasik = {
+    email = "joseph@jgl.me";
+    github = "jglukasik";
+    name = "Joseph Lukasik";
   };
   jhhuh = {
     email = "jhhuh.note@gmail.com";
@@ -3380,6 +3395,11 @@
     email = "ricky@elrod.me";
     github = "relrod";
     name = "Ricky Elrod";
+  };
+  renatoGarcia = {
+    email = "fgarcia.renato@gmail.com";
+    github = "renatoGarcia";
+    name = "Renato Garcia";
   };
   renzo = {
     email = "renzocarbonara@gmail.com";
