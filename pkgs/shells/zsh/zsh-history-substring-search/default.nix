@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, zsh }:
+{ stdenv, lib, fetchFromGitHub, zsh }:
 
 stdenv.mkDerivation rec {
   name = "zsh-history-substring-search-${version}";
@@ -13,13 +13,14 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     install -D zsh-history-substring-search.zsh \
-      $out/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-    '';
+      "$out/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Fish shell history-substring-search for Zsh";
     homepage = https://github.com/zsh-users/zsh-history-substring-search;
     license = licenses.bsd3;
+    maintainers = with maintainers; [ qyliss ];
     platforms = platforms.unix;
   };
 }
