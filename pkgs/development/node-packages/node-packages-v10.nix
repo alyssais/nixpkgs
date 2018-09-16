@@ -1215,7 +1215,7 @@ let
       packageName = "minimist";
       version = "0.0.8";
       src = fetchurl {
-        url = "http://registry.npmjs.org/minimist/-/minimist-0.0.8.tgz";
+        url = "https://registry.npmjs.org/minimist/-/minimist-0.0.8.tgz";
         sha1 = "857fcabfc3397d2625b8228262e86aa7a011b05d";
       };
     };
@@ -1224,7 +1224,7 @@ let
       packageName = "minimist";
       version = "1.2.0";
       src = fetchurl {
-        url = "http://registry.npmjs.org/minimist/-/minimist-1.2.0.tgz";
+        url = "https://registry.npmjs.org/minimist/-/minimist-1.2.0.tgz";
         sha1 = "a35008b20f41383eec1fb914f4cd5df79a264284";
       };
     };
@@ -1260,7 +1260,7 @@ let
       packageName = "mkdirp";
       version = "0.5.1";
       src = fetchurl {
-        url = "http://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz";
+        url = "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz";
         sha1 = "30057438eac6cf7f8c4767f38648d6697d75c903";
       };
     };
@@ -2593,10 +2593,10 @@ in
   pnpm = nodeEnv.buildNodePackage {
     name = "pnpm";
     packageName = "pnpm";
-    version = "2.14.5";
+    version = "2.13.6";
     src = fetchurl {
-      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.14.5.tgz";
-      sha512 = "duRmHLnT+Fvrks+YEcewx9B9DubMCscmZCN7g0Wv3E8wVUENbQ1eYhWTK0EnDVEocL35mqVe+ukE3LtUaY5JLw==";
+      url = "https://registry.npmjs.org/pnpm/-/pnpm-2.13.6.tgz";
+      sha512 = "X8zmtUzmEIa/QMg0t0eeq6hSd7kmL5Zvneqpj3Tcbyn2g/FEFTPb9kaghR+DW1WdViOE51eo4ECLK7uY9oogkA==";
     };
     buildInputs = globalBuildInputs;
     meta = {

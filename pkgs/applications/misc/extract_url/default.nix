@@ -1,5 +1,5 @@
 { stdenv, lib, fetchFromGitHub, makeWrapper, perl
-, PodChecker, MIMEtools, HTMLParser
+, MIMEtools, HTMLParser
 , cursesSupport ? true, CursesUI
 , uriFindSupport ? true, URIFind
 }:
@@ -14,20 +14,6 @@ in stdenv.mkDerivation rec {
   name = "extract_url-${version}";
   version = "1.6.2";
 
-  nativeBuildInputs = [ PodChecker makeWrapper ];
-  propagatedBuildInputs = [ perl ] ++ perlDeps;
-
-  makeFlags = "prefix=$(out)";
-
-  postPatch = ''
-    substituteInPlace Makefile --replace /usr/bin/install install
-  '';
-
-  postFixup = ''
-    wrapProgram "$out/bin/extract_url" \
-      --set PERL5LIB "${lib.makeFullPerlPath perlDeps}"
-  '';
-
   src = fetchFromGitHub {
     owner = "m3m0ryh0l3";
     repo = "extracturl";
@@ -35,8 +21,19 @@ in stdenv.mkDerivation rec {
     sha256 = "05589lp15jmcpbj4y9a3hmf6n2gsqrm4ybcyh3hd4j6pc7hmnhny";
   };
 
+  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ perl ] ++ perlDeps;
+
+  makeFlags = [ "prefix=$(out)" ];
+  installFlags = [ "INSTALL=install" ];
+
+  postFixup = ''
+    wrapProgram "$out/bin/extract_url" \
+      --set PERL5LIB "${lib.makeFullPerlPath perlDeps}"
+  '';
+
   meta = with lib; {
-    homepage = "https://www.memoryhole.net/~kyle/extract_url/";
+    homepage = https://www.memoryhole.net/~kyle/extract_url/;
     description = "Extracts URLs from MIME messages or plain text";
     license = licenses.bsd2;
     maintainers = [ maintainers.qyliss ];

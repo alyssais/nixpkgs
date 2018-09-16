@@ -27,11 +27,6 @@ rec {
     "${patchSet}/patches/ruby/1.9.3/p${patchLevel}/railsexpress/18-fix-missing-c-return-event.patch"
     "${patchSet}/patches/ruby/1.9.3/p${patchLevel}/railsexpress/19-fix-process-daemon-call.patch"
   ];
-  "2.2.9" = ops useRailsExpress [
-    "${patchSet}/patches/ruby/2.2/head/railsexpress/01-zero-broken-tests.patch"
-    "${patchSet}/patches/ruby/2.2/head/railsexpress/02-improve-gc-stats.patch"
-    "${patchSet}/patches/ruby/2.2/head/railsexpress/03-display-more-detailed-stack-trace.patch"
-  ];
   "2.3.7" = ops useRailsExpress [
     "${patchSet}/patches/ruby/2.3/head/railsexpress/01-skip-broken-tests.patch"
     "${patchSet}/patches/ruby/2.3/head/railsexpress/02-improve-gc-stats.patch"

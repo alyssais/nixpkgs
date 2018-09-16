@@ -343,8 +343,8 @@ in
       # Mainly avoid reference to bootstrap tools
       allowedRequisites = with prevStage; with lib;
         # Simple executable tools
-        concatMap (p: [ (getBin p) (getLib p) ])
-          [ gzip bzip2 xz bash binutils.bintools coreutils diffutils findutils
+        concatMap (p: [ (getBin p) (getLib p) ]) [
+            gzip bzip2 xz bash binutils.bintools coreutils diffutils findutils
             gawk gnumake gnused gnutar gnugrep gnupatch patchelf ed paxctl
           ]
         # Library dependencies
@@ -366,7 +366,7 @@ in
           gnumake gnused gnutar gnugrep gnupatch patchelf
           attr acl paxctl zlib pcre;
         ${localSystem.libc} = getLibc prevStage;
-      } // lib.optionalAttrs (super.targetPlatform == localSystem) {
+      } // lib.optionalAttrs (super.stdenv.targetPlatform == localSystem) {
         # Need to get rid of these when cross-compiling.
         inherit (prevStage) binutils binutils-unwrapped;
         gcc = cc;
