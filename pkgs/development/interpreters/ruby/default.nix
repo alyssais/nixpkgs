@@ -32,6 +32,8 @@ let
   generic = { version, sha256 }: let
     ver = version;
     tag = ver.gitTag;
+    isRuby20 = ver.majMin == "2.0";
+    isRuby21 = ver.majMin == "2.1";
     isRuby25 = ver.majMin == "2.5";
     baseruby = self.override { useRailsExpress = false; };
     self = lib.makeOverridable (
@@ -96,6 +98,8 @@ let
 
         enableParallelBuilding = true;
 
+        hardeningDisable = lib.optional isRuby20 "format";
+
         patches =
           (import ./patchsets.nix {
             inherit patchSet useRailsExpress ops;
@@ -107,9 +111,16 @@ let
           pushd ${sourceRoot}/rubygems
           patch -p1 < ${rubygemsPatch}
           popd
+        '' + opString isRuby21 ''
+          rm "$sourceRoot/enc/unicode/name2ctype.h"
         '';
 
-        postPatch = if isRuby25 then ''
+        postPatch = if isRuby21 then ''
+          rm tool/config_files.rb
+          cp ${config}/config.guess tool/
+          cp ${config}/config.sub tool/
+        ''
+        else if isRuby25 then ''
           sed -i configure.ac -e '/config.guess/d'
           cp ${config}/config.guess tool/
           cp ${config}/config.sub tool/
@@ -206,6 +217,30 @@ in {
     sha256 = {
       src = "1s2ibg3s2iflzdv7rfxi1qqkvdbn2dq8gxdn0nxrb77ls5ffanxv";
       git = "1r9xzzxmci2ajb34qb4y1w424mz878zdgzxkfp9w60agldxnb36s";
+    };
+  };
+
+  ruby_2_0 = generic {
+    version = rubyVersion "2" "0" "0" "p648";
+    sha256 = {
+      src = "1y3n4c6xw2wki7pyjpq5zpbgxnw5i3jc8mcpj6rk7hs995mvv446";
+      git = "0ncjfq4hfqj9kcr8pbll6kypwnmcgs8w7l4466qqfyv7jj3yjd76";
+    };
+  };
+
+  ruby_2_1 = generic {
+    version = rubyVersion "2" "1" "10" "";
+    sha256 = {
+      src = "086x66w51lg41abjn79xb7f6xsryymkcc3nvakmkjnjyg96labpv";
+      git = "133phd5r5y0np5lc9nqif93l7yb13yd52aspyl6c46z5jhvhyvfi";
+    };
+  };
+
+  ruby_2_2 = generic {
+    version = rubyVersion "2" "2" "9" "";
+    sha256 = {
+      src = "19m1ximl7vcrsvq595dgrjh4yb6kar944095wbywqh7waiqcfirg";
+      git = "03qrjh55098wcqh2khxryzkzfqkznjrcdgwf27r2bgcycbg5ca5q";
     };
   };
 

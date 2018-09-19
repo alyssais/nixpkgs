@@ -7755,6 +7755,9 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   })
     ruby_1_9
+    ruby_2_0
+    ruby_2_1
+    ruby_2_2
     ruby_2_3
     ruby_2_4
     ruby_2_5;
@@ -8654,7 +8657,9 @@ with pkgs;
 
   hammer = callPackage ../development/tools/parsing/hammer { };
 
-  redis-dump = callPackage ../development/tools/redis-dump { };
+  redis-dump = callPackage ../development/tools/redis-dump {
+    ruby = ruby_2_0;
+  };
 
   redo = callPackage ../development/tools/build-managers/redo { };
 
@@ -19073,7 +19078,7 @@ with pkgs;
     inherit (gnome3) defaultIconTheme;
   };
 
-  macvim = callPackage ../applications/editors/vim/macvim.nix { stdenv = clangStdenv; };
+  macvim = callPackage ../applications/editors/vim/macvim.nix { stdenv = clangStdenv; ruby = ruby_2_2; };
 
   vimHugeX = vim_configurable;
 
