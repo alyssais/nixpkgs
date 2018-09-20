@@ -302,6 +302,8 @@ in {
 
   fire = callPackage ../development/python-modules/fire { };
 
+  fuse = callPackage ../development/python-modules/fuse-python { fuse = pkgs.fuse; };
+
   genanki = callPackage ../development/python-modules/genanki { };
 
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
@@ -385,6 +387,8 @@ in {
   pdfx = callPackage ../development/python-modules/pdfx { };
 
   phonopy = callPackage ../development/python-modules/phonopy { };
+
+  pims = callPackage ../development/python-modules/pims { };
 
   plantuml = callPackage ../tools/misc/plantuml { };
 
@@ -507,6 +511,8 @@ in {
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
+  python-binance = callPackage ../development/python-modules/python-binance { };
+
   python-hosts = callPackage ../development/python-modules/python-hosts { };
 
   python-lz4 = callPackage ../development/python-modules/python-lz4 { };
@@ -565,6 +571,8 @@ in {
   sklearn-deap = callPackage ../development/python-modules/sklearn-deap { };
 
   slackclient = callPackage ../development/python-modules/slackclient { };
+
+  slicerator = callPackage ../development/python-modules/slicerator { };
 
   spglib = callPackage ../development/python-modules/spglib { };
 
@@ -1983,6 +1991,16 @@ in {
   darcsver = callPackage ../development/python-modules/darcsver { };
 
   dask = callPackage ../development/python-modules/dask { };
+
+  dask-glm = callPackage ../development/python-modules/dask-glm { };
+
+  dask-image = callPackage ../development/python-modules/dask-image { };
+
+  dask-jobqueue = callPackage ../development/python-modules/dask-jobqueue { };
+
+  dask-ml = callPackage ../development/python-modules/dask-ml { };
+
+  dask-xgboost = callPackage ../development/python-modules/dask-xgboost { };
 
   datrie = callPackage ../development/python-modules/datrie { };
 
@@ -5609,8 +5627,6 @@ in {
     };
   };
 
-  fuse = callPackage ../development/python-modules/python-fuse { fuse = pkgs.fuse; };
-
   fusepy = buildPythonPackage rec {
     name = "fusepy-2.0.4";
 
@@ -6100,13 +6116,13 @@ in {
 
   hetzner = buildPythonPackage rec {
     name = "hetzner-${version}";
-    version = "0.8.0";
+    version = "0.8.1";
 
     src = pkgs.fetchFromGitHub {
       repo = "hetzner";
       owner = "aszlig";
       rev = "v${version}";
-      sha256 = "04q2q2w2qkhfly8rfjg2h5pnh42gs18l6cmipqc37yf7qvkw3nd0";
+      sha256 = "1xd1klvjskv0pg8ginih597jkk491a55b8dq80dsm61m5sbsx3vq";
     };
 
     meta = {
@@ -9458,31 +9474,7 @@ in {
     };
   };
 
-  pgspecial = buildPythonPackage rec {
-    pname = "pgspecial";
-    version = "1.8.0";
-    name = "${pname}-${version}";
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "1dwlv3m4jl34zsakmvxg6hgbfv786jl8dcffxsrlnmcpks829xc9";
-    };
-
-    buildInputs = with self; [ pytest psycopg2 ];
-
-    checkPhase = ''
-      find tests -name \*.pyc -delete
-      py.test tests
-    '';
-
-    propagatedBuildInputs = with self; [ click sqlparse ];
-
-    meta = {
-      description = "Meta-commands handler for Postgres Database";
-      homepage = https://pypi.python.org/pypi/pgspecial;
-      license = licenses.bsd3;
-    };
-  };
+  pgspecial = callPackage ../development/python-modules/pgspecial { };
 
   pickleshare = buildPythonPackage rec {
     version = "0.7.4";
@@ -9752,21 +9744,7 @@ in {
 
   psutil = callPackage ../development/python-modules/psutil { };
 
-  psycopg2 = buildPythonPackage rec {
-    name = "psycopg2-2.7.1";
-    disabled = isPyPy;
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/psycopg2/${name}.tar.gz";
-      sha256 = "86c9355f5374b008c8479bc00023b295c07d508f7c3b91dbd2e74f8925b1d9c6";
-    };
-    buildInputs = optional stdenv.isDarwin pkgs.openssl;
-    propagatedBuildInputs = with self; [ pkgs.postgresql ];
-    doCheck = false;
-    meta = {
-      description = "PostgreSQL database adapter for the Python programming language";
-      license = with licenses; [ gpl2 zpl20 ];
-    };
-  };
+  psycopg2 = callPackage ../development/python-modules/psycopg2 {};
 
   ptpython = callPackage ../development/python-modules/ptpython {};
 
@@ -16972,6 +16950,8 @@ EOF
   yapf = callPackage ../development/python-modules/yapf { };
 
   black = callPackage ../development/python-modules/black { };
+
+  bjoern = callPackage ../development/python-modules/bjoern { };
 
   autobahn = callPackage ../development/python-modules/autobahn { };
 
