@@ -1184,6 +1184,8 @@ with pkgs;
 
   deja-dup = callPackage ../applications/backup/deja-dup { };
 
+  desync = callPackage ../applications/networking/sync/desync { };
+
   devmem2 = callPackage ../os-specific/linux/devmem2 { };
 
   dbus-broker = callPackage ../os-specific/linux/dbus-broker { };
@@ -1486,6 +1488,8 @@ with pkgs;
   patdiff = callPackage ../tools/misc/patdiff { };
 
   pbzx = callPackage ../tools/compression/pbzx { };
+
+  pev = callPackage ../development/tools/analysis/pev { };
 
   photon = callPackage ../tools/networking/photon { };
 
@@ -7501,8 +7505,6 @@ with pkgs;
 
   ### LUA MODULES
 
-  lua4 = callPackage ../development/interpreters/lua-4 { };
-  lua5_0 = callPackage ../development/interpreters/lua-5/5.0.3.nix { };
   lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix { };
   lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix { };
   lua5_2_compat = callPackage ../development/interpreters/lua-5/5.2.nix {
@@ -9339,23 +9341,18 @@ with pkgs;
 
   ffmpeg_0_10 = callPackage ../development/libraries/ffmpeg/0.10.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
-    stdenv = gccStdenv;
   };
   ffmpeg_1_2 = callPackage ../development/libraries/ffmpeg/1.2.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
-    stdenv = gccStdenv;
   };
   ffmpeg_2_8 = callPackage ../development/libraries/ffmpeg/2.8.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
-    stdenv = gccStdenv;
   };
   ffmpeg_3_4 = callPackage ../development/libraries/ffmpeg/3.4.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa CoreMedia;
-    stdenv = gccStdenv;
   };
   ffmpeg_4 = callPackage ../development/libraries/ffmpeg/4.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa CoreMedia;
-    stdenv = gccStdenv;
   };
 
   # Aliases
@@ -12081,6 +12078,7 @@ with pkgs;
     s6-rc = callPackage ../tools/system/s6-rc { };
 
     nsss = callPackage ../development/libraries/nsss { };
+    utmps = callPackage ../development/libraries/utmps { };
 
   };
 
@@ -12369,6 +12367,8 @@ with pkgs;
   };
 
   uthash = callPackage ../development/libraries/uthash { };
+
+  utmps = skawarePackages.utmps;
 
   ucommon = ucommon_openssl;
 
@@ -14465,7 +14465,7 @@ with pkgs;
   nvme-cli = callPackage ../os-specific/linux/nvme-cli { };
 
   open-vm-tools = callPackage ../applications/virtualization/open-vm-tools {
-    inherit (gnome2) gtk gtkmm;
+    inherit (gnome3) gtk gtkmm;
   };
   open-vm-tools-headless = open-vm-tools.override { withX = false; };
 
@@ -15068,6 +15068,8 @@ with pkgs;
   libertine = callPackage ../data/fonts/libertine { };
 
   libertinus = callPackage ../data/fonts/libertinus { };
+
+  libratbag = callPackage ../os-specific/linux/libratbag { };
 
   libre-baskerville = callPackage ../data/fonts/libre-baskerville { };
 
@@ -17795,6 +17797,8 @@ with pkgs;
   pig = callPackage ../applications/networking/cluster/pig { };
 
   pijul = callPackage ../applications/version-management/pijul {};
+
+  piper = callPackage ../os-specific/linux/piper { };
 
   plank = callPackage ../applications/misc/plank { };
 
