@@ -560,6 +560,8 @@ in {
 
   serversyncstorage = callPackage ../development/python-modules/serversyncstorage {};
 
+  shellingham = callPackage ../development/python-modules/shellingham {};
+
   simpleeval = callPackage ../development/python-modules/simpleeval { };
 
   singledispatch = callPackage ../development/python-modules/singledispatch { };
@@ -1006,6 +1008,8 @@ in {
     inherit (pkgs) gcc wirelesstools;
   };
 
+  base58 = callPackage ../development/python-modules/base58 {};
+
   batinfo = callPackage ../development/python-modules/batinfo {};
 
   bcdoc = callPackage ../development/python-modules/bcdoc {};
@@ -1119,6 +1123,8 @@ in {
   };
 
   blessed = callPackage ../development/python-modules/blessed {};
+
+  block-io = callPackage ../development/python-modules/block-io {};
 
   # Build boost for this specific Python version
   # TODO: use separate output for libboost_python.so
@@ -1540,6 +1546,10 @@ in {
 
   click = callPackage ../development/python-modules/click {};
 
+  click-completion = callPackage ../development/python-modules/click-completion {};
+
+  click-didyoumean = callPackage ../development/python-modules/click-didyoumean {};
+
   click-log = callPackage ../development/python-modules/click-log {};
 
   click-plugins = callPackage ../development/python-modules/click-plugins {};
@@ -1836,6 +1846,8 @@ in {
   pydub = callPackage ../development/python-modules/pydub {};
 
   pyjade = callPackage ../development/python-modules/pyjade {};
+
+  pyjet = callPackage ../development/python-modules/pyjet {};
 
   PyLD = callPackage ../development/python-modules/PyLD { };
 
@@ -2197,27 +2209,9 @@ in {
 
   elasticsearch = callPackage ../development/python-modules/elasticsearch { };
 
-  elasticsearchdsl = buildPythonPackage (rec {
-    name = "elasticsearch-dsl-0.0.9";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/e/elasticsearch-dsl/${name}.tar.gz";
-      sha256 = "1gdcdshk881vy18p0czcmbb3i4s5hl8llnfg6961b6x7jkvhihbj";
-    };
-
-    buildInputs = with self; [ covCore dateutil elasticsearch mock pytest pytestcov unittest2 urllib3 pytz ];
-
-    # ImportError: No module named test_elasticsearch_dsl
-    # Tests require a local instance of elasticsearch
-    doCheck = false;
-
-    meta = {
-      description = "Python client for Elasticsearch";
-      homepage = https://github.com/elasticsearch/elasticsearch-dsl-py;
-      license = licenses.asl20;
-      maintainers = with maintainers; [ desiderius ];
-    };
-  });
+  elasticsearch-dsl = callPackage ../development/python-modules/elasticsearch-dsl { };
+  # alias
+  elasticsearchdsl = self.elasticsearch-dsl;
 
   elasticsearch-curator = callPackage ../development/python-modules/elasticsearch-curator { };
 
@@ -3875,35 +3869,7 @@ in {
     };
   };
 
-  pypillowfight = buildPythonPackage rec {
-    name = "pypillowfight-${version}";
-    version = "0.2.1";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "jflesch";
-      repo = "libpillowfight";
-      rev = version;
-      sha256 = "1rwmajsy9qhl3qhhy5mw0xmr3n8abxcq8baidpn0sxv6yjg2369z";
-    };
-
-    # Disable tests because they're designed to only work on Debian:
-    # https://github.com/jflesch/libpillowfight/issues/2#issuecomment-268259174
-    doCheck = false;
-
-    # Python 2.x is not supported, see:
-    # https://github.com/jflesch/libpillowfight/issues/1
-    disabled = !isPy3k && !isPyPy;
-
-    # This is needed by setup.py regardless of whether tests are enabled.
-    buildInputs = [ self.nose ];
-    propagatedBuildInputs = [ self.pillow ];
-
-    meta = {
-      description = "Library containing various image processing algorithms";
-      homepage = "https://github.com/jflesch/libpillowfight";
-      license = licenses.gpl3Plus;
-    };
-  };
+  pypillowfight = callPackage ../development/python-modules/pypillowfight { };
 
   pyprind = callPackage ../development/python-modules/pyprind { };
 
@@ -9731,7 +9697,7 @@ in {
   protobuf = callPackage ../development/python-modules/protobuf {
     disabled = isPyPy;
     doCheck = !isPy3k;
-    protobuf = pkgs.protobuf3_5;
+    protobuf = pkgs.protobuf;
   };
 
   protobuf3_1 = callPackage ../development/python-modules/protobuf {
@@ -12380,6 +12346,8 @@ in {
   spambayes = callPackage ../development/python-modules/spambayes { };
 
   shapely = callPackage ../development/python-modules/shapely { };
+
+  sharedmem = callPackage ../development/python-modules/sharedmem { };
 
   soco = callPackage ../development/python-modules/soco { };
 
