@@ -221,6 +221,11 @@
     github = "amiloradovsky";
     name = "Andrew Miloradovsky";
   };
+  aminb = {
+    email = "amin@aminb.org";
+    github = "aminb";
+    name = "Amin Bandali";
+  };
   aminechikhaoui = {
     email = "amine.chikhaoui91@gmail.com";
     github = "AmineChikhaoui";
@@ -3998,6 +4003,11 @@
     github = "sztupi";
     name = "Attila Sztupak";
   };
+  t184256 = {
+    email = "monk@unboiled.info";
+    github = "t184256";
+    name = "Alexander Sosedkin";
+  };
   tadfisher = {
     email = "tadfisher@gmail.com";
     github = "tadfisher";
@@ -4430,6 +4440,11 @@
     email = "rahul@gopinath.org";
     github = "vrthra";
     name = "Rahul Gopinath";
+  };
+  vskilet = {
+    email = "victor@sene.ovh";
+    github = "vskilet";
+    name = "Victor SENE";
   };
   vyp = {
     email = "elisp.vim@gmail.com";
