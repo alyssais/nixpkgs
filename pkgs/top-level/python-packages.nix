@@ -3351,19 +3351,43 @@ in {
 
   python-mapnik = buildPythonPackage rec {
     name = "python-mapnik-${version}";
-    version = "3.0.13";
+    version = "3.0.16";
 
     src = pkgs.fetchFromGitHub {
       owner = "mapnik";
       repo = "python-mapnik";
       rev = "v${version}";
-      sha256 = "0biw9bfkbsgfyjihyvkj4abx9s9r3h81rk6dc1y32022rypsqhkp";
+      sha256 = "1gqs4kvmjawdgl80j0ab5r8y0va9kw0rvwix3093xsv4hwd00lcc";
     };
 
     disabled = isPyPy;
     doCheck = false; # doesn't find needed test data files
-    buildInputs = with pkgs;
-      [ boost cairo harfbuzz icu libjpeg libpng libtiff libwebp mapnik proj zlib ];
+    preBuild = let
+      pythonVersion = with stdenv.lib.versions; "${major python.version}${minor python.version}";
+    in ''
+      export BOOST_PYTHON_LIB="boost_python${pythonVersion}"
+      export BOOST_THREAD_LIB="boost_thread"
+      export BOOST_SYSTEM_LIB="boost_system"
+    '';
+    buildInputs = with pkgs; [
+        (boost.override {
+          enablePython = true;
+          inherit python;
+        })
+        (mapnik.override {
+          inherit python;
+          boost = (boost.override { enablePython = true; inherit python; });
+        })
+        cairo
+        harfbuzz
+        icu
+        libjpeg
+        libpng
+        libtiff
+        libwebp
+        proj
+        zlib
+      ];
     propagatedBuildInputs = with self; [ pillow pycairo ];
 
     meta = with stdenv.lib; {
@@ -5278,6 +5302,8 @@ in {
 
   flask_elastic = callPackage ../development/python-modules/flask-elastic { };
 
+  flask-jwt-extended = callPackage ../development/python-modules/flask-jwt-extended { };
+
   flask-limiter = callPackage ../development/python-modules/flask-limiter { };
 
   flask_login = callPackage ../development/python-modules/flask-login { };
@@ -5306,23 +5332,7 @@ in {
 
   flask-silk = callPackage ../development/python-modules/flask-silk { };
 
-  flask_sqlalchemy = buildPythonPackage rec {
-    name = "Flask-SQLAlchemy-${version}";
-    version = "2.1";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/F/Flask-SQLAlchemy/${name}.tar.gz";
-      sha256 = "1i9ps5d5snih9xlqhrvmi3qfiygkmqzxh92n25kj4pf89kj4s965";
-    };
-
-    propagatedBuildInputs = with self ; [ flask sqlalchemy ];
-
-    meta = {
-      description = "SQLAlchemy extension for Flask";
-      homepage = http://flask-sqlalchemy.pocoo.org/;
-      license = licenses.bsd3;
-    };
-  };
+  flask_sqlalchemy = callPackage ../development/python-modules/flask-sqlalchemy { };
 
   flask_testing = callPackage ../development/python-modules/flask-testing { };
 
@@ -5842,35 +5852,7 @@ in {
     };
   };
 
-  glances = buildPythonPackage rec {
-    name = "glances-${version}";
-    version = "3.0.1";
-    disabled = isPyPy;
-
-    src = pkgs.fetchFromGitHub {
-      owner = "nicolargo";
-      repo = "glances";
-      rev = "v${version}";
-      sha256 = "18pyp6ij3bzybqj771v48n7yn3a1spk6ncg1kgp6hfpjhpqiw87x";
-    };
-
-    # Requires access to /sys/class/power_supply
-    doCheck = false;
-
-    buildInputs = with self; [ unittest2 ];
-    propagatedBuildInputs = with self; [ psutil setuptools bottle batinfo pkgs.hddtemp pysnmp ];
-
-    preConfigure = ''
-      sed -i 's/data_files\.append((conf_path/data_files.append(("etc\/glances"/' setup.py;
-    '';
-
-    meta = {
-      homepage = https://nicolargo.github.io/glances/;
-      description = "Cross-platform curses-based monitoring tool";
-      license = licenses.lgpl3;
-      maintainers = with maintainers; [ primeos koral ];
-    };
-  };
+  glances = callPackage ../development/python-modules/glances { };
 
   github3_py = buildPythonPackage rec {
     name = "github3.py-${version}";
@@ -9846,6 +9828,8 @@ in {
   };
 
   python-pushover = callPackage ../development/python-modules/pushover {};
+
+  pystemd = callPackage ../development/python-modules/pystemd { systemd = pkgs.systemd; };
 
   mongodict = buildPythonPackage rec {
     name = "mongodict-${version}";

@@ -1332,6 +1332,11 @@
     github = "etu";
     name = "Elis Hirwing";
   };
+  evck = {
+    email = "eric@evenchick.com";
+    github = "ericevenchick";
+    name = "Eric Evenchick";
+  };
   exfalso = {
     email = "0slemi0@gmail.com";
     github = "exfalso";
@@ -2565,6 +2570,11 @@
     email = "mdaiter8121@gmail.com";
     github = "mdaiter";
     name = "Matthew S. Daiter";
+  };
+  mdevlamynck = {
+    email = "matthias.devlamynck@mailoo.org";
+    github = "mdevlamynck";
+    name = "Matthias Devlamynck";
   };
   meditans = {
     email = "meditans@gmail.com";
