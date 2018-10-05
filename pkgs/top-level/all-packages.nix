@@ -13675,6 +13675,8 @@ with pkgs;
 
   webmetro = callPackage ../servers/webmetro { };
 
+  webhook = callPackage ../servers/http/webhook { };
+
   winstone = callPackage ../servers/http/winstone { };
 
   xinetd = callPackage ../servers/xinetd { };
