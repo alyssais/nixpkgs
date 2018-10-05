@@ -1135,6 +1135,11 @@
     github = "dtzWill";
     name = "Will Dietz";
   };
+  dysinger = {
+    email = "tim@dysinger.net";
+    github = "dysinger";
+    name = "Tim Dysinger";
+  };
   dywedir = {
     email = "dywedir@protonmail.ch";
     github = "dywedir";
@@ -1331,6 +1336,11 @@
     email = "elis@hirwing.se";
     github = "etu";
     name = "Elis Hirwing";
+  };
+  evck = {
+    email = "eric@evenchick.com";
+    github = "ericevenchick";
+    name = "Eric Evenchick";
   };
   exfalso = {
     email = "0slemi0@gmail.com";
@@ -1634,6 +1644,11 @@
     email = "github@hamhut1066.com";
     github = "hamhut1066";
     name = "Hamish Hutchings";
+  };
+  haslersn = {
+    email = "haslersn@fius.informatik.uni-stuttgart.de";
+    github = "haslersn";
+    name = "Sebastian Hasler";
   };
   havvy = {
     email = "ryan.havvy@gmail.com";
@@ -2432,6 +2447,11 @@
     github = "ma27";
     name = "Maximilian Bosch";
   };
+  ma9e = {
+    email = "sean@lfo.team";
+    github = "ma9e";
+    name = "Sean Haugh";
+  };
   madjar = {
     email = "georges.dubus@compiletoi.net";
     github = "madjar";
@@ -2565,6 +2585,11 @@
     email = "mdaiter8121@gmail.com";
     github = "mdaiter";
     name = "Matthew S. Daiter";
+  };
+  mdevlamynck = {
+    email = "matthias.devlamynck@mailoo.org";
+    github = "mdevlamynck";
+    name = "Matthias Devlamynck";
   };
   meditans = {
     email = "meditans@gmail.com";
@@ -3299,6 +3324,11 @@
     github = "proglodyte";
     name = "Proglodyte";
   };
+  prusnak = {
+    email = "stick@gk2.sk";
+    github = "prusnak";
+    name = "Pavol Rusnak";
+  };
   pshendry = {
     email = "paul@pshendry.com";
     github = "pshendry";
@@ -4003,6 +4033,11 @@
     github = "sztupi";
     name = "Attila Sztupak";
   };
+  t184256 = {
+    email = "monk@unboiled.info";
+    github = "t184256";
+    name = "Alexander Sosedkin";
+  };
   tadfisher = {
     email = "tadfisher@gmail.com";
     github = "tadfisher";
@@ -4291,6 +4326,11 @@
     email = "uri@canva.com";
     github = "uri-canva";
     name = "Uri Baghin";
+  };
+  uskudnik = {
+    email = "urban.skudnik@gmail.com";
+    github = "uskudnik";
+    name = "Urban Skudnik";
   };
   utdemir = {
     email = "me@utdemir.com";
