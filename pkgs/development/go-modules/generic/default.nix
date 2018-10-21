@@ -1,12 +1,10 @@
 { go, govers, parallel, lib, fetchgit, fetchhg, fetchbzr, rsync
 , removeReferencesTo, fetchFromGitHub }:
 
-with builtins;
-
 let
   buildGoPackage =
-    { name, buildInputs ? [], nativeBuildInputs ? [], passthru ? {}
-    , preFixup ? "", shellHook ? ""
+    { name, buildInputs ? [], nativeBuildInputs ? [], passthru ? {}, preFixup ? ""
+    , shellHook ? ""
 
     # We want parallel builds by default
     , enableParallelBuilding ? true
@@ -47,8 +45,7 @@ let
 
       removeReferences = [ ] ++ lib.optional (!allowGoReference) go;
 
-      removeExpr = refs:
-        "remove-references-to ${lib.concatMapStrings (ref: " -t ${ref}") refs}";
+      removeExpr = refs: ''remove-references-to ${lib.concatMapStrings (ref: " -t ${ref}") refs}'';
 
       dep2src = goDep:
         {
@@ -75,9 +72,8 @@ let
       importGodeps = { depsFile }:
         map dep2src (import depsFile);
 
-      goPath = if goDeps != null
-               then importGodeps { depsFile = goDeps; } ++ extraSrcs
-               else extraSrcs;
+      goPath = if goDeps != null then importGodeps { depsFile = goDeps; } ++ extraSrcs
+                                 else extraSrcs;
     in
 
     go.stdenv.mkDerivation (
@@ -176,6 +172,7 @@ let
         runHook postBuild
       '';
 
+      doCheck = args.doCheck or false;
       checkPhase = args.checkPhase or ''
         runHook preCheck
 
@@ -220,8 +217,7 @@ let
 
       enableParallelBuilding = enableParallelBuilding;
 
-      # I prefer to call this dev but propagatedBuildInputs expects $out to
-      # exist
+      # I prefer to call this dev but propagatedBuildInputs expects $out to exist
       outputs = args.outputs or [ "bin" "out" ];
 
       meta = {

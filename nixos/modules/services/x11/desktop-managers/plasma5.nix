@@ -185,10 +185,8 @@ in
         target = "X11/xkb";
       };
 
-      environment.variables = {
-        # Enable GTK applications to load SVG icons
-        GDK_PIXBUF_MODULE_FILE = "${pkgs.librsvg.out}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache";
-      };
+      # Enable GTK applications to load SVG icons
+      services.xserver.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 
       fonts.fonts = with pkgs; [ noto-fonts hack-font ];
       fonts.fontconfig.defaultFonts = {
@@ -225,11 +223,8 @@ in
       security.pam.services.sddm.enableKwallet = true;
       security.pam.services.slim.enableKwallet = true;
 
-      # Update the start menu for each user that has `isNormalUser` set.
-      system.activationScripts.plasmaSetup = stringAfter [ "users" "groups" ]
-        (concatStringsSep "\n"
-          (mapAttrsToList (name: value: "${pkgs.su}/bin/su ${name} -c ${pkgs.libsForQt5.kservice}/bin/kbuildsycoca5")
-            (filterAttrs (n: v: v.isNormalUser) config.users.users)));
+      # Update the start menu for each user that is currently logged in
+      system.userActivationScripts.plasmaSetup = "${pkgs.libsForQt5.kservice}/bin/kbuildsycoca5";
     })
   ];
 
