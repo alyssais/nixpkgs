@@ -3444,6 +3444,8 @@ in {
     };
   };
 
+  priority = callPackage ../development/python-modules/priority { };
+
   prov = callPackage ../development/python-modules/prov { };
 
   pudb = buildPythonPackage rec {
