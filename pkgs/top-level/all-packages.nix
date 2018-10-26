@@ -13117,6 +13117,8 @@ with pkgs;
 
   dex-oidc = callPackage ../servers/dex { };
 
+  doh-proxy = python3Packages.callPackage ../servers/dns/doh-proxy { };
+
   dgraph = callPackage ../servers/dgraph { };
 
   dico = callPackage ../servers/dico { };
