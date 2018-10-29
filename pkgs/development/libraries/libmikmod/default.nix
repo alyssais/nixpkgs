@@ -11,10 +11,10 @@ in stdenv.mkDerivation rec {
   };
 
   buildInputs = [ texinfo ]
-    ++ optionals stdenv.isLinux [ alsaLib libpulseaudio ]
-    ++ optional stdenv.isDarwin CoreAudio;
+    ++ optional stdenv.isLinux alsaLib;
   propagatedBuildInputs =
-    optional stdenv.isLinux libpulseaudio;
+    optional stdenv.isLinux libpulseaudio
+    ++ optional stdenv.isDarwin CoreAudio;
 
   NIX_LDFLAGS = optionalString stdenv.isLinux "-lasound";
 
