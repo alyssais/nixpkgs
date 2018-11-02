@@ -53,7 +53,6 @@ rec {
 
   freicoin = callPackage ./freicoin.nix { boost = boost155; };
   go-ethereum = callPackage ./go-ethereum.nix {
-    buildGoPackage = buildGo110Package;
     inherit (darwin) libobjc;
     inherit (darwin.apple_sdk.frameworks) IOKit;
   };
@@ -91,5 +90,5 @@ rec {
   parity-beta = callPackage ./parity/beta.nix { };
   parity-ui = callPackage ./parity-ui { };
 
-  particl-core = callPackage ./particl/particl-core.nix { boost = boost165; miniupnpc = miniupnpc_2; };
+  particl-core = callPackage ./particl/particl-core.nix { miniupnpc = miniupnpc_2; };
 }

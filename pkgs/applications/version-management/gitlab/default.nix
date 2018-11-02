@@ -7,33 +7,33 @@ let
   rubyEnv = bundlerEnv {
     name = "gitlab-env-${version}";
     inherit ruby;
-    gemdir = ./.;
+    gemdir = ./rubyEnv- + "${if gitlabEnterprise then "ee" else "ce"}";
     groups = [ "default" "unicorn" "ed25519" "metrics" ];
   };
 
-  version = "11.3.0";
+  version = "11.4.3";
 
   sources = if gitlabEnterprise then {
     gitlabDeb = fetchurl {
       url = "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/stretch/gitlab-ee_${version}-ee.0_amd64.deb/download.deb";
-      sha256 = "1l5cfbc45xa3gq90wyly3szn93szh162g9szc6dnkqx0db70j9l3";
+      sha256 = "1cw75qj508z6n00rqgqjzdm2013kyb7c57cypmq0m08nc6f3jspz";
     };
     gitlab = fetchFromGitLab {
       owner = "gitlab-org";
       repo = "gitlab-ee";
       rev = "v${version}-ee";
-      sha256 = "0gmainjhs21hipbvshga5dzkjrpmlkk9vxxnxgwjaqbg9wrhw47m";
+      sha256 = "1vqc77whpbsifbm9vgcmpxnw13v8jz1s9q04i8jfv99c59fjlids";
     };
   } else {
     gitlabDeb = fetchurl {
       url = "https://packages.gitlab.com/gitlab/gitlab-ce/packages/debian/stretch/gitlab-ce_${version}-ce.0_amd64.deb/download.deb";
-      sha256 = "162xy8xpa2qhz10nh2dw0vbd0665pz9984vnim9i30xcafr5picq";
+      sha256 = "0vk03k42pp92h520wnynl9czcigjhj9m7y68z1x0gwqr9m61r7zm";
     };
     gitlab = fetchFromGitLab {
       owner = "gitlab-org";
       repo = "gitlab-ce";
       rev = "v${version}";
-      sha256 = "158n2qnp1zsj5kk2w3v9xyakgdb739n955hlq3i9sl80q8f4xda3";
+      sha256 = "1zvjz2gv2vwqqjz52zcvi0ap3d8rdbpgsqk9wv80hqq4v37a5gfx";
     };
   };
 

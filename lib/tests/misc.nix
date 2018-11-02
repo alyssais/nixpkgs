@@ -112,7 +112,7 @@ runTests {
         storePathAppendix = isStorePath
           "${goodPath}/bin/python";
         nonAbsolute = isStorePath (concatStrings (tail (stringToCharacters goodPath)));
-        asPath = isStorePath goodPath;
+        asPath = isStorePath (/. + goodPath);
         otherPath = isStorePath "/something/else";
         otherVals = {
           attrset = isStorePath {};
@@ -369,6 +369,7 @@ runTests {
   testToPretty = {
     expr = mapAttrs (const (generators.toPretty {})) rec {
       int = 42;
+      float = 0.1337;
       bool = true;
       string = ''fno"rd'';
       path = /. + "/foo";
@@ -381,6 +382,7 @@ runTests {
     };
     expected = rec {
       int = "42";
+      float = "~0.133700";
       bool = "true";
       string = ''"fno\"rd"'';
       path = "/foo";

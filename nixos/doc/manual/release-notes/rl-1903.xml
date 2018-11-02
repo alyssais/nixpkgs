@@ -105,6 +105,46 @@
      <varname>rabbitmq-server</varname>.
     </para>
    </listitem>
+   <listitem>
+    <para>
+     The <literal>light</literal> module no longer uses setuid binaries, but
+     udev rules. As a consequence users of that module have to belong to the
+     <literal>video</literal> group in order to use the executable (i.e.
+     <literal>users.users.yourusername.extraGroups = ["video"];</literal>).
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     Buildbot now supports Python 3 and its packages have been moved to
+     <literal>pythonPackages</literal>. The options
+     <option>services.buildbot-master.package</option> and
+     <option>services.buildbot-worker.package</option> can be used to select
+     the Python 2 or 3 version of the package.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+      Options
+      <literal>services.znc.confOptions.networks.<replaceable>name</replaceable>.userName</literal> and
+      <literal>services.znc.confOptions.networks.<replaceable>name</replaceable>.modulePackages</literal>
+      were removed. They were never used for anything and can therefore safely be removed.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     Package <literal>wasm</literal> has been renamed <literal>proglodyte-wasm</literal>. The package
+     <literal>wasm</literal> will be pointed to <literal>ocamlPackages.wasm</literal> in 19.09, so
+     make sure to update your configuration if you want to keep <literal>proglodyte-wasm</literal>
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     OpenSMTPD has been upgraded to version 6.4.0p1. This release makes
+     backwards-incompatible changes to the configuration file format. See
+     <command>man smtpd.conf</command> for more information on the new file
+     format.
+    </para>
+   </listitem>
   </itemizedlist>
  </section>
 
@@ -117,7 +157,20 @@
 
   <itemizedlist>
    <listitem>
-    <para />
+    <para>
+     The <option>services.matomo</option> module gained the option
+     <option>services.matomo.package</option> which determines the used
+     Matomo version.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     The deprecated <literal>truecrypt</literal> package has been removed
+     and <literal>truecrypt</literal> attribute is now an alias for
+     <literal>veracrypt</literal>. VeraCrypt is backward-compatible with
+     TrueCrypt volumes. Note that <literal>cryptsetup</literal> also
+     supports loading TrueCrypt volumes.
+    </para>
    </listitem>
   </itemizedlist>
  </section>

@@ -250,13 +250,14 @@ in rec {
   tests.acme = callTest tests/acme.nix {};
   tests.avahi = callTest tests/avahi.nix {};
   tests.beegfs = callTest tests/beegfs.nix {};
+  tests.upnp = callTest tests/upnp.nix {};
   tests.bittorrent = callTest tests/bittorrent.nix {};
   tests.bind = callTest tests/bind.nix {};
   #tests.blivet = callTest tests/blivet.nix {};   # broken since 2017-07024
   tests.boot = callSubTests tests/boot.nix {};
   tests.boot-stage1 = callTest tests/boot-stage1.nix {};
   tests.borgbackup = callTest tests/borgbackup.nix {};
-  tests.buildbot = callTest tests/buildbot.nix {};
+  tests.buildbot = callSubTests tests/buildbot.nix {};
   tests.cadvisor = callTestOnMatchingSystems ["x86_64-linux"] tests/cadvisor.nix {};
   tests.ceph = callTestOnMatchingSystems ["x86_64-linux"] tests/ceph.nix {};
   tests.certmgr = callSubTests tests/certmgr.nix {};
@@ -362,6 +363,7 @@ in rec {
   tests.netdata = callTest tests/netdata.nix { };
   tests.networking.networkd = callSubTests tests/networking.nix { networkd = true; };
   tests.networking.scripted = callSubTests tests/networking.nix { networkd = false; };
+  tests.nextcloud = callSubTests tests/nextcloud { };
   # TODO: put in networking.nix after the test becomes more complete
   tests.networkingProxy = callTest tests/networking-proxy.nix {};
   tests.nexus = callTest tests/nexus.nix { };
@@ -388,13 +390,16 @@ in rec {
   tests.predictable-interface-names = callSubTests tests/predictable-interface-names.nix {};
   tests.printing = callTest tests/printing.nix {};
   tests.prometheus = callTest tests/prometheus.nix {};
+  tests.prometheus-exporters = callTest tests/prometheus-exporters.nix {};
   tests.prosody = callTest tests/prosody.nix {};
   tests.proxy = callTest tests/proxy.nix {};
   tests.quagga = callTest tests/quagga.nix {};
   tests.quake3 = callTest tests/quake3.nix {};
   tests.rabbitmq = callTest tests/rabbitmq.nix {};
   tests.radicale = callTest tests/radicale.nix {};
+  tests.redmine = callTest tests/redmine.nix {};
   tests.rspamd = callSubTests tests/rspamd.nix {};
+  tests.rsyslogd = callSubTests tests/rsyslogd.nix {};
   tests.runInMachine = callTest tests/run-in-machine.nix {};
   tests.rxe = callTest tests/rxe.nix {};
   tests.samba = callTest tests/samba.nix {};

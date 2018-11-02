@@ -16,22 +16,23 @@ assert selinuxSupport -> libselinux != null && libsepol != null;
 with lib;
 
 stdenv.mkDerivation rec {
-  name = "coreutils-8.29";
+  name = "coreutils-8.30";
 
   src = fetchurl {
     url = "mirror://gnu/coreutils/${name}.tar.xz";
-    sha256 = "0plm1zs9il6bb5mk881qvbghq4glc8ybbgakk2lfzb0w64fgml4j";
+    sha256 = "0mxhw43d4wpqmvg0l4znk1vm10fy92biyh90lzdnqjcic2lb6cg8";
   };
 
   patches = optional stdenv.hostPlatform.isCygwin ./coreutils-8.23-4.cygwin.patch;
 
   # The test tends to fail on btrfs and maybe other unusual filesystems.
-  postPatch = optionalString (!stdenv.hostPlatform.isDarwin) ''
+  postPatch = ''
     sed '2i echo Skipping dd sparse test && exit 0' -i ./tests/dd/sparse.sh
     sed '2i echo Skipping cp sparse test && exit 0' -i ./tests/cp/sparse.sh
     sed '2i echo Skipping rm deep-2 test && exit 0' -i ./tests/rm/deep-2.sh
     sed '2i echo Skipping du long-from-unreadable test && exit 0' -i ./tests/du/long-from-unreadable.sh
     sed '2i echo Skipping chmod setgid test && exit 0' -i ./tests/chmod/setgid.sh
+    sed '2i print "Skipping env -S test";  exit 0;' -i ./tests/misc/env-S.pl
     substituteInPlace ./tests/install/install-C.sh \
       --replace 'mode3=2755' 'mode3=1755'
   '';
@@ -88,7 +89,7 @@ stdenv.mkDerivation rec {
 
   postInstall = optionalString (stdenv.hostPlatform != stdenv.buildPlatform && !minimal) ''
     rm $out/share/man/man1/*
-    cp ${buildPackages.coreutils}/share/man/man1/* $out/share/man/man1
+    cp ${buildPackages.coreutils-full}/share/man/man1/* $out/share/man/man1
   ''
   # du: 8.7 M locale + 0.4 M man pages
   + optionalString minimal ''

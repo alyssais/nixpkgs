@@ -7,8 +7,8 @@ let
 in
 
 stdenv.mkDerivation rec {
-  srcVersion = "sep18a";
-  version = "20180901_a";
+  srcVersion = "oct18b";
+  version = "20181001_b";
   name = "gildas-${version}";
 
   src = fetchurl {
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
     # source code of the previous release to a different directory
     urls = [ "http://www.iram.fr/~gildas/dist/gildas-src-${srcVersion}.tar.gz"
       "http://www.iram.fr/~gildas/dist/archive/gildas/gildas-src-${srcVersion}.tar.gz" ];
-    sha256 = "c9110636431a94e5b1ff5af876c25ad0a991cf62b94d4c42ce07b048eb93d956";
+    sha256 = "1q54q7y4zdax9vr28pvmy5g34kyr92jr3v1rkpjw7lxjafyqwy27";
   };
 
   enableParallelBuilding = true;
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ gtk2-x11 lesstif cfitsio python27Env ];
 
-  patches = [ ./wrapper.patch ./clang.patch ./aarch64.patch ./gag-font-bin-rule.patch ];
+  patches = [ ./wrapper.patch ./clang.patch ./aarch64.patch ];
 
   NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.cc.isClang "-Wno-unused-command-line-argument";
 

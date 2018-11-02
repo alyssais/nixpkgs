@@ -1,19 +1,20 @@
 { stdenv, fetchFromGitLab, git, go }:
+
 stdenv.mkDerivation rec {
   name = "gitlab-workhorse-${version}";
 
-  version = "6.1.0";
+  version = "7.0.0";
 
   srcs = fetchFromGitLab {
     owner = "gitlab-org";
     repo = "gitlab-workhorse";
     rev = "v${version}";
-    sha256 = "0h0mqalia4ldb2icr2h6x75pnr5jb5y23pi4kv4ri3w3ddnl74bq";
+    sha256 = "1mmfb7h5sbva2kv9h9cxfg7dyksxrwwikq7jwggfawqaadzwm677";
   };
 
   buildInputs = [ git go ];
 
-  patches = [ ./remove-hardcoded-paths.patch ];
+  patches = [ ./remove-hardcoded-paths.patch ./deterministic-build.patch ];
 
   makeFlags = [ "PREFIX=$(out)" "VERSION=${version}" ];
 
