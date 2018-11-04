@@ -1,14 +1,14 @@
 { stdenv, lib, fetchpatch, fetchFromGitHub, autoconf, automake, libtool, pkgconfig }:
 
 stdenv.mkDerivation rec {
-  version = "1.23.0";
+  version = "1.23.1";
   name = "libuv-${version}";
 
   src = fetchFromGitHub {
     owner = "libuv";
     repo = "libuv";
     rev = "v${version}";
-    sha256 = "1yfx99f7qnq3qvcgbnih27dgwfg6c51xw6n6n2c3c1wb3mh95im0";
+    sha256 = "14h8dcyx81sbckbgmqhagncyz8s6z6qzpx0fy8p79whq5hb3f4jg";
   };
 
   patches = [
@@ -66,6 +66,7 @@ stdenv.mkDerivation rec {
     homepage    = https://github.com/libuv/libuv;
     maintainers = with maintainers; [ cstrahan ];
     platforms   = with platforms; linux ++ darwin;
+    license     = with licenses; [ mit isc bsd2 bsd3 cc-by-40 ];
   };
 
 }

@@ -158,6 +158,11 @@
     github = "alexanderkjeldaas";
     name = "Alexander Kjeldaas";
   };
+  akavel = {
+    email = "czapkofan@gmail.com";
+    github = "akavel";
+    name = "Mateusz Czapliński";
+  };
   akaWolf = {
     email = "akawolf0@gmail.com";
     github = "akaWolf";
@@ -3115,6 +3120,11 @@
     github = "olynch";
     name = "Owen Lynch";
   };
+  OPNA2608 = {
+    email = "christoph.neidahl@gmail.com";
+    github = "OPNA2608";
+    name = "Christoph Neidahl";
+  };
   orbekk = {
     email = "kjetil.orbekk@gmail.com";
     github = "orbekk";
@@ -3333,6 +3343,11 @@
     email = "pauly@myjavec.com";
     github = "pmyjavec";
     name = "Pauly Myjavec";
+  };
+  pnelson = {
+    email = "me@pnelson.ca";
+    github = "pnelson";
+    name = "Philip Nelson";
   };
   pneumaticat = {
     email = "kevin@potatofrom.space";
@@ -3625,6 +3640,11 @@
     email = "roosembert.palacios+nixpkgs@gmail.com";
     github = "roosemberth";
     name = "Roosembert (Roosemberth) Palacios";
+  };
+  royneary = {
+    email = "christian@ulrich.earth";
+    github = "royneary";
+    name = "Christian Ulrich";
   };
   rprospero = {
     email = "rprospero+nix@gmail.com";
@@ -4137,11 +4157,6 @@
     email = "mail@tazj.in";
     github = "tazjin";
     name = "Vincent Ambo";
-  };
-  TealG = {
-    email = "~@Teal.Gr";
-    github = "TealG";
-    name = "Teal Gaure";
   };
   teh = {
     email = "tehunger@gmail.com";

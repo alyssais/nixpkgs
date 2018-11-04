@@ -108,7 +108,6 @@
   ./programs/oblogout.nix
   ./programs/plotinus.nix
   ./programs/qt5ct.nix
-  ./programs/rootston.nix
   ./programs/screen.nix
   ./programs/sedutil.nix
   ./programs/slock.nix
@@ -635,7 +634,7 @@
   ./services/networking/zerobin.nix
   ./services/networking/zeronet.nix
   ./services/networking/zerotierone.nix
-  ./services/networking/znc.nix
+  ./services/networking/znc/default.nix
   ./services/printing/cupsd.nix
   ./services/scheduling/atd.nix
   ./services/scheduling/chronos.nix
