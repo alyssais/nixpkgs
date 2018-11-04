@@ -2620,7 +2620,9 @@ with pkgs;
 
   flamegraph = callPackage ../development/tools/flamegraph { };
 
-  flvtool2 = callPackage ../tools/video/flvtool2 { };
+  flvtool2 = callPackage ../tools/video/flvtool2 {
+    ruby = ruby_2_2;
+  };
 
   fmbt = callPackage ../development/tools/fmbt {
     python = python2;
