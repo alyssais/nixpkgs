@@ -204,6 +204,8 @@ in {
 
   automat = callPackage ../development/python-modules/automat { };
 
+  awkward = callPackage ../development/python-modules/awkward { };
+
   aws-sam-translator = callPackage ../development/python-modules/aws-sam-translator { };
 
   aws-xray-sdk = callPackage ../development/python-modules/aws-xray-sdk { };
@@ -249,6 +251,8 @@ in {
   bash_kernel = callPackage ../development/python-modules/bash_kernel { };
 
   bayespy = callPackage ../development/python-modules/bayespy { };
+
+  bitarray = callPackage ../development/python-modules/bitarray { };
 
   bitcoinlib = callPackage ../development/python-modules/bitcoinlib { };
 
@@ -594,6 +598,8 @@ in {
 
   python-prctl = callPackage ../development/python-modules/python-prctl { };
 
+  python-rapidjson = callPackage ../development/python-modules/python-rapidjson { };
+
   python-sql = callPackage ../development/python-modules/python-sql { };
 
   python-stdnum = callPackage ../development/python-modules/python-stdnum { };
@@ -705,6 +711,8 @@ in {
   aiohttp-jinja2 = callPackage ../development/python-modules/aiohttp-jinja2 { };
 
   aiohttp_remotes = callPackage ../development/python-modules/aiohttp_remotes { };
+
+  aioprocessing = callPackage ../development/python-modules/aioprocessing { };
 
   ajpy = callPackage ../development/python-modules/ajpy { };
 
@@ -969,12 +977,8 @@ in {
 
   cypari2 = callPackage ../development/python-modules/cypari2 { };
 
-  dlib = buildPythonPackage rec {
-    inherit (pkgs.dlib) name src nativeBuildInputs meta buildInputs;
-
-    patches = [ ../development/python-modules/dlib/build-cores.patch ];
-
-    checkInputs = with self; [ pytest ];
+  dlib = callPackage ../development/python-modules/dlib {
+    inherit (pkgs) dlib;
   };
 
   datadog = callPackage ../development/python-modules/datadog {};
@@ -2047,11 +2051,17 @@ in {
 
   django_colorful = callPackage ../development/python-modules/django_colorful { };
 
+  django-cache-url = callPackage ../development/python-modules/django-cache-url { };
+
+  django-configurations = callPackage ../development/python-modules/django-configurations { };
+
   django_compressor = callPackage ../development/python-modules/django_compressor { };
 
   django_compat = callPackage ../development/python-modules/django-compat { };
 
   django_contrib_comments = callPackage ../development/python-modules/django_contrib_comments { };
+
+  django-discover-runner = callPackage ../development/python-modules/django-discover-runner { };
 
   django_environ = callPackage ../development/python-modules/django_environ { };
 
@@ -2125,6 +2135,10 @@ in {
   django_pipeline = callPackage ../development/python-modules/django-pipeline { };
 
   dj-database-url = callPackage ../development/python-modules/dj-database-url { };
+
+  dj-email-url = callPackage ../development/python-modules/dj-email-url { };
+
+  dj-search-url = callPackage ../development/python-modules/dj-search-url { };
 
   djmail = callPackage ../development/python-modules/djmail { };
 
@@ -2467,6 +2481,8 @@ in {
   httpretty = callPackage ../development/python-modules/httpretty { };
 
   icalendar = callPackage ../development/python-modules/icalendar { };
+
+  ifaddr = callPackage ../development/python-modules/ifaddr { };
 
   imageio = callPackage ../development/python-modules/imageio { };
 
@@ -4670,7 +4686,11 @@ in {
 
   PyStemmer = callPackage ../development/python-modules/pystemmer {};
 
-  Pyro = callPackage ../development/python-modules/pyro { };
+  serpent = callPackage ../development/python-modules/serpent { };
+
+  selectors34 = callPackage ../development/python-modules/selectors34 { };
+
+  Pyro4 = callPackage ../development/python-modules/pyro4 { };
 
   pyrsistent = buildPythonPackage (rec {
     name = "pyrsistent-0.11.12";
@@ -6733,23 +6753,7 @@ in {
     };
   };
 
-
-  sh = buildPythonPackage rec {
-    name = "sh-1.11";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/sh/${name}.tar.gz";
-      sha256 = "590fb9b84abf8b1f560df92d73d87965f1e85c6b8330f8a5f6b336b36f0559a4";
-    };
-
-    doCheck = false;
-
-    meta = {
-      description = "Python subprocess interface";
-      homepage = https://pypi.python.org/pypi/sh/;
-    };
-  };
-
+  sh = callPackage ../development/python-modules/sh { };
 
   sipsimple = buildPythonPackage rec {
     name = "sipsimple-${version}";
@@ -6835,24 +6839,7 @@ in {
 
   subprocess32 = callPackage ../development/python-modules/subprocess32 { };
 
-  spark_parser = buildPythonPackage (rec {
-    name = "${pname}-${version}";
-    pname = "spark_parser";
-    version = "1.4.0";
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/s/${pname}/${name}.tar.gz";
-      sha256 = "1r7d07kw4asgajvhq1gzln4g1qi2r13jw0s8c7d5z3g4kp8y0br8";
-    };
-    buildInputs = with self; [nose];
-    propagatedBuildInputs = [];
-    meta = {
-      description = ''An Early-Algorithm Context-free grammar Parser'';
-      homepage = "https://github.com/rocky/python-spark";
-      license = licenses.mit;
-      maintainers = with maintainers; [raskin];
-      platforms = platforms.all;
-    };
-  });
+  spark_parser = callPackage ../development/python-modules/spark_parser { };
 
   sphinx = callPackage ../development/python-modules/sphinx { };
 
@@ -7953,6 +7940,8 @@ in {
   uritemplate = callPackage ../development/python-modules/uritemplate { };
 
   uproot = callPackage ../development/python-modules/uproot {};
+
+  uproot-methods = callPackage ../development/python-modules/uproot-methods { };
 
   uptime = buildPythonPackage rec {
     name = "uptime-${version}";

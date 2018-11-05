@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, aalib, ncurses, xorg, libmikmod }:
+{ stdenv, lib, fetchurl, darwin, aalib, ncurses, xorg, libmikmod }:
 
 stdenv.mkDerivation rec {
   name    = "bb-${version}";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     aalib ncurses libmikmod
     xorg.libXau xorg.libXdmcp xorg.libX11
-  ];
+  ] ++ lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.CoreAudio;
 
   postPatch = lib.optionalString stdenv.isDarwin ''
     sed -i -e '/^#include <malloc.h>$/d' *.c

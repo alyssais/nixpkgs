@@ -105,6 +105,7 @@ let
 
       '') + ''
         export GOPATH=$NIX_BUILD_TOP/go:$GOPATH
+        export GOCACHE=$TMPDIR/go-cache
 
         runHook postConfigure
       '';
@@ -194,9 +195,6 @@ let
       preFixup = preFixup + ''
         find $bin/bin -type f -exec ${removeExpr removeReferences} '{}' + || true
       '';
-
-      # Disable go cache, which is not reused in nix anyway
-      GOCACHE = "off";
 
       shellHook = ''
         d=$(mktemp -d "--suffix=-$name")
