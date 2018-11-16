@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "0.81.2";
+  version = "0.81.5";
   components = {
     "abode" = ps: with ps; [  ];
     "ads" = ps: with ps; [  ];
@@ -676,7 +676,7 @@
     "media_player.russound_rnet" = ps: with ps; [  ];
     "media_player.samsungtv" = ps: with ps; [ wakeonlan ];
     "media_player.sisyphus" = ps: with ps; [  ];
-    "media_player.snapcast" = ps: with ps; [  ];
+    "media_player.snapcast" = ps: with ps; [ snapcast ];
     "media_player.songpal" = ps: with ps; [  ];
     "media_player.sonos" = ps: with ps; [  ];
     "media_player.soundtouch" = ps: with ps; [ libsoundtouch ];
@@ -867,7 +867,7 @@
     "sensor.bme680" = ps: with ps; [  ];
     "sensor.bmw_connected_drive" = ps: with ps; [  ];
     "sensor.bom" = ps: with ps; [  ];
-    "sensor.broadlink" = ps: with ps; [  ];
+    "sensor.broadlink" = ps: with ps; [ broadlink ];
     "sensor.buienradar" = ps: with ps; [  ];
     "sensor.canary" = ps: with ps; [  ];
     "sensor.cert_expiry" = ps: with ps; [  ];
@@ -1166,7 +1166,7 @@
     "switch.arduino" = ps: with ps; [  ];
     "switch.arest" = ps: with ps; [  ];
     "switch.bbb_gpio" = ps: with ps; [  ];
-    "switch.broadlink" = ps: with ps; [  ];
+    "switch.broadlink" = ps: with ps; [ broadlink ];
     "switch.command_line" = ps: with ps; [  ];
     "switch.deconz" = ps: with ps; [  ];
     "switch.deluge" = ps: with ps; [ deluge-client ];
