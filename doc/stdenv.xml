@@ -618,7 +618,7 @@ let f(h, h + 1, i) = i + h
   </variablelist>
 
   <variablelist>
-   <title>Variables affecting build properties</title>
+   <title>Attributes affecting build properties</title>
    <varlistentry>
     <term>
      <varname>enableParallelBuilding</varname>
@@ -634,21 +634,6 @@ let f(h, h + 1, i) = i + h
       support for parallel building including <literal>cmake</literal>,
       <literal>meson</literal>, and <literal>qmake</literal> will set it to
       <literal>true</literal>.
-     </para>
-    </listitem>
-   </varlistentry>
-   <varlistentry>
-    <term>
-     <varname>preferLocalBuild</varname>
-    </term>
-    <listitem>
-     <para>
-      If set, specifies that the package is so lightweight in terms of build
-      operations (e.g. write a text file from a Nix string to the store) that
-      there's no need to look for it in binary caches -- it's faster to just
-      build it locally. It also tells Hydra and other facilities that this
-      package doesn't need to be exported in binary caches (noone would use it,
-      after all).
      </para>
     </listitem>
    </varlistentry>
@@ -2092,7 +2077,7 @@ someVar=$(stripHash $name)
    Nix itself considers a build-time dependency merely something that should
    previously be built and accessible at build time—packages themselves are
    on their own to perform any additional setup. In most cases, that is fine,
-   and the downstream derivation can deal with it's own dependencies. But for a
+   and the downstream derivation can deal with its own dependencies. But for a
    few common tasks, that would result in almost every package doing the same
    sort of setup work---depending not on the package itself, but entirely on
    which dependencies were used.
@@ -2146,10 +2131,10 @@ someVar=$(stripHash $name)
    <literal>n + 1</literal> dependencies, as only those ones match the
    compiler's target platform. The <envar>hostOffset</envar> variable is
    defined with the current dependency's host offset
-   <envar>targetOffset</envar> with its target offset, before it's setup hook
-   is sourced. Additionally, since most environment hooks don't care about the
-   target platform, That means the setup hook can append to the right bash
-   array by doing something like
+   <envar>targetOffset</envar> with its target offset, before its setup hook is
+   sourced. Additionally, since most environment hooks don't care about the
+   target platform, That means the setup hook can append to the right bash array
+   by doing something like
 <programlisting language="bash">
 addEnvHooks "$hostOffset" myBashFunction
   </programlisting>
@@ -2157,7 +2142,7 @@ addEnvHooks "$hostOffset" myBashFunction
 
   <para>
    The <emphasis>existence</emphasis> of setups hooks has long been documented
-   and packages inside Nixpkgs are free to use these mechanism. Other packages,
+   and packages inside Nixpkgs are free to use this mechanism. Other packages,
    however, should not rely on these mechanisms not changing between Nixpkgs
    versions. Because of the existing issues with this system, there's little
    benefit from mandating it be stable for any period of time.
