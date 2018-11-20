@@ -1,7 +1,7 @@
 { lib, buildRubyGem, ruby }:
 
 buildRubyGem rec {
-  ruby = ruby_2_2;
+  inherit ruby;
   name = "${gemName}-${version}";
   gemName = "flvtool2";
   version = "1.0.6";

@@ -14,14 +14,22 @@ rec {
 
   firefox = common rec {
     pname = "firefox";
-    ffversion = "63.0";
+    ffversion = "63.0.1";
     src = fetchurl {
       url = "mirror://mozilla/firefox/releases/${ffversion}/source/firefox-${ffversion}.source.tar.xz";
-      sha512 = "095nn50g72l4ihbv26qqqs2jg4ahnmd54vxvm7nxwrnkx901aji7pph6c91zfpf7df26ib1b0pqyir9vsac40sdxc8yrzm6d0lyl1m2";
+      sha512 = "29acad70259d71a924cbaf4c2f01fb034cf8090759b3a2d74a5eabc2823f83b6508434e619d8501d3930702e2bbad373581a70e2ce57aead9af77fc42766fbe2";
     };
 
     patches = nixpkgsPatches ++ [
       ./no-buildconfig.patch
+      # this is only required for version 63.0,  version 63.0.3 onwards will
+      # carry the patch
+      # bug report: https://bugzilla.mozilla.org/show_bug.cgi?id=1503401
+      (fetchpatch {
+        name = "fix-rust-cbindgen-breaking-change.patch";
+        url = "https://hg.mozilla.org/releases/mozilla-release/raw-rev/22273af49058";
+        sha256 = "1kvswbr1jxigli6s5jh3cr21153jx6mlyxf4a39510y3dg19ls0a";
+      })
     ];
 
     extraNativeBuildInputs = [ python3 ];
@@ -67,7 +75,7 @@ rec {
     ffversion = "60.3.0esr";
     src = fetchurl {
       url = "mirror://mozilla/firefox/releases/${ffversion}/source/firefox-${ffversion}.source.tar.xz";
-      sha512 = "36ipksq4408mfkyzna7kkjyg70nqx0hzg8zp34kmsynl42whvsqhsfl198c34shsx9zhfsag3hzx2ihhfnj8ph8b0xdgyrmi2ijbvbx";
+      sha512 = "7ded25a38835fbd73a58085e24ad83308afee1784a3bf853d75093c1500ad46988f5865c106abdae938cfbd1fb10746cc1795ece7994fd7eba8a002158cf1bcd";
     };
 
     patches = nixpkgsPatches ++ [
