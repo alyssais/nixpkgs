@@ -19,7 +19,9 @@
 
   <itemizedlist>
    <listitem>
-    <para />
+    <para>
+    The default Python 3 interpreter is now CPython 3.7 instead of CPython 3.6.
+    </para>
    </listitem>
   </itemizedlist>
  </section>
@@ -37,7 +39,9 @@
 
   <itemizedlist>
    <listitem>
-    <para />
+    <para>
+     <literal>./programs/nm-applet.nix</literal>
+    </para>
    </listitem>
   </itemizedlist>
  </section>
@@ -107,6 +111,16 @@
       <literal>/var/lib/syncthing/.config/syncthing</literal>.
       This change makes possible to share synced directories using ACLs
       without Syncthing resetting the permission on every start.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+      The <literal>ntp</literal> module now has sane default restrictions.
+      If you're relying on the previous defaults, which permitted all queries
+      and commands from all firewall-permitted sources, you can set
+      <varname>services.ntp.restrictDefault</varname> and
+      <varname>services.ntp.restrictSource</varname> to
+      <literal>[]</literal>.
     </para>
    </listitem>
    <listitem>
@@ -220,6 +234,31 @@
      reset to the default value (<literal>false</literal>).
     </para>
    </listitem>
+   <listitem>
+    <para>
+     Network interface indiscriminate NixOS firewall options
+     (<literal>networking.firewall.allow*</literal>) are now preserved when also
+     setting interface specific rules such as <literal>networking.firewall.interfaces.en0.allow*</literal>.
+     These rules continue to use the pseudo device "default"
+     (<literal>networking.firewall.interfaces.default.*</literal>), and assigning
+     to this pseudo device will override the (<literal>networking.firewall.allow*</literal>)
+     options.
+   </para>
+  </listitem>
+  <listitem>
+   <para>
+     GitLab Shell previously used the nix store paths for the
+     <literal>gitlab-shell</literal> command in its
+     <literal>authorized_keys</literal> file, which might stop working after
+     garbage collection. To circumvent that, we regenerated that file on each
+     startup.  As <literal>gitlab-shell</literal> has now been changed to use
+     <literal>/var/run/current-system/sw/bin/gitlab-shell</literal>, this is
+     not necessary anymore, but there might be leftover lines with a nix store
+     path. Regenerate the <literal>authorized_keys</literal> file via
+     <command>sudo -u git -H gitlab-rake gitlab:shell:setup</command> in that
+     case.
+   </para>
+  </listitem>
   </itemizedlist>
  </section>
 

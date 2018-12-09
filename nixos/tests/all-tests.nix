@@ -178,7 +178,9 @@ in
   rabbitmq = handleTest ./rabbitmq.nix {};
   radicale = handleTest ./radicale.nix {};
   redmine = handleTest ./redmine.nix {};
+  roundcube = handleTest ./roundcube.nix {};
   rspamd = handleTest ./rspamd.nix {};
+  rss2email = handleTest ./rss2email.nix {};
   rsyslogd = handleTest ./rsyslogd.nix {};
   runInMachine = handleTest ./run-in-machine.nix {};
   rxe = handleTest ./rxe.nix {};
@@ -193,6 +195,7 @@ in
   strongswan-swanctl = handleTest ./strongswan-swanctl.nix {};
   sudo = handleTest ./sudo.nix {};
   switchTest = handleTest ./switch-test.nix {};
+  syncthing-relay = handleTest ./syncthing-relay.nix {};
   systemd = handleTest ./systemd.nix {};
   taskserver = handleTest ./taskserver.nix {};
   tomcat = handleTest ./tomcat.nix {};

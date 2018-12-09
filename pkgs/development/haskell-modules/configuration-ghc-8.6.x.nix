@@ -46,27 +46,29 @@ self: super: {
 
   # LTS-12.x versions do not compile.
   base-orphans = self.base-orphans_0_8;
-  brick = self.brick_0_41_3;
+  brick = self.brick_0_42_1;
   cassava-megaparsec = doJailbreak super.cassava-megaparsec;
   config-ini = doJailbreak super.config-ini;   # https://github.com/aisamanra/config-ini/issues/18
   contravariant = self.contravariant_1_5;
+  fgl = self.fgl_5_7_0_1;
   free = self.free_5_1;
   haddock-library = dontCheck super.haddock-library_1_7_0;
   HaTeX = doJailbreak super.HaTeX;
-  hledger = doJailbreak super.hledger;
-  hledger-lib = doJailbreak super.hledger-lib;
-  hledger-ui = doJailbreak super.hledger-ui;
   hpack = self.hpack_0_31_1;
   hslua = self.hslua_1_0_1;
   hslua-module-text = self.hslua-module-text_0_2_0;
   hspec = self.hspec_2_6_0;
+  hspec-contrib = self.hspec-contrib_0_5_1;
   hspec-core = self.hspec-core_2_6_0;
   hspec-discover = self.hspec-discover_2_6_0;
   hspec-megaparsec = doJailbreak super.hspec-megaparsec;  # newer versions need megaparsec 7.x
-  hspec-meta = self.hspec-meta_2_5_6;
+  hspec-meta = self.hspec-meta_2_6_0;
   JuicyPixels = self.JuicyPixels_3_3_2;
   lens = self.lens_4_17;
   megaparsec = dontCheck (doJailbreak super.megaparsec);
+  pandoc = self.pandoc_2_5;
+  pandoc-citeproc = self.pandoc-citeproc_0_15;
+  pandoc-citeproc_0_15 = doJailbreak super.pandoc-citeproc_0_15;
   patience = markBrokenVersion "0.1.1" super.patience;
   polyparse = self.polyparse_1_12_1;
   primitive = self.primitive_0_6_4_0;
@@ -81,10 +83,6 @@ self: super: {
   # https://github.com/tibbe/unordered-containers/issues/214
   unordered-containers = dontCheck super.unordered-containers;
 
-  # https://github.com/haskell/fgl/issues/79
-  # https://github.com/haskell/fgl/issues/81
-  fgl = appendPatch (overrideCabal super.fgl (drv: { editedCabalFile = null; })) ./patches/fgl-monad-fail.patch;
-
   # Test suite does not compile.
   cereal = dontCheck super.cereal;
   data-clist = doJailbreak super.data-clist;  # won't cope with QuickCheck 2.12.x
@@ -98,9 +96,6 @@ self: super: {
 
   # https://github.com/jgm/skylighting/issues/55
   skylighting-core = dontCheck super.skylighting-core;
-
-  # https://github.com/jgm/pandoc/issues/4974
-  pandoc = doJailbreak super.pandoc_2_4;
 
   # Break out of "yaml >=0.10.4.0 && <0.11".
   stack = doJailbreak super.stack;

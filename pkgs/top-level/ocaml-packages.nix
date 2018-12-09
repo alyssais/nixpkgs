@@ -131,6 +131,9 @@ let
 
     bin_prot_p4 = callPackage ../development/ocaml-modules/bin_prot { };
 
+    bisect_ppx = callPackage ../development/ocaml-modules/bisect_ppx { };
+    bisect_ppx-ocamlbuild = callPackage ../development/ocaml-modules/bisect_ppx-ocamlbuild { };
+
     ocaml_cairo = callPackage ../development/ocaml-modules/ocaml-cairo { };
 
     cairo2 = callPackage ../development/ocaml-modules/cairo2 { };
@@ -551,6 +554,8 @@ let
     omd = callPackage ../development/ocaml-modules/omd { };
 
     opam-file-format = callPackage ../development/ocaml-modules/opam-file-format { };
+
+    opti = callPackage ../development/ocaml-modules/opti { };
 
     otfm = callPackage ../development/ocaml-modules/otfm { };
 
@@ -1039,7 +1044,9 @@ let
       enableX11 = config.unison.enableX11 or true;
     };
 
-    hol_light = callPackage ../applications/science/logic/hol_light { };
+    hol_light = callPackage ../applications/science/logic/hol_light {
+      camlp5 = callPackage ../development/tools/ocaml/camlp5 { legacy = true; };
+    };
 
   };
     in (ocamlPackages.janeStreet // ocamlPackages);

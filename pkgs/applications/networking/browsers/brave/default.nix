@@ -12,6 +12,7 @@
   gdk_pixbuf,
   glib,
   gnome2,
+  gnome3,
   gtk3,
   libuuid,
   libX11,
@@ -31,7 +32,8 @@
   udev,
   xorg,
   zlib,
-  xdg_utils
+  xdg_utils,
+  wrapGAppsHook
 }:
 
 let rpath = lib.makeLibraryPath [
@@ -71,26 +73,28 @@ let rpath = lib.makeLibraryPath [
 
 
 in stdenv.mkDerivation rec {
-    name = "brave";
-    version = "0.56.12";
+    pname = "brave";
+    version = "0.56.15";
 
     src = fetchurl {
         url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb";
-        sha256 = "1pvablwchpsm1fdhfp9kr2912yv4812r8prv5fn799qpflzxvyai";
+        sha256 = "1d18fgnxcgl95bhkgfqjyv4p81q6fciqibd3ss4vwh1ljjy1fv76";
     };
 
     dontConfigure = true;
     dontBuild = true;
     dontPatchELF = true;
 
-    nativeBuildInputs = [ dpkg ];
+    nativeBuildInputs = [ dpkg wrapGAppsHook ];
+
+    buildInputs = [ glib gnome3.gsettings_desktop_schemas gnome3.defaultIconTheme ];
 
     unpackPhase = "dpkg-deb --fsys-tarfile $src | tar -x --no-same-permissions --no-same-owner";
 
     installPhase = ''
-        mkdir -p $out
+        mkdir -p $out $out/bin
 
-        cp -R usr/* $out
+        cp -R usr/share $out
         cp -R opt/ $out/opt
 
         export BINARYWRAPPER=$out/opt/brave.com/brave/brave-browser
