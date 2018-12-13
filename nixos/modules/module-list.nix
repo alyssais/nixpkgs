@@ -248,6 +248,7 @@
   ./services/desktops/gnome3/gnome-documents.nix
   ./services/desktops/gnome3/gnome-keyring.nix
   ./services/desktops/gnome3/gnome-online-accounts.nix
+  ./services/desktops/gnome3/gnome-remote-desktop.nix
   ./services/desktops/gnome3/gnome-online-miners.nix
   ./services/desktops/gnome3/gnome-terminal-server.nix
   ./services/desktops/gnome3/gnome-user-share.nix
@@ -714,7 +715,6 @@
   ./services/web-apps/restya-board.nix
   ./services/web-apps/tt-rss.nix
   ./services/web-apps/selfoss.nix
-  ./services/web-apps/quassel-webserver.nix
   ./services/web-apps/virtlyst.nix
   ./services/web-apps/youtrack.nix
   ./services/web-servers/apache-httpd/default.nix

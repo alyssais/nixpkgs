@@ -401,6 +401,11 @@
     github = "aszlig";
     name = "aszlig";
   };
+  atnnn = {
+    email = "etienne@atnnn.com";
+    github = "atnnn";
+    name = "Etienne Laurin";
+  };
   auntie = {
     email = "auntieNeo@gmail.com";
     github = "auntie";
@@ -1888,6 +1893,10 @@
     email = "michele@catalano.de";
     github = "ironpinguin";
     name = "Michele Catalano";
+  };
+  ivan = {
+    email = "ivan@ludios.org";
+    name = "Ivan Kozik";
   };
   ivan-tkatchev = {
     email = "tkatchev@gmail.com";
@@ -4277,6 +4286,11 @@
     email = "kim.lindberger@gmail.com";
     github = "talyz";
     name = "Kim Lindberger";
+  };
+  taneb = {
+    email = "nvd1234@gmail.com";
+    github = "Taneb";
+    name = "Nathan van Doorn";
   };
   tari = {
     email = "peter@taricorp.net";

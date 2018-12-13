@@ -1,11 +1,11 @@
 { stdenv, fetchgit, meson, ninja, pkgconfig
 , python3, gtk3, gst_all_1, libsecret, libsoup
 , appstream-glib, desktop-file-utils, gnome3
-, gobjectIntrospection, wrapGAppsHook }:
+, gobject-introspection, wrapGAppsHook }:
 
 python3.pkgs.buildPythonApplication rec  {
+  pname = "lollypop";
   version = "0.9.611";
-  name = "lollypop-${version}";
 
   format = "other";
   doCheck = false;
@@ -20,7 +20,7 @@ python3.pkgs.buildPythonApplication rec  {
   nativeBuildInputs = with python3.pkgs; [
     appstream-glib
     desktop-file-utils
-    gobjectIntrospection
+    gobject-introspection
     meson
     ninja
     pkgconfig
@@ -40,7 +40,7 @@ python3.pkgs.buildPythonApplication rec  {
     libsoup
   ];
 
-  pythonPath = with python3.pkgs; [
+  propagatedBuildInputs = with python3.pkgs; [
     beautifulsoup4
     gst-python
     pillow
@@ -56,15 +56,15 @@ python3.pkgs.buildPythonApplication rec  {
   '';
 
   preFixup = ''
-    buildPythonPath "$out/libexec/lollypop-sp $pythonPath"
+    buildPythonPath "$out $propagatedBuildInputs"
     patchPythonScript "$out/libexec/lollypop-sp"
   '';
 
   meta = with stdenv.lib; {
     description = "A modern music player for GNOME";
-    homepage    = https://wiki.gnome.org/Apps/Lollypop;
-    license     = licenses.gpl3Plus;
+    homepage = https://wiki.gnome.org/Apps/Lollypop;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ worldofpeace ];
-    platforms   = platforms.linux;
+    platforms = platforms.linux;
   };
 }

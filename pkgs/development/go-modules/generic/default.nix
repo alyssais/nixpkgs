@@ -1,5 +1,5 @@
-{ go, govers, parallel, lib, fetchgit, fetchhg, fetchbzr, rsync
-, removeReferencesTo, fetchFromGitHub }:
+{ go, govers, lib, fetchgit, fetchhg, fetchbzr, rsync
+, removeReferencesTo, fetchFromGitHub, stdenv }:
 
 let
   buildGoPackage =
@@ -80,9 +80,11 @@ let
       (builtins.removeAttrs args [ "goPackageAliases" "disabled" ]) // {
 
       inherit name;
-      nativeBuildInputs = [ removeReferencesTo go parallel ]
+      nativeBuildInputs = [ removeReferencesTo go ]
         ++ (lib.optional (!dontRenameImports) govers) ++ nativeBuildInputs;
-      buildInputs = [ go ] ++ buildInputs;
+      buildInputs = buildInputs;
+
+      inherit (go) GOOS GOARCH;
 
       configurePhase = args.configurePhase or ''
         runHook preConfigure
@@ -164,12 +166,23 @@ let
         else
           touch $TMPDIR/buildFlagsArray
         fi
-        export -f buildGoDir # parallel needs to see the function
+        export -f buildGoDir # xargs needs to see the function
         if [ -z "$enableParallelBuilding" ]; then
             export NIX_BUILD_CORES=1
         fi
-        getGoDirs "" | parallel -j $NIX_BUILD_CORES buildGoDir install
-
+        getGoDirs "" | xargs -n1 -P $NIX_BUILD_CORES bash -c 'buildGoDir install "$@"' --
+      '' + lib.optionalString (stdenv.hostPlatform != stdenv.buildPlatform) ''
+        # normalize cross-compiled builds w.r.t. native builds
+        (
+          dir=$NIX_BUILD_TOP/go/bin/${go.GOOS}_${go.GOARCH}
+          if [[ -n "$(shopt -s nullglob; echo $dir/*)" ]]; then
+            mv $dir/* $dir/..
+          fi
+          if [[ -d $dir ]]; then
+            rmdir $dir
+          fi
+        )
+      '' + ''
         runHook postBuild
       '';
 
@@ -177,7 +190,7 @@ let
       checkPhase = args.checkPhase or ''
         runHook preCheck
 
-        getGoDirs test | parallel -j $NIX_BUILD_CORES buildGoDir test
+        getGoDirs test | xargs -n1 -P $NIX_BUILD_CORES bash -c 'buildGoDir test "$@"' --
 
         runHook postCheck
       '';
@@ -228,7 +241,7 @@ let
                       [ lib.maintainers.ehmry lib.maintainers.lethalman ];
       };
     }) // {
-      overrideGoAttrs = f: buildGoPackage (args // (f args));
+      overrideGoAttrs = f: buildGoPackage (args' // (f args'));
     };
 
 in buildGoPackage
