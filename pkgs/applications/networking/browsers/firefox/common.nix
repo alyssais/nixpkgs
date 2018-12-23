@@ -22,6 +22,7 @@
 , ffmpegSupport ? true
 , gtk3Support ? true, gtk2, gtk3, wrapGAppsHook
 , gssSupport ? true, kerberos
+, waylandSupport ? gtk3Support, libxkbcommon
 
 ## privacy-related options
 
@@ -73,7 +74,7 @@ let
   flag = tf: x: [(if tf then "--enable-${x}" else "--disable-${x}")];
 
   default-toolkit = if stdenv.isDarwin then "cairo-cocoa"
-                    else "cairo-gtk${if gtk3Support then "3" else "2"}";
+                    else "cairo-gtk${if gtk3Support then "3" else "2"}${lib.optionalString waylandSupport "-wayland"}";
 
   execdir = if stdenv.isDarwin
             then "/Applications/${browserName}.app/Contents/MacOS"
@@ -102,6 +103,7 @@ stdenv.mkDerivation rec {
   ++ lib.optional  alsaSupport alsaLib
   ++ lib.optional  pulseaudioSupport libpulseaudio # only headers are needed
   ++ lib.optional  gtk3Support gtk3
+  ++ lib.optional  waylandSupport libxkbcommon
   ++ lib.optional  gssSupport kerberos
   ++ lib.optionals stdenv.isDarwin [ CoreMedia ExceptionHandling Kerberos
                                      AVFoundation MediaToolbox CoreLocation
