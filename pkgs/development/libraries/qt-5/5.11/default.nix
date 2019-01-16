@@ -53,6 +53,7 @@ let
       ./qtbase.patch
       ./qtbase-darwin.patch
       ./qtbase-revert-no-macos10.10.patch
+      ./qtbase-fixguicmake.patch
     ] ++ optionals stdenv.isDarwin [
       ./qtbase-darwin-nseventtype.patch
     ];
@@ -60,7 +61,6 @@ let
     qtscript = [ ./qtscript.patch ];
     qtserialport = [ ./qtserialport.patch ];
     qttools = [ ./qttools.patch ];
-    qtwebengine = optional stdenv.needsPax ./qtwebengine-paxmark-mksnapshot.patch;
     qtwebkit = [ ./qtwebkit.patch ];
   };
 

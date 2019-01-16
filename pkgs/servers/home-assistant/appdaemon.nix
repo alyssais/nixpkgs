@@ -10,6 +10,9 @@ let
           inherit version;
           sha256 = "8adda6583ba438a4c70693374e10b60168663ffa6564c5c75d3c7a9055290964";
         };
+        # TODO: remove after pinning aiohttp to a newer version
+        propagatedBuildInputs = with self; [ chardet multidict async-timeout yarl idna-ssl ];
+        doCheck = false;
       });
 
       yarl = super.yarl.overridePythonAttrs (oldAttrs: rec {
