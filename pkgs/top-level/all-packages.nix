@@ -8073,7 +8073,8 @@ in
   bundix = callPackage ../development/ruby-modules/bundix { };
 
   bundler = bundler_1;
-  bundler_1 = callPackage ../development/ruby-modules/bundler { };
+  bundler_1 = callPackage ../development/ruby-modules/bundler/1.nix { };
+  bundler_2 = callPackage ../development/ruby-modules/bundler/2.nix { };
 
   bundlerEnv = callPackage ../development/ruby-modules/bundler-env { };
   bundlerApp = callPackage ../development/ruby-modules/bundler-app { };
