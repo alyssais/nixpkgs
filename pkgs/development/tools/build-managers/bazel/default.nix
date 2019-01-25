@@ -1,6 +1,6 @@
-{ stdenv, lib, fetchurl, fetchpatch, runCommand, makeWrapper
+{ stdenv, callPackage, lib, fetchurl, fetchpatch, runCommand, makeWrapper
 , jdk, zip, unzip, bash, writeCBin, coreutils
-, which, python, perl, gnused, gnugrep, findutils
+, which, python, perl, gawk, gnused, gnugrep, findutils
 # Apple dependencies
 , cctools, clang, libcxx, CoreFoundation, CoreServices, Foundation
 # Allow to independently override the jdks used to build and run respectively
@@ -23,7 +23,7 @@ let
     for i in ${builtins.toString srcDeps}; do cp $i $out/$(stripHash $i); done
   '';
 
-  defaultShellPath = lib.makeBinPath [ bash coreutils findutils gnugrep gnused which unzip ];
+  defaultShellPath = lib.makeBinPath [ bash coreutils findutils gawk gnugrep gnused which unzip ];
 
 in
 stdenv.mkDerivation rec {
@@ -38,6 +38,11 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux ++ platforms.darwin;
   };
 
+  # additional tests that check bazel’s functionality
+  passthru.tests = {
+    pythonBinPath = callPackage ./python-bin-path-test.nix {};
+  };
+
   name = "bazel-${version}";
 
   src = fetchurl {
@@ -47,8 +52,9 @@ stdenv.mkDerivation rec {
 
   sourceRoot = ".";
 
-  patches =
-    lib.optional enableNixHacks ./nix-hacks.patch;
+  patches = [
+    ./python-stub-path-fix.patch
+  ] ++ lib.optional enableNixHacks ./nix-hacks.patch;
 
   # Bazel expects several utils to be available in Bash even without PATH. Hence this hack.
 
@@ -118,6 +124,12 @@ stdenv.mkDerivation rec {
     '';
 
     genericPatches = ''
+      # Substitute python's stub shebang to plain python path. (see TODO add pr URL)
+      # See also `postFixup` where python is added to $out/nix-support
+      substituteInPlace src/main/java/com/google/devtools/build/lib/bazel/rules/python/python_stub_template.txt\
+          --replace "/usr/bin/env python" "${python}/bin/python" \
+          --replace "NIX_STORE_PYTHON_PATH" "${python}/bin/python" \
+
       # substituteInPlace is rather slow, so prefilter the files with grep
       grep -rlZ /bin src/main/java/com/google/devtools | while IFS="" read -r -d "" path; do
         # If you add more replacements here, you must change the grep above!
@@ -252,7 +264,10 @@ stdenv.mkDerivation rec {
   # Save paths to hardcoded dependencies so Nix can detect them.
   postFixup = ''
     mkdir -p $out/nix-support
-    echo "${customBash} ${defaultShellPath}" > $out/nix-support/depends
+    echo "${customBash} ${defaultShellPath}" >> $out/nix-support/depends
+    # The templates get tar’d up into a .jar,
+    # so nix can’t detect python is needed in the runtime closure
+    echo "${python}" >> $out/nix-support/depends
   '';
 
   dontStrip = true;
