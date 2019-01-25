@@ -192,7 +192,7 @@ stdenv.mkDerivation ((builtins.removeAttrs attrs ["source"]) // {
       --http-proxy 'http://nodtd.invalid' \
       --ignore-dependencies \
       --install-dir "$GEM_HOME" \
-      --build-root '/' \
+      ${lib.optionalString ((lib.versionAtLeast ruby.version.majMin "2.2")) "--build-root '/'"} \
       --backtrace \
       --no-env-shebang \
       ${documentFlag} \
