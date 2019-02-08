@@ -7,7 +7,7 @@ with import ../lib/testing.nix { inherit system pkgs; };
 with pkgs.lib;
 
 let
-  postgresql-versions = pkgs.callPackages ../../pkgs/servers/sql/postgresql { };
+  postgresql-versions = import ../../pkgs/servers/sql/postgresql pkgs;
   test-sql = pkgs.writeText "postgresql-test" ''
     CREATE EXTENSION pgcrypto; -- just to check if lib loading works
     CREATE TABLE sth (
@@ -29,8 +29,8 @@ let
 
     machine = {...}:
       {
-        services.postgresql.package = postgresql-package;
         services.postgresql.enable = true;
+        services.postgresql.package = postgresql-package;
 
         services.postgresqlBackup.enable = true;
         services.postgresqlBackup.databases = optional (!backup-all) "postgres";
@@ -67,12 +67,7 @@ let
 
   };
 in
-  (mapAttrs' (name: package: { inherit name; value=make-postgresql-test name package false;}) postgresql-versions) // (
-    # just pick one version for the dump all test
-    let
-      first = head (attrNames postgresql-versions);
-      name = "${first}-backup-all";
-    in {
-      ${name} = make-postgresql-test name postgresql-versions.${first} true;
-    }
-  )
+  (mapAttrs' (name: package: { inherit name; value=make-postgresql-test name package false;}) postgresql-versions) // {
+    postgresql_11-backup-all = make-postgresql-test "postgresql_11-backup-all" postgresql-versions.postgresql_11 true;
+  }
+

@@ -107,6 +107,7 @@ in
   initrdNetwork = handleTest ./initrd-network.nix {};
   installer = handleTest ./installer.nix {};
   ipv6 = handleTest ./ipv6.nix {};
+  jackett = handleTest ./jackett.nix {};
   jenkins = handleTest ./jenkins.nix {};
   #kafka = handleTest ./kafka.nix {}; # broken since openjdk: 8u181 -> 8u192
   kerberos = handleTest ./kerberos/default.nix {};
@@ -120,6 +121,7 @@ in
   latestKernel.login = handleTest ./login.nix { latestKernel = true; };
   ldap = handleTest ./ldap.nix {};
   leaps = handleTest ./leaps.nix {};
+  lidarr = handleTest ./lidarr.nix {};
   #lightdm = handleTest ./lightdm.nix {};
   login = handleTest ./login.nix {};
   #logstash = handleTest ./logstash.nix {};
@@ -127,6 +129,7 @@ in
   matrix-synapse = handleTest ./matrix-synapse.nix {};
   memcached = handleTest ./memcached.nix {};
   mesos = handleTest ./mesos.nix {};
+  minio = handleTest ./minio.nix {};
   misc = handleTest ./misc.nix {};
   mongodb = handleTest ./mongodb.nix {};
   morty = handleTest ./morty.nix {};
@@ -140,6 +143,8 @@ in
   nat.firewall = handleTest ./nat.nix { withFirewall = true; };
   nat.firewall-conntrack = handleTest ./nat.nix { withFirewall = true; withConntrackHelpers = true; };
   nat.standalone = handleTest ./nat.nix { withFirewall = false; };
+  ndppd = handleTest ./ndppd.nix {};
+  neo4j = handleTest ./neo4j.nix {};
   netdata = handleTest ./netdata.nix {};
   networking.networkd = handleTest ./networking.nix { networkd = true; };
   networking.scripted = handleTest ./networking.nix { networkd = false; };
@@ -151,6 +156,7 @@ in
   nfs4 = handleTest ./nfs.nix { version = 4; };
   nghttpx = handleTest ./nghttpx.nix {};
   nginx = handleTest ./nginx.nix {};
+  nginx-sso = handleTest ./nginx-sso.nix {};
   nix-ssh-serve = handleTest ./nix-ssh-serve.nix {};
   novacomd = handleTestOn ["x86_64-linux"] ./novacomd.nix {};
   nsd = handleTest ./nsd.nix {};
@@ -160,6 +166,7 @@ in
   osquery = handleTest ./osquery.nix {};
   ostree = handleTest ./ostree.nix {};
   pam-oath-login = handleTest ./pam-oath-login.nix {};
+  pam-u2f = handleTest ./pam-u2f.nix {};
   peerflix = handleTest ./peerflix.nix {};
   pgjwt = handleTest ./pgjwt.nix {};
   pgmanage = handleTest ./pgmanage.nix {};
@@ -178,6 +185,7 @@ in
   quagga = handleTest ./quagga.nix {};
   quake3 = handleTest ./quake3.nix {};
   rabbitmq = handleTest ./rabbitmq.nix {};
+  radarr = handleTest ./radarr.nix {};
   radicale = handleTest ./radicale.nix {};
   redmine = handleTest ./redmine.nix {};
   roundcube = handleTest ./roundcube.nix {};
@@ -194,6 +202,7 @@ in
   smokeping = handleTest ./smokeping.nix {};
   snapper = handleTest ./snapper.nix {};
   solr = handleTest ./solr.nix {};
+  sonarr = handleTest ./sonarr.nix {};
   strongswan-swanctl = handleTest ./strongswan-swanctl.nix {};
   sudo = handleTest ./sudo.nix {};
   switchTest = handleTest ./switch-test.nix {};

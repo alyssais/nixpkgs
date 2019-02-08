@@ -22,8 +22,9 @@
 , pkgconfig , ncurses, xapian_1_2_22, gpgme, utillinux, fetchpatch, tzdata, icu, libffi
 , cmake, libssh2, openssl, mysql, darwin, git, perl, pcre, gecode_3, curl
 , msgpack, qt59, libsodium, snappy, libossp_uuid, lxc, libpcap, xorg, gtk2, buildRubyGem
-, cairo, re2, rake, gobject-introspection, gdk_pixbuf, zeromq, graphicsmagick, libcxx, file
-, libselinux ? null, libsepol ? null, libvirt
+, cairo, re2, rake, gobject-introspection, gdk_pixbuf, zeromq, czmq, graphicsmagick, libcxx
+, file, libvirt, glib, vips
+, libselinux ? null, libsepol ? null
 }@args:
 
 let
@@ -274,6 +275,10 @@ in
     ] ++ lib.optional stdenv.isDarwin "--with-iconv-dir=${libiconv}";
   };
 
+  ovirt-engine-sdk = attrs: {
+    buildInputs = [ curl libxml2 ];
+  };
+
   pango = attrs: {
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ gtk2 xorg.libXdmcp pcre xorg.libpthreadstubs ];
@@ -299,6 +304,11 @@ in
 
   rainbow = attrs: {
     buildInputs = [ rainbow_rake ];
+  };
+
+  rbczmq = { ... }: {
+    buildInputs = [ zeromq czmq ];
+    buildFlags = [ "--with-system-libs" ];
   };
 
   rbnacl = spec:
@@ -340,6 +350,22 @@ in
       "--with-ldflags=-L${ncurses.out}/lib"
     ];
   };
+
+  ruby-vips = attrs: {
+    postInstall = ''
+      cd "$(cat $out/nix-support/gem-meta/install-path)"
+
+      substituteInPlace lib/vips.rb \
+        --replace "glib-2.0" "${glib.out}/lib/libglib-2.0${stdenv.hostPlatform.extensions.sharedLibrary}"
+
+      substituteInPlace lib/vips.rb \
+        --replace "gobject-2.0" "${glib.out}/lib/libgobject-2.0${stdenv.hostPlatform.extensions.sharedLibrary}"
+
+      substituteInPlace lib/vips.rb \
+        --replace "vips_libname = 'vips'" "vips_libname = '${vips}/lib/libvips${stdenv.hostPlatform.extensions.sharedLibrary}'"
+    '';
+  };
+
   rugged = attrs: {
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ cmake openssl libssh2 zlib ];
@@ -357,6 +383,10 @@ in
         sed -i -e "s/-arch i386//" Rakefile ext/scrypt/Rakefile
       '';
     } else {};
+
+  semian = attrs: {
+    buildInputs = [ openssl ];
+  };
 
   sequel_pg = attrs: {
     buildInputs = [ postgresql ];
