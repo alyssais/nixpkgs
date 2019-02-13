@@ -241,6 +241,11 @@
     email = "nix-commits@lists.science.uu.nl";
     name = "Nix Committers";
   };
+  allonsy = {
+    email = "linuxbash8@gmail.com";
+    github = "allonsy";
+    name = "Alec Snyder";
+  };
   alunduil = {
     email = "alunduil@gmail.com";
     github = "alunduil";
@@ -1305,6 +1310,11 @@
     github = "edef1c";
     name = "edef";
   };
+  embr = {
+    email = "hi@liclac.eu";
+    github = "liclac";
+    name = "embr";
+  };
   ederoyd46 = {
     email = "matt@ederoyd.co.uk";
     github = "ederoyd46";
@@ -1951,6 +1961,11 @@
     email = "ikervagyok@gmail.com";
     github = "ikervagyok";
     name = "Balázs Lengyel";
+  };
+  ilikeavocadoes = {
+    email = "ilikeavocadoes@hush.com";
+    github = "ilikeavocadoes";
+    name = "Lassi Haasio";
   };
   illegalprime = {
     email = "themichaeleden@gmail.com";
@@ -4658,7 +4673,7 @@
     name = "Thomas Bereknyei";
   };
   tomsmeets = {
-    email = "tom@tsmeets.nl";
+    email = "tom.tsmeets@gmail.com";
     github = "tomsmeets";
     name = "Tom Smeets";
   };
