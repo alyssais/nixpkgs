@@ -2568,6 +2568,8 @@ in
 
   euca2ools = callPackage ../tools/virtualization/euca2ools { };
 
+  evscript = callPackage ../tools/inputmethods/evscript { };
+
   eventstat = callPackage ../os-specific/linux/eventstat { };
 
   evtest = callPackage ../applications/misc/evtest { };
