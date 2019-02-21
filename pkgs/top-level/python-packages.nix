@@ -168,6 +168,10 @@ in {
 
   aioimaplib = callPackage ../development/python-modules/aioimaplib { };
 
+  aiolifx = callPackage ../development/python-modules/aiolifx { };
+
+  aiolifx-effects = callPackage ../development/python-modules/aiolifx-effects { };
+
   aioamqp = callPackage ../development/python-modules/aioamqp { };
 
   ansicolor = callPackage ../development/python-modules/ansicolor { };
@@ -264,6 +268,8 @@ in {
 
   bayespy = callPackage ../development/python-modules/bayespy { };
 
+  beanstalkc = disabledIf isPy3k (callPackage ../development/python-modules/beanstalkc {});
+
   bitarray = callPackage ../development/python-modules/bitarray { };
 
   bitcoinlib = callPackage ../development/python-modules/bitcoinlib { };
@@ -299,7 +305,7 @@ in {
   cdecimal = callPackage ../development/python-modules/cdecimal { };
 
   cfn-flip = callPackage ../development/python-modules/cfn-flip { };
- 
+
   chalice = callPackage ../development/python-modules/chalice { };
 
   cleo = callPackage ../development/python-modules/cleo { };
@@ -485,6 +491,8 @@ in {
   mwoauth = callPackage ../development/python-modules/mwoauth { };
 
   nanomsg-python = callPackage ../development/python-modules/nanomsg-python { inherit (pkgs) nanomsg; };
+
+  nbsphinx = callPackage ../development/python-modules/nbsphinx { };
 
   nbval = callPackage ../development/python-modules/nbval { };
 
@@ -840,6 +848,8 @@ in {
 
   webapp2 = callPackage ../development/python-modules/webapp2 { };
 
+  wrf-python = callPackage ../development/python-modules/wrf-python { };
+
   pyunbound = callPackage ../tools/networking/unbound/python.nix { };
 
   WazeRouteCalculator = callPackage ../development/python-modules/WazeRouteCalculator { };
@@ -1094,11 +1104,10 @@ in {
 
   cached-property = callPackage ../development/python-modules/cached-property { };
 
-  caffe = pkgs.caffe.override {
-    python = self.python;
-    boost = self.boost;
-    numpy = self.numpy;
-  };
+  caffe = toPythonModule (pkgs.caffe.override {
+    pythonSupport = true;
+    inherit (self) python numpy boost;
+  });
 
   capstone = callPackage ../development/python-modules/capstone { };
 
