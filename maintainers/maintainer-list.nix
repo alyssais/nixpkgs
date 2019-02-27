@@ -2294,6 +2294,11 @@
   joko = {
     email = "ioannis.koutras@gmail.com";
     github = "jokogr";
+    keys = [{
+      # compare with https://keybase.io/joko
+      longkeyid = "rsa2048/0x85EAE7D9DF56C5CA";
+      fingerprint = "B154 A8F9 0610 DB45 0CA8  CF39 85EA E7D9 DF56 C5CA";
+    }];
     name = "Ioannis Koutras";
   };
   jonafato = {
@@ -4356,6 +4361,15 @@
     github = "solson";
     name = "Scott Olson";
   };
+  sondr3 = {
+    email = "nilsen.sondre@gmail.com";
+    github = "sondr3";
+    name = "Sondre Nilsen";
+    keys = [{
+      longkeyid = "ed25519/0x25676BCBFFAD76B1";
+      fingerprint = "0EC3 FA89 EFBA B421 F82E  40B0 2567 6BCB FFAD 76B1";
+    }];
+  };
   sorki = {
     email = "srk@48.io";
     github = "sorki";
@@ -4895,9 +4909,13 @@
     name = "Vincent Bernardoff";
   };
   vcunat = {
-    email = "vcunat@gmail.com";
-    github = "vcunat";
     name = "Vladimír Čunát";
+    email = "v@cunat.cz"; # vcunat@gmail.com predominated in commits before 2019/03
+    github = "vcunat";
+    keys = [{
+      longkeyid = "rsa4096/0xE747DF1F9575A3AA";
+      fingerprint = "B600 6460 B60A 80E7 8206  2449 E747 DF1F 9575 A3AA";
+    }];
   };
   vdemeester = {
     email = "vincent@sbr.pm";
@@ -5051,7 +5069,7 @@
     name = "Kranium Gikos Mendoza";
   };
   worldofpeace = {
-    email = "worldofpeace@users.noreply.github.com";
+    email = "worldofpeace@protonmail.ch";
     github = "worldofpeace";
     name = "Worldofpeace";
   };

@@ -1181,6 +1181,8 @@ in
 
   clingo = callPackage ../applications/science/logic/potassco/clingo.nix { };
 
+  clprover = callPackage ../applications/science/logic/clprover/clprover.nix { };
+
   colord-kde = libsForQt5.callPackage ../tools/misc/colord-kde {};
 
   colpack = callPackage ../applications/science/math/colpack { };
@@ -3795,6 +3797,8 @@ in
 
   mautrix-whatsapp = callPackage ../servers/mautrix-whatsapp { };
 
+  mcfly = callPackage ../tools/misc/mcfly { };
+
   mdbook = callPackage ../tools/text/mdbook {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
@@ -4420,6 +4424,10 @@ in
   netrw = callPackage ../tools/networking/netrw { };
 
   netselect = callPackage ../tools/networking/netselect { };
+
+  nettee = callPackage ../tools/networking/nettee {
+    inherit (skawarePackages) cleanPackaging;
+  };
 
   # stripped down, needed by steam
   networkmanager098 = callPackage ../tools/networking/network-manager/0.9.8 { };
@@ -6680,6 +6688,8 @@ in
       useMacosReexportHack = true;
     };
   };
+  llvm-polly = llvmPackages_7.llvm-polly;
+  clang-polly = clang_7.override { cc = llvmPackages_7.clang-polly-unwrapped; };
 
   clang_7  = llvmPackages_7.clang;
   clang_6  = llvmPackages_6.clang;
@@ -12550,8 +12560,11 @@ in
 
   skalibs = skawarePackages.skalibs;
 
-  skawarePackages = recurseIntoAttrs {
-    buildPackage = callPackage ../build-support/skaware/build-skaware-package.nix { };
+  skawarePackages = recurseIntoAttrs rec {
+    cleanPackaging = callPackage ../build-support/skaware/clean-packaging.nix { };
+    buildPackage = callPackage ../build-support/skaware/build-skaware-package.nix {
+      inherit cleanPackaging;
+    };
 
     skalibs = callPackage ../development/libraries/skalibs { };
     execline = callPackage ../tools/misc/execline { };
@@ -15498,6 +15511,8 @@ in
 
   cm_unicode = callPackage ../data/fonts/cm-unicode {};
 
+  creep = callPackage ../data/fonts/creep { };
+
   crimson = callPackage ../data/fonts/crimson {};
 
   dejavu_fonts = lowPrio (callPackage ../data/fonts/dejavu-fonts {});
@@ -15593,8 +15608,8 @@ in
 
   fira-mono = callPackage ../data/fonts/fira-mono { };
 
-  font-awesome_4 = callPackage ../data/fonts/font-awesome-4 { };
   font-awesome_5 = callPackage ../data/fonts/font-awesome-5 { };
+  font-awesome = font-awesome_5;
 
   freefont_ttf = callPackage ../data/fonts/freefont-ttf { };
 
@@ -19029,7 +19044,7 @@ in
 
   qtpfsgui = callPackage ../applications/graphics/qtpfsgui { };
 
-  qtractor = callPackage ../applications/audio/qtractor { };
+  qtractor = libsForQt5.callPackage ../applications/audio/qtractor { };
 
   qtscrobbler = callPackage ../applications/audio/qtscrobbler { };
 
@@ -19863,6 +19878,8 @@ in
   };
 
   virtinst = callPackage ../applications/virtualization/virtinst {};
+
+  virtscreen = callPackage ../tools/admin/virtscreen {};
 
   virtualbox = callPackage ../applications/virtualization/virtualbox {
     stdenv = stdenv_32bit;
@@ -22282,6 +22299,8 @@ in
   cups-bjnp = callPackage ../misc/cups/drivers/cups-bjnp { };
 
   cups-brother-hl1110 = pkgsi686Linux.callPackage ../misc/cups/drivers/hl1110 { };
+
+  cups-brother-hl3140cw = pkgsi686Linux.callPackage ../misc/cups/drivers/hl3140cw { };
 
   cups-googlecloudprint = callPackage ../misc/cups/drivers/googlecloudprint { };
 
