@@ -1628,6 +1628,10 @@
     email = "fpletz@fnordicwalking.de";
     github = "fpletz";
     name = "Franz Pletz";
+    keys = [{
+      longkeyid = "rsa4096/0x846FDED7792617B4";
+      fingerprint = "8A39 615D CE78 AF08 2E23  F303 846F DED7 7926 17B4";
+    }];
   };
   fps = {
     email = "mista.tapas@gmx.net";
@@ -2453,6 +2457,11 @@
     email = "kisonecat@gmail.com";
     github = "kisonecat";
     name = "Jim Fowler";
+  };
+  kjuvi = {
+    email = "quentin.vaucher@pm.me";
+    github = "kjuvi";
+    name = "Quentin Vaucher";
   };
   kkallio = {
     email = "tierpluspluslists@gmail.com";
@@ -5281,5 +5290,10 @@
     email = "shmish111@gmail.com";
     github = "shmish111";
     name = "David Smith";
+  };
+  minijackson = {
+    email = "minijackson@riseup.net";
+    github = "minijackson";
+    name = "Rémi Nicole";
   };
 }
