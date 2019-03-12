@@ -70,11 +70,13 @@ rec {
     "${patchSet}/patches/ruby/2.5/head/railsexpress/02-improve-gc-stats.patch"
     "${patchSet}/patches/ruby/2.5/head/railsexpress/03-more-detailed-stacktrace.patch"
   ];
-  "2.6.1" = [
+  "2.6.1" = ops useRailsExpress [
     (fetchpatch {
       url = https://patch-diff.githubusercontent.com/raw/rubygems/rubygems/pull/2596.patch;
       sha256 = "0m1s5brd30bqcr8v99sczihm83g270philx83kkw5bpix462fdm3";
     })
-  ] ++ ops useRailsExpress [ # no Rails Express patchset yet (2019-01-30)
+    "${patchSet}/patches/ruby/2.6/head/railsexpress/01-fix-broken-tests-caused-by-ad.patch"
+    "${patchSet}/patches/ruby/2.6/head/railsexpress/02-improve-gc-stats.patch"
+    "${patchSet}/patches/ruby/2.6/head/railsexpress/03-more-detailed-stacktrace.patch"
   ];
 }
