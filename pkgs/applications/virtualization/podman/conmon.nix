@@ -4,13 +4,13 @@ with lib;
 
 stdenv.mkDerivation rec {
   name = "conmon-${version}";
-  version = "unstable-2018-11-28";
-  rev = "8fba206232c249a8fc4e2fac1469fb2fddbf5cf7";
+  version = "unstable-2019-03-19";
+  rev = "84c860029893e2e2dd71d62231f009c9dcd3c0b4";
 
   src = fetchFromGitHub {
     owner = "containers";
     repo = "conmon";
-    sha256 = "07ar0dk9i072b14f6il51yqahxp5c4fkf5jzar8rxcpvymkdy8zq";
+    sha256 = "1ydidl3s7s5rfwk9gx0k80nxcixlilxw61g7x0vqsdy3mkylysv5";
     inherit rev;
   };
 

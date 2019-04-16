@@ -1,14 +1,14 @@
 { stdenv, fetchFromGitHub, ocamlPackages, cf-private, CoreServices }:
 
 stdenv.mkDerivation rec {
-  version = "0.92.0";
-  name = "flow-${version}";
+  pname = "flow";
+  version = "0.96.0";
 
   src = fetchFromGitHub {
     owner  = "facebook";
     repo   = "flow";
     rev    = "refs/tags/v${version}";
-    sha256 = "1v83hkkbls5x2062ry3gwrnn9al8rhsmargv2mvanxlpf0a63wx3";
+    sha256 = "04al9jnaxgh8la6s2pzzpzm6pyfc5c6g7pc8cwz4xcngbsw60cpn";
   };
 
   installPhase = ''

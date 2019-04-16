@@ -22,7 +22,7 @@ let version_ = lib.splitString "-" crateVersion;
     version = lib.splitString "." (lib.head version_);
     rustcOpts = lib.lists.foldl' (opts: opt: opts + " " + opt)
         (if release then "-C opt-level=3" else "-C debuginfo=2")
-        (["-C codegen-units=1"] ++ extraRustcOpts);
+        (["-C codegen-units=$NIX_BUILD_CORES"] ++ extraRustcOpts);
     buildDeps = makeDeps buildDependencies;
     authors = lib.concatStringsSep ":" crateAuthors;
     optLevel = if release then 3 else 0;
@@ -81,7 +81,7 @@ in ''
   export CARGO_CFG_TARGET_POINTER_WIDTH=${toString stdenv.hostPlatform.parsed.cpu.bits}
   export CARGO_CFG_TARGET_VENDOR=${stdenv.hostPlatform.parsed.vendor.name}
 
-  export CARGO_MANIFEST_DIR="."
+  export CARGO_MANIFEST_DIR=$(pwd)
   export DEBUG="${toString (!release)}"
   export OPT_LEVEL="${toString optLevel}"
   export TARGET="${stdenv.hostPlatform.config}"

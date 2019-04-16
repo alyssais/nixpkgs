@@ -2,7 +2,8 @@
 
 let
   buildRustPackage =
-    { name, cargoSha256 ? "unset"
+    { name ? "${args.pname}-${args.version}"
+    , cargoSha256 ? "unset"
     , src ? null
     , srcs ? null
     , cargoPatches ? []

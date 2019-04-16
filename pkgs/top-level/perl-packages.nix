@@ -1752,6 +1752,18 @@ let
     propagatedBuildInputs = [ CGI ];
   };
 
+  CGIMinimal = buildPerlPackage rec {
+    name = "CGI-Minimal-1.29";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SN/SNOWHARE/${name}.tar.gz";
+      sha256 = "36c785ffacf5cdee4f1a7219ca1848b7e1700bdd71cd9116e1f00545ec88475d";
+    };
+    meta = {
+      description = "A lightweight CGI form processing package";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   CGIPSGI = buildPerlPackage {
     name = "CGI-PSGI-0.15";
     src = fetchurl {
@@ -2182,6 +2194,22 @@ let
     meta = {
       description = "Support for creating standard 'inside-out' classes";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  ClassStdFast = buildPerlModule rec {
+    name = "${pname}-${version}";
+    pname = "Class-Std-Fast";
+    version = "0.0.8";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/A/AC/ACID/${pname}-v${version}.tar.gz";
+      sha256 = "1057rz95jsr66gam472i4zdv04v7bmzph3m3jwq1hwx3qrikgm0v";
+    };
+    propagatedBuildInputs = [ ClassStd ];
+    checkInputs = [ TestPod TestPodCoverage ];
+    meta = with stdenv.lib; {
+      description = "Faster but less secure than Class::Std";
+      license = with licenses; [ artistic1 gpl1Plus ];
     };
   };
 
@@ -4013,6 +4041,8 @@ let
   DBDSQLite = callPackage ../development/perl-modules/DBD-SQLite { };
 
   DBDmysql = callPackage ../development/perl-modules/DBD-mysql { };
+
+  DBDOracle = callPackage ../development/perl-modules/DBD-Oracle { };
 
   DBDPg = callPackage ../development/perl-modules/DBD-Pg { };
 
@@ -7874,11 +7904,11 @@ let
 
   ImageExifTool = buildPerlPackage rec {
     name = "Image-ExifTool-${version}";
-    version = "11.11";
+    version = "11.30";
 
     src = fetchurl {
       url = "https://www.sno.phy.queensu.ca/~phil/exiftool/${name}.tar.gz";
-      sha256 = "1szg1k82nz88pp5n7lg71ja7q3hh5i5f9bcbb7m482dwrmsywkp6";
+      sha256 = "0vkjb2c1a3jdlq8rx1jywx4p3f1bmgjn7rzfwx6dxgij2lx76lrs";
     };
 
     meta = with stdenv.lib; {
