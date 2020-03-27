@@ -8,6 +8,7 @@ let
 
   arch = with stdenv.hostPlatform;
     if isAarch64 then "aarch64"
+    else if isAarch32 then "arm"
     else if isx86_64 then "x86_64"
     else throw "no seccomp policy files available for host platform";
 
@@ -84,6 +85,8 @@ in
       homepage = "https://chromium.googlesource.com/chromiumos/platform/crosvm/";
       maintainers = with maintainers; [ qyliss ];
       license = licenses.bsd3;
-      platforms = [ "aarch64-linux" "x86_64-linux" ];
+      platforms = [
+        "armv7a-linux" "armv7l-linux" "aarch64-linux" "x86_64-linux"
+      ];
     };
   }
