@@ -22,6 +22,15 @@ let
       '';
     };
 
+    castnow = super.castnow.override {
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+
+      postInstall = ''
+        wrapProgram "$out/bin/castnow" \
+            --prefix PATH : ${stdenv.lib.makeBinPath [ pkgs.ffmpeg ]}
+      '';
+    };
+
     coc-imselect = super.coc-imselect.override {
       meta.broken = since "10";
     };
