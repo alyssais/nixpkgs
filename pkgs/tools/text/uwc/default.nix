@@ -1,4 +1,4 @@
-{ rustPlatform, lib, fetchFromGitLab }:
+{ rustPlatform, lib, fetchFromGitLab, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "uwc";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1ywqq9hrrm3frvd2sswknxygjlxi195kcy7g7phwq63j7hkyrn50";
   };
 
-  cargoSha256 = "0ra62cf75b1c4knxxpbdg8m0sy2k02r52j606fp5l9crp0fml8l0";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = true;
 
