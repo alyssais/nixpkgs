@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, CoreServices, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, CoreServices, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "mdbook";
@@ -13,6 +13,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "1p72iwl9ca7a92nf6wyjjbn0qns0xxb4xrbz2r2nmd83cxs0fplg";
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ CoreServices ];
 
   meta = with stdenv.lib; {
