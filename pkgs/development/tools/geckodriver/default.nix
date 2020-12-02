@@ -1,6 +1,7 @@
 { lib
 , fetchzip
 , rustPlatform
+, importCargo
 , stdenv
 , darwin
 }:
@@ -20,10 +21,12 @@ rustPlatform.buildRustPackage {
     unpackCmd = "unzip $curSrc";
   });
 
-  cargoPatches = [ ./cargo-lock.patch ];
-  cargoSha256 = "0jl1gvd7fhl10v7ag3ycr9ik5kp03xhnm7n4ww2ph9zv34gjhd5g";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
+
+  postPatch = ''
+    cp ${./Cargo.lock} Cargo.lock
+  '';
 
   meta = with lib; {
     description = "Proxy for using W3C WebDriver-compatible clients to interact with Gecko-based browsers";
