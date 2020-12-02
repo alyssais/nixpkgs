@@ -1,7 +1,7 @@
 { lib, stdenv
 , fetchgit, fetchFromGitHub, fetchurl
 , writeShellScript, runCommand, which
-, rustPlatform, jq, nix-prefetch-git, xe, curl, emscripten
+, rustPlatform, importCargo, jq, nix-prefetch-git, xe, curl, emscripten
 , callPackage
 , enableShared ? true
 , enableStatic ? false
@@ -11,12 +11,12 @@
 # TODO: move to carnix or https://github.com/kolloch/crate2nix
 let
   # to update:
-  # 1) change all these hashes
-  # 2) nix-build -A tree-sitter.updater.update-all-grammars
-  # 3) run the ./result script that is output by that (it updates ./grammars)
+  # 1) change this hash
+  # 2) maintainers/scripts/get-cargo-lock.sh tree-sitter
+  # 3) nix-build -A tree-sitter.updater.update-all-grammars
+  # 4) run the ./result script that is output by that (it updates ./grammars)
   version = "0.17.3";
   sha256 = "sha256-uQs80r9cPX8Q46irJYv2FfvuppwonSS5HVClFujaP+U=";
-  cargoSha256 = "sha256-fonlxLNh9KyEwCj7G5vxa7cM/DlcHNFbQpp0SwVQ3j4=";
 
   src = fetchFromGitHub {
     owner = "tree-sitter";
@@ -50,11 +50,11 @@ let
 
 in rustPlatform.buildRustPackage {
   pname = "tree-sitter";
-  inherit src version cargoSha256;
+  inherit src version;
 
   buildInputs = lib.optionals stdenv.isDarwin [ Security ];
 
-  nativeBuildInputs = [ emscripten which ];
+  nativeBuildInputs = [ emscripten which (importCargo ./Cargo.lock) ];
 
   postPatch = ''
     # needed for the tests
