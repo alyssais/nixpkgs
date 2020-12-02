@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -14,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0j3861pxqw0lnamb201c7h5w7npzyiwwb6c1xzxjv72m2ccvz76j";
   };
 
-  cargoSha256 = "1p18926pfff1yayb2i28v0nz37j52hqqv7244yfrzgidi29kyvbc";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "A human-friendly and fast alternative to cut and (sometimes) awk";
