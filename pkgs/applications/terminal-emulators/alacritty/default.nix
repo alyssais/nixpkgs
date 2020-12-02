@@ -2,6 +2,7 @@
 , lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 
 , cmake
 , gzip
@@ -61,7 +62,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "vQdNwNiUvoJWRT1foPRadirI2zWjnzU3sGnIxeHKlj8=";
   };
 
-  cargoSha256 = "1PQSg6EmwVMZj2ALw6qsbtPMCtALVHx5TR05FjGD/QE=";
+  # cargoSha256 = "1PQSg6EmwVMZj2ALw6qsbtPMCtALVHx5TR05FjGD/QE=";
 
   nativeBuildInputs = [
     cmake
@@ -71,6 +72,7 @@ rustPlatform.buildRustPackage rec {
     ncurses
     pkgconfig
     python3
+    (importCargo ./Cargo.lock)
   ];
 
   buildInputs = rpathLibs
