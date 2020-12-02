@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, ncurses }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, ncurses }:
 
 rustPlatform.buildRustPackage {
   pname = "hexdino";
@@ -11,9 +11,12 @@ rustPlatform.buildRustPackage {
     sha256 = "11mz07735gxqfamjcjjmxya6swlvr1p77sgd377zjcmd6z54gwyf";
   };
 
-  cargoSha256 = "06ghcd4j751mdkzwb88nqwk8la4zdb137y0iqrkpykkfx0as43x3";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = [ ncurses ];
+
+  postPatch = ''
+    cp ${./Cargo.lock} Cargo.lock
+  '';
 
   meta = with stdenv.lib; {
     description = "A hex editor with vim like keybindings written in Rust";
