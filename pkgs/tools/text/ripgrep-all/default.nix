@@ -1,5 +1,5 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform, makeWrapper, ffmpeg_3
-, pandoc, poppler_utils, ripgrep, Security, imagemagick, tesseract
+{ stdenv, lib, fetchFromGitHub, rustPlatform, importCargo, makeWrapper
+, ffmpeg_3, pandoc, poppler_utils, ripgrep, Security, imagemagick, tesseract
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -13,8 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1wjpgi7m3lxybllkr3r60zaphp02ykq2syq72q9ail2760cjcir6";
   };
 
-  cargoSha256 = "0arwxqrpxdws4q1pnqzqkp1yv5aas08lkzh1vcgmf26j58sycniy";
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
   buildInputs = lib.optional stdenv.isDarwin Security;
 
   postInstall = ''
