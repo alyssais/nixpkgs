@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
 , darwin, fontconfig, harfbuzz, openssl, pkgconfig }:
 
 rustPlatform.buildRustPackage rec {
@@ -12,9 +12,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "yJzfymA4elyyeVR8FzTJe8wgs+vm3RWwcOh7IlmBYPE=";
   };
 
-  cargoSha256 = "7zqr54H6GemiM/xuHOH6+s669IG2orj1neoqAH+wnV4=";
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
 
   buildInputs = [ fontconfig harfbuzz openssl ]
     ++ stdenv.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ ApplicationServices Cocoa Foundation ]);
