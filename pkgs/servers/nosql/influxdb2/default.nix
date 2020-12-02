@@ -7,6 +7,7 @@
 , mkYarnPackage
 , pkg-config
 , rustPlatform
+, importCargo
 }:
 
 # Note for maintainers: use ./update-influxdb2.sh to update the Yarn
@@ -55,8 +56,7 @@ let
       sha256 = "07jz2nw3zswg9f4p5sb5r4hpg3n4qibjcgs9sk9csns70h5rp9j3";
     };
     sourceRoot = "source/libflux";
-    cargoSha256 = "0y5xjkqpaxp9qq1qj39zw3mnvkbbb9g4fa5cli77nhfwz288xx6h";
-    nativeBuildInputs = [ llvmPackages.libclang ];
+    nativeBuildInputs = [ llvmPackages.libclang (importCargo ./flux-Cargo.lock) ];
     LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
     pkgcfg = ''
       Name: flux
@@ -99,7 +99,7 @@ in buildGoModule {
   vendorSha256 = "0lviz7l5zbghyfkp0lvlv8ykpak5hhkfal8d7xwvpsm8q3sghc8a";
   subPackages = [ "cmd/influxd" "cmd/influx" ];
 
-  PKG_CONFIG_PATH = "${flux}/pkgconfig";
+  PKG_CONFIG_PATH = "${builtins.trace flux.src.outPath flux}/pkgconfig";
   # We have to run a bunch of go:generate commands to embed the UI
   # assets into the source code. Ideally we'd run `make generate`, but
   # that ends up running a ton of non-hermetic stuff. Instead, we find
