@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, importCargo, fetchFromGitHub }:
 rustPlatform.buildRustPackage rec {
   pname = "cargo-about";
   version = "0.2.3";
@@ -10,7 +10,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1jdp5ksxm4rsqhirgl5zwpiahrz2lx046pkvf6xvr6ms70l2xiwj";
   };
 
-  cargoSha256 = "07bjxsg5kgx8dg3wf6mvi5460db206l68irqc21hz10plz5llmnr";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Cargo plugin to generate list of all licenses for a crate";
