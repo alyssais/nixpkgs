@@ -46,12 +46,11 @@
 , buildAndTestSubdir ? null
 , ... } @ args:
 
-assert cargoVendorDir == null -> cargoSha256 != "unset";
 assert buildType == "release" || buildType == "debug";
 
 let
 
-  cargoDeps = if cargoVendorDir == null
+  cargoDeps = if cargoSha256 != "unset"
     then fetchCargoTarball ({
         inherit name src srcs sourceRoot unpackPhase cargoUpdateHook;
         patches = cargoPatches;
@@ -124,7 +123,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
   PKG_CONFIG_ALLOW_CROSS =
     if stdenv.buildPlatform != stdenv.hostPlatform then 1 else 0;
 
-  postUnpack = ''
+  postUnpack = stdenv.lib.optionalString (cargoSha256 != "unset" || cargoVendorDir != null) ''
     eval "$cargoDepsHook"
 
     ${setupVendorDir}
@@ -150,6 +149,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
     ''}
     EOF
 
+  '' + ''
     export RUST_LOG=${logLevel}
   '' + (args.postUnpack or "");
 

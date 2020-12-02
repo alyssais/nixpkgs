@@ -9981,6 +9981,8 @@ in
 
   makeRustPlatform = callPackage ../development/compilers/rust/make-rust-platform.nix {};
 
+  importCargo = callPackage ../build-support/rust/import-cargo.nix { };
+
   buildRustCrate = callPackage ../build-support/rust/build-rust-crate { };
   buildRustCrateHelpers = callPackage ../build-support/rust/build-rust-crate/helpers.nix { };
   buildRustCrateTests = recurseIntoAttrs (callPackage ../build-support/rust/build-rust-crate/test { });
