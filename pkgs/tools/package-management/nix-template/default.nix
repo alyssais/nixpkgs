@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, importCargo, fetchFromGitHub }:
 
 rustPlatform.buildRustPackage rec {
   pname = "nix-template";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1h6xdvhzg7nb0s82b3r5bsh8bfdb1l5sm7fa24lfwd396xp9yyig";
   };
 
-  cargoSha256 = "13y3b60xnry71999kygvkr29gkyjss3ga3rzb43ajah4qp90rsqs";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Make creating nix expressions easy";
