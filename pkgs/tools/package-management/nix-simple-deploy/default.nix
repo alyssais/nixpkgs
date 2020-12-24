@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "nix-simple-deploy";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "12g0sbgs2dfnk0agp1kagfi1yhk26ga98zygxxrjhjxrqb2n5w80";
   };
 
-  cargoSha256 = "0svnz9r0lrmz333qpbpdddjd46vh9i74qchws8aifa2qwnqy0kmn";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "Deploy software or an entire NixOS system configuration to another NixOS system";
