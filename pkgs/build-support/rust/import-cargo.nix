@@ -85,11 +85,12 @@ let
                   | select(.name == $name and .version == $version)
                   | .manifest_path')"
       vendored="$out/vendor/$crateName-$crateVersion"
-      cargo package --no-verify --manifest-path "$manifestPath"
       mkdir "$vendored"
-      tar -C "$vendored" -xf target/package/*.crate --strip-components 1
+      cargo package -l --frozen --no-verify --manifest-path "$manifestPath" |
+          grep -Ev '^Cargo\.(lock|toml\.orig)$' |
+          xargs tar -c |
+          tar -C "$vendored" -x
       popd >/dev/null
-      mv "$vendored/Cargo.toml.orig" "$vendored/Cargo.toml"
       echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
     '') (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
   '';
