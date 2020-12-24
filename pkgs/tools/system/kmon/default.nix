@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform, python3, libxcb }:
+{ lib, fetchFromGitHub, rustPlatform, python3, importCargo, libxcb }:
 
 rustPlatform.buildRustPackage rec {
   pname = "kmon";
@@ -11,9 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0j6w4rg2gybcy1cv812qixravy0z0xpp33snrng11q802zq3mkmq";
   };
 
-  cargoSha256 = "0x5s3yi5bv3h1k54lrgcvkpdkmfphvwhnrmk5lmk6xd9pxfh218p";
-
-  nativeBuildInputs = [ python3 ];
+  nativeBuildInputs = [ python3 (importCargo ./Cargo.lock) ];
 
   buildInputs = [ libxcb ];
 
