@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, IOKit }:
+{ stdenv, rustPlatform, importCargo, fetchFromGitHub, IOKit }:
 
 rustPlatform.buildRustPackage rec {
   pname = "zenith";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1cxmgpq07q6vfasnkx3grpx1y0f0dg6irb9kdn17nwrypy44l92d";
   };
 
-  cargoSha256 = "1kgjj11fwvlk700yp9046b3kiq9ay47fiwqpqfhmlbxw3lsh8qvq";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ IOKit ];
 
   meta = with stdenv.lib; {

@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/bvaisvil/sysinfo.git'
+rev = 'e887cc824ce0c2624481c4c39ac23092944a0f3c'
+sha256 = '0kl0zivsalpyp2424i1rgxhz6zc4grq8l2ywvimjh07f40s3iy8v'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
