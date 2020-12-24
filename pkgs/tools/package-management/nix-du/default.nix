@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, nix, boost, graphviz, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, nix, boost, graphviz, darwin
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "nix-du";
@@ -11,11 +13,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0h8ya0nn65hbyi3ssmrjarfxadx2sa61sspjlrln8knk7ppxk3mq";
   };
 
-  cargoSha256 = "0d86bn6myr29bwrzw3ihnzg1yij673s80bm1l8srk2k2szyfwwh5";
-
   doCheck = true;
   checkInputs = [ nix graphviz ];
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = [
     boost
     nix
