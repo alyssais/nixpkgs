@@ -1,0 +1,24 @@
+[[git]]
+url = 'https://github.com/SergioBenitez/Devise.git'
+rev = 'e58b3ac9afc3b6ff10a8aaf02a3e768a8f530089'
+sha256 = '0li9n5pviky3i4sb4h7p78vydgbx1nl3hrlynf42n5mvl8wc9fbj'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/SergioBenitez/Rocket'
+rev = '1010f6a2a88fac899dec0cd2f642156908038a53'
+sha256 = '1ml5sin194b9fxvj050fffar8f3cxvf8zrypc0ywryj0jcv1axps'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/servo/rust-url'
+rev = '7f1bd6ce1c2fde599a757302a843a60e714c5f72'
+sha256 = '1f9sskxzns952icf9wxagimzi5ikdrawr8az8xxvv3kfxkm2y2lf'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+

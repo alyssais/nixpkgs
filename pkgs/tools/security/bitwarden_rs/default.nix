@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, nixosTests
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, nixosTests
 , pkgconfig, openssl
 , Security, CoreServices
 , dbBackend ? "sqlite", libmysqlclient, postgresql }:
@@ -17,7 +17,7 @@ in rustPlatform.buildRustPackage rec {
     sha256 = "0hi29vy23a5r23pgzdssd2gvim8vw2vmykck5cl5phq11a3az31p";
   };
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
   buildInputs = with stdenv.lib; [ openssl ]
     ++ optionals stdenv.isDarwin [ Security CoreServices ]
     ++ optional (dbBackend == "mysql") libmysqlclient
@@ -25,7 +25,6 @@ in rustPlatform.buildRustPackage rec {
 
   RUSTC_BOOTSTRAP = 1;
 
-  cargoSha256 = "0hv3k5l85nz4syzamranhi237fiwkjnda8v5ssnm2nsmcm7ih9k8";
   cargoBuildFlags = [ featuresFlag ];
 
   checkPhase = ''
