@@ -19,10 +19,11 @@ let
   cratesIODeps = filter (c: c ? source) cargoLock.package;
 
   splitGitSource = source:
-    let matches = match "git\\+([^?]*)\\?rev=(.*)#(.*)" source; in {
+    let matches = match "git\\+([^?]*)\\?(rev|branch)=(.*)#(.*)" source; in {
       url = elemAt matches 0;
-      ref = elemAt matches 1;
-      rev = elemAt matches 2;
+      refType = elemAt matches 1;
+      ref = elemAt matches 2;
+      rev = elemAt matches 3;
     };
 
   gitDeps = let path' = dirOf path + "/Cargo-git.lock"; in
@@ -31,12 +32,12 @@ let
   gitDep = { source, ... }: let s = splitGitSource source; in
     head (filter (d: d.url == s.url && d.rev == s.rev) gitDeps);
 
-  refForURL = url:
+  gitSourceForURL = url:
     let
       hasGitSource = { source, ... }: hasPrefix "git+${url}?" source;
       package = head (filter hasGitSource cratesIODeps);
     in
-      (splitGitSource package.source).ref;
+      splitGitSource package.source;
 
   # Create a directory that symlinks all the crate sources and
   # contains a cargo configuration file that redirects to those
@@ -53,7 +54,7 @@ let
 
     [source."${url}"]
     git = "${url}"
-    rev = "${refForURL url}"
+    ${with gitSourceForURL url; ''${refType} = "${ref}"''}
     replace-with = "vendored-sources"
     '') gitDeps}
     [source.vendored-sources]
