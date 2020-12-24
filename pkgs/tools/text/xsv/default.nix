@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "xsv";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "17v1nw36mrarrd5yv4xd3mpc1d7lvhd5786mqkzyyraf78pjg045";
   };
 
-  cargoSha256 = "1q59nvklh5r2mrsz656z6js3j2l6rqyhfz6l0yq28df5kyahk91b";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   meta = with stdenv.lib; {
