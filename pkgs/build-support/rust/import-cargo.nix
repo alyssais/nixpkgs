@@ -1,11 +1,14 @@
-{ lib, fetchurl, runCommand, writeScript, makeSetupHook }:
+{ lib, fetchurl, fetchgit, runCommand, writeScript, makeSetupHook
+, cargo, jq
+}:
 
 path:
 
 let
-  inherit (builtins) filter;
-  inherit (lib) importTOML concatMapStrings;
-  
+  inherit (builtins) dirOf elemAt filter head match pathExists;
+  inherit (lib) concatMapStrings escapeShellArg hasPrefix importTOML last
+    optionals;
+
   fetchCrate = { name, version, checksum, ... }: fetchurl {
     name = "${name}-${version}";
     url = "https://crates.io/api/v1/crates/${name}/${version}/download";
@@ -15,23 +18,74 @@ let
   cargoLock = importTOML path;
   cratesIODeps = filter (c: c ? source) cargoLock.package;
 
+  splitGitSource = source:
+    let matches = match "git\\+([^?]*)\\?rev=(.*)#(.*)" source; in {
+      url = elemAt matches 0;
+      ref = elemAt matches 1;
+      rev = elemAt matches 2;
+    };
+
+  gitDeps = let path' = dirOf path + "/Cargo-git.lock"; in
+            optionals (pathExists path') (importTOML path').git;
+
+  gitDep = { source, ... }: let s = splitGitSource source; in
+    head (filter (d: d.url == s.url && d.rev == s.rev) gitDeps);
+
+  refForURL = url:
+    let
+      hasGitSource = { source, ... }: hasPrefix "git+${url}?" source;
+      package = head (filter hasGitSource cratesIODeps);
+    in
+      (splitGitSource package.source).ref;
+
   # Create a directory that symlinks all the crate sources and
   # contains a cargo configuration file that redirects to those
   # sources.
-  vendorDir = runCommand "cargo-vendor-dir" {} ''
+  vendorDir = runCommand "cargo-vendor-dir" {
+    nativeBuildInputs = [ cargo jq ];
+  } ''
     mkdir -p $out/vendor
-    ${concatMapStrings ({ name, version, checksum, ... } @ crate: ''
-      tar -C $out/vendor -xf ${fetchCrate crate}
-      echo '{"files":{},"package":"${checksum}"}' \
-          >$out/vendor/${name}-${version}/.cargo-checksum.json
-    '') cratesIODeps}
 
     cat >$out/vendor/config <<EOF
     [source.crates-io]
     replace-with = "vendored-sources"
+    ${concatMapStrings ({ url, ... }: ''
+
+    [source."${url}"]
+    git = "${url}"
+    rev = "${refForURL url}"
+    replace-with = "vendored-sources"
+    '') gitDeps}
     [source.vendored-sources]
     directory = "vendor"
     EOF
+
+    ${concatMapStrings ({ name, version, checksum, ... } @ crate: ''
+      vendored="$out/vendor"/${escapeShellArg "${name}-${version}"}
+      tar -C $out/vendor -xf ${fetchCrate crate}
+      echo '{"files":{},"package":"${checksum}"}' \
+          >"$vendored/.cargo-checksum.json"
+    '') (filter ({ source, ... }: hasPrefix "registry+" source) cratesIODeps)}
+
+    ${concatMapStrings ({ name, version, ... } @ crate: let dep = gitDep crate; in ''
+      crateName=${escapeShellArg name}
+      crateVersion=${escapeShellArg version}
+      dir="$(mktemp -d)"
+      cp -r --no-preserve=mode ${fetchgit dep} "$dir"
+      pushd "$dir"/* >/dev/null
+      manifestPath="$(cargo metadata --format-version 1 --no-deps |
+          jq -r --arg name "$crateName" --arg version "$crateVersion" \
+              '.packages[]
+                  | select(.name == $name and .version == $version)
+                  | .manifest_path')"
+      vendored="$out/vendor/$crateName-$crateVersion"
+      cargo package --no-verify --manifest-path "$manifestPath"
+      mkdir "$vendored"
+      tar -C "$vendored" -xf target/package/*.crate --strip-components 1
+      popd >/dev/null
+      mv "$vendored/Cargo.toml.orig" "$vendored/Cargo.toml"
+      echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
+    '') (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
   '';
 
 in

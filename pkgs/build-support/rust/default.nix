@@ -123,7 +123,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
   PKG_CONFIG_ALLOW_CROSS =
     if stdenv.buildPlatform != stdenv.hostPlatform then 1 else 0;
 
-  postUnpack = stdenv.lib.optionalString (cargoSha256 != "unset" || cargoVendorDir != null) ''
+  postUnpack = (if cargoSha256 != "unset" || cargoVendorDir != null then ''
     eval "$cargoDepsHook"
 
     ${setupVendorDir}
@@ -137,6 +137,9 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
       --subst-var-by vendor "$(pwd)/$cargoDepsCopy"
 
     cat >> .cargo/config <<'EOF'
+  '' else ''
+    cat >> $CARGO_HOME/config <<'EOF'
+  '') + ''
     [target."${rust.toRustTarget stdenv.buildPlatform}"]
     "linker" = "${ccForBuild}"
     ${stdenv.lib.optionalString (stdenv.buildPlatform.config != stdenv.hostPlatform.config) ''
@@ -149,7 +152,6 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
     ''}
     EOF
 
-  '' + ''
     export RUST_LOG=${logLevel}
   '' + (args.postUnpack or "");
 
