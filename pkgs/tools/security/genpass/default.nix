@@ -1,6 +1,7 @@
 { stdenv
 , fetchgit
 , rustPlatform
+, importCargo
 , CoreFoundation
 , libiconv
 , Security
@@ -15,8 +16,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1dpv2iyd48xd8yw9bmymjjrkhsgmpwvsl5b9zx3lpaaq59ypi9g9";
   };
 
-  cargoSha256 = "1cwxpc3xkw673wiamr4v7clrzwxl8ma1vdr6bw0hixm37gxdxz7x";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ CoreFoundation libiconv Security ];
 
   meta = with stdenv.lib; {
