@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/White-Oak/qml-rust'
+rev = '3316f54e29331ac951b5cf083179bb71add002e2'
+sha256 = '1rqva9j5kpgk72gf3a427ghifyspjhidg9zbqpsp3i7q8hk7idn9'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
