@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, installShellFiles, python3, libxcb, AppKit }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, installShellFiles
+, python3, libxcb, AppKit
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "kbs2";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0n83d4zvy74rn38fqq84lm58l24c3r87m2di2sw4cdr1hkjg3nbl";
   };
 
-  cargoSha256 = "0kafyljn3b87k5m0wdii0gfa4wj1yfys8jqx79inj82m0w1khprk";
-
-  nativeBuildInputs = [ installShellFiles ]
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ]
     ++ stdenv.lib.optionals stdenv.isLinux [ python3 ];
 
   buildInputs = [ ]
