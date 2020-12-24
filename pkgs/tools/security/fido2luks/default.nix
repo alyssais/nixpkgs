@@ -1,5 +1,6 @@
 { stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , cryptsetup
 , pkg-config
@@ -19,13 +20,11 @@ rustPlatform.buildRustPackage rec {
   };
 
   buildInputs = [ cryptsetup ];
-  nativeBuildInputs = [ pkg-config clang ];
+  nativeBuildInputs = [ pkg-config clang (importCargo ./Cargo.lock) ];
 
   configurePhase = ''
     export LIBCLANG_PATH="${llvmPackages.libclang}/lib"
   '';
-
-  cargoSha256 = "19drjql13z8bw257z10kjppxm25jlfgrpc9g1jf68ka5j2b3nx7k";
 
   meta = with stdenv.lib; {
     description = "Decrypt your LUKS partition using a FIDO2 compatible authenticator";
