@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, nmap, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, nmap, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "rustscan";
@@ -11,13 +11,12 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0fdbsz1v7bb5dm3zqjs1qf73lb1m4qzkqyb3h3hbyrp9vklgxsgw";
   };
 
-  cargoSha256 = "039xarscwqndpyrr3sgzkhqna3c908zh06id8x2qaykm8l248zs9";
-
   postPatch = ''
     substituteInPlace src/main.rs \
       --replace 'Command::new("nmap")' 'Command::new("${nmap}/bin/nmap")'
   '';
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   checkFlags = [
