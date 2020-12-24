@@ -9,6 +9,7 @@
 , cargo
 , rustc
 , rustPlatform
+, importCargo
 , pkg-config
 , glib
 , openssl
@@ -32,8 +33,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-br5GRzWprQTixNrE0WpNIB7Ayj5oEfyCg5JY4MnX5rA=";
   };
 
-  cargoSha256 = "sha256-SpCdoLCtvU9jpG/ivB/+4KhRdKZxN3/+7P/RlR6n9/c=";
-
   nativeBuildInputs = [
     pkg-config
     cargo
@@ -43,6 +42,7 @@ rustPlatform.buildRustPackage rec {
     llvmPackages_10.clang
     ensureNewerSourcesForZipFilesHook
     capnproto
+    (importCargo ./Cargo.lock)
   ] ++
     lib.optionals pythonSupport [ pythonPackages.setuptools ]
   ;
