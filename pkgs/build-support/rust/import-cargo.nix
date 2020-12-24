@@ -7,7 +7,7 @@ path:
 let
   inherit (builtins) dirOf elemAt filter head match pathExists;
   inherit (lib) concatMapStrings escapeShellArg hasPrefix importTOML last
-    optionals;
+    optionalString optionals;
 
   fetchCrate = { name, version, checksum, ... }: fetchurl {
     name = "${name}-${version}";
@@ -19,11 +19,11 @@ let
   cratesIODeps = filter (c: c ? source) cargoLock.package;
 
   splitGitSource = source:
-    let matches = match "git\\+([^?]*)\\?(rev|branch)=(.*)#(.*)" source; in {
+    let matches = match "git\\+([^?]*)(\\?(rev|branch)=(.*))?#(.*)" source; in {
       url = elemAt matches 0;
-      refType = elemAt matches 1;
-      ref = elemAt matches 2;
-      rev = elemAt matches 3;
+      refType = elemAt matches 2;
+      ref = elemAt matches 3;
+      rev = elemAt matches 4;
     };
 
   gitDeps = let path' = dirOf path + "/Cargo-git.lock"; in
@@ -34,10 +34,14 @@ let
 
   gitSourceForURL = url:
     let
-      hasGitSource = { source, ... }: hasPrefix "git+${url}?" source;
+      hasGitSource = { source, ... }:
+        hasPrefix "git+${url}?" source || hasPrefix "git+${url}#" source;
       package = head (filter hasGitSource cratesIODeps);
     in
       splitGitSource package.source;
+
+  oldFormatChecksumFor = { name, version, source, ... }:
+    cargoLock.metadata."checksum ${name} ${version} (${source})";
 
   # Create a directory that symlinks all the crate sources and
   # contains a cargo configuration file that redirects to those
@@ -54,16 +58,17 @@ let
 
     [source."${url}"]
     git = "${url}"
-    ${with gitSourceForURL url; ''${refType} = "${ref}"''}
+    ${with gitSourceForURL url;
+      optionalString (refType != null) ''${refType} = "${ref}"''}
     replace-with = "vendored-sources"
     '') gitDeps}
     [source.vendored-sources]
     directory = "vendor"
     EOF
 
-    ${concatMapStrings ({ name, version, checksum, ... } @ crate: ''
+    ${concatMapStrings ({ name, version, checksum ? oldFormatChecksumFor crate, ... } @ crate: ''
       vendored="$out/vendor"/${escapeShellArg "${name}-${version}"}
-      tar -C $out/vendor -xf ${fetchCrate crate}
+      tar -C $out/vendor -xf ${fetchCrate (crate // { inherit checksum; })}
       echo '{"files":{},"package":"${checksum}"}' \
           >"$vendored/.cargo-checksum.json"
     '') (filter ({ source, ... }: hasPrefix "registry+" source) cratesIODeps)}
