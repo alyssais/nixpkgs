@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, installShellFiles, darwin }:
+{ stdenv, rustPlatform, fetchFromGitHub, installShellFiles, importCargo
+, darwin
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "rage";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-XSDfAsXfwSoe5JMdJtZlC324Sra+4fVJhE3/k2TthEc=";
   };
 
-  cargoSha256 = "sha256-GPr5zxeODAjD+ynp/nned9gZUiReYcdzosuEbLIKZSs=";
-
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
 
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
