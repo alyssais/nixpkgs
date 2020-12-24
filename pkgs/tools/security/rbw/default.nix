@@ -2,6 +2,7 @@
 , stdenv
 , rustPlatform
 , fetchCrate
+, importCargo
 , pinentry
 , openssl
 , pkgconfig
@@ -28,11 +29,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0p37kwkp153mkns4bh7k7gnksk6c31214wlw3faf42daav32mmgw";
   };
 
-  cargoSha256 = "1vkgh0995xx0hr96mnzmdgd15gs6da7ynywqcjgcw5kr48bf1063";
-
   nativeBuildInputs = [
     pkgconfig
     makeWrapper
+    (importCargo ./Cargo.lock)
   ];
 
   buildInputs = lib.optionals stdenv.isDarwin [ Security ];
