@@ -1,6 +1,7 @@
 { stdenv
 , fetchgit
 , rustPlatform
+, importCargo
 , unzip
 , rsync
 , innoextract
@@ -19,11 +20,8 @@ rustPlatform.buildRustPackage rec {
     rev = version;
     sha256 = "1sl3yhash1527amc8rs4374fd7jbgnkyy7qpw94ms2gs80sdv3s5";
   };
-  cargoPatches = [ ./cargo-lock.patch ];
 
-  cargoSha256 = "sha256:1nd5qla3p1jrssg5fqal8m3jcbxax0wsfc8cp97jdrpqlcgqfmrx";
-
-  nativeBuildInputs = [ cmake pkgconfig ];
+  nativeBuildInputs = [ cmake pkgconfig (importCargo ./Cargo.lock) ];
   buildInputs = [ openssl ];
 
   meta = with stdenv.lib; {
