@@ -15,6 +15,5 @@ do
 
     src="$(nix-build --no-out-link -A "$attr.src")"
 
-src="$(nix-build --no-out-link -A "$attr.src")"
-
-cp -v "$src/Cargo.lock" "$path"
+    cp -v --no-preserve=mode "$src/Cargo.lock" "$path"
+done
