@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/alexcrichton/raytracer'
+rev = '42faa13859f7d8d47fd18be785c108003a207786'
+sha256 = '03dj6ffmqzq28hdsxym3h36cp7lvkf8c0ssclnw857gf21sad9wk'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
