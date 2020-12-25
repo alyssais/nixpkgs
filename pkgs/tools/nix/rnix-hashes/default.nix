@@ -1,4 +1,5 @@
-{ lib, rustPlatform, fetchFromGitHub, fetchpatch }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
+
 rustPlatform.buildRustPackage rec {
   pname = "rnix-hashes";
   version = "0.2.0";
@@ -10,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "SzHyG5cEjaaPjTkn8puht6snjHMl8DtorOGDjxakJfA=";
   };
 
-  cargoSha256 = "vaG+0t+XAckV9F4iIgcTkbIUurxdQsTCfOnRnrOKoRc=";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Nix Hash Converter";
