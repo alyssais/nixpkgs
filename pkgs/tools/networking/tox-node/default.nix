@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
 , libsodium, openssl
 , pkgconfig
 }:
@@ -17,7 +17,7 @@ buildRustPackage rec {
   };
 
   buildInputs = [ libsodium openssl ];
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
 
   SODIUM_USE_PKG_CONFIG = "yes";
 
@@ -30,8 +30,6 @@ buildRustPackage rec {
   '';
 
   doCheck = false;
-
-  cargoSha256 = "087ccb824hmmxmnn5c2bzww2q888a8zy6y7rwgsdfr8rbay2c909";
 
   meta = with stdenv.lib; {
     description = "A server application to run tox node written in pure Rust";
