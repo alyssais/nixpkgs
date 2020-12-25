@@ -2,6 +2,7 @@
 , lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , rust
 , Security
 }:
@@ -17,9 +18,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1hs96yv0awgi7ggpxp7k3n21jpv642sm0529b21hs9ib6kp4vs8s";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = lib.optionals stdenv.isDarwin [ Security ];
-
-  cargoSha256 = "1vqnnqn6rzkdi239bh3lk7gaxr7w6v3c4ws4ya1ah04g6v9hkzlw";
 
   checkType = "debug";
 
