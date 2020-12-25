@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , asciidoctor
 , installShellFiles
 , Security
@@ -19,11 +20,11 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1hqps7l5qrjh9f914r5i6kmcz6f1yb951nv4lby0cjnp5l253kps";
   };
 
-  cargoSha256 = "03wf9r2csi6jpa7v5sw5lpxkrk4wfzwmzx7k3991q3bdjzcwnnwp";
-
   cargoBuildFlags = stdenv.lib.optional withPCRE2 "--features pcre2";
 
-  nativeBuildInputs = [ asciidoctor installShellFiles ];
+  nativeBuildInputs = [
+    asciidoctor installShellFiles (importCargo ./Cargo.lock)
+  ];
   buildInputs = (stdenv.lib.optional withPCRE2 pcre2)
   ++ (stdenv.lib.optional stdenv.isDarwin Security);
 
