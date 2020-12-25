@@ -1,4 +1,5 @@
-{ lib, rustPlatform, fetchFromGitHub, fetchpatch }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
+
 rustPlatform.buildRustPackage rec {
   pname = "nixpkgs-fmt";
   version = "1.0.0";
@@ -10,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0w1himwix7iv40rixj9afknwmqg2qmkif23z217gc7x63zyg9vdc";
   };
 
-  cargoSha256 = "1qzhii72hjdxmgfncvyk80ybvk6zywd6v73bb1ibhnry734grzvw";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Nix code formatter for nixpkgs";
