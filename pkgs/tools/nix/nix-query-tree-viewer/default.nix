@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, glib, gtk3, wrapGAppsHook }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, glib, gtk3, wrapGAppsHook
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "nix-query-tree-viewer";
@@ -13,14 +15,13 @@ rustPlatform.buildRustPackage rec {
 
   nativeBuildInputs = [
     wrapGAppsHook
+    (importCargo ./Cargo.lock)
   ];
 
   buildInputs = [
     glib
     gtk3
   ];
-
-  cargoSha256 = "1pbyi7knqmqxbpi3jhl492is9zkaxdpdnmbm11nqwc1nvvbjblzc";
 
   meta = with stdenv.lib; {
     description = "GTK viewer for the output of `nix store --query --tree`";
