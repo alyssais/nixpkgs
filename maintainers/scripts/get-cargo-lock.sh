@@ -8,8 +8,10 @@ then
     exit 69 # EX_USAGE
 fi
 
-attr="$1"
-shift
+for attr
+do
+    position="$(nix-instantiate --eval --json -A "$attr.meta.position" | jq -r .)"
+    path="$(dirname "$position")/Cargo.lock"
 
 position="$(nix-instantiate --eval --json -A "$attr.meta.position" | jq -r .)"
 path="$(dirname "$position")/Cargo.lock"
