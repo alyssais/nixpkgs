@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "rshijack";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0y01hi3jpfawqlqs8ka0vwfhjw5j5gkhk2nz5m13ns2h27bw20v7";
   };
 
-  cargoSha256 = "0l1kavacnjvi22l6pawgkqqxnjaizi3pddqkhwjshw4pzzixzvli";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "TCP connection hijacker";
