@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   name = "tdns-cli";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0nn036in5j1h0vxkwif0lf7fn900zy4f4kxlzy6qdx3jakgmxvwh";
   };
 
-  cargoSha256 = "0v1hx6kjsmydx6ckjqj31y2gcpvax4mshwrniicplkka3q6hx9ra";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "DNS tool that aims to replace dig and nsupdate";
