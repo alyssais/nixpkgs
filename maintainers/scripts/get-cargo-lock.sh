@@ -13,8 +13,7 @@ do
     position="$(nix-instantiate --eval --json -A "$attr.meta.position" | jq -r .)"
     path="$(dirname "$position")/Cargo.lock"
 
-position="$(nix-instantiate --eval --json -A "$attr.meta.position" | jq -r .)"
-path="$(dirname "$position")/Cargo.lock"
+    src="$(nix-build --no-out-link -A "$attr.src")"
 
 src="$(nix-build --no-out-link -A "$attr.src")"
 
