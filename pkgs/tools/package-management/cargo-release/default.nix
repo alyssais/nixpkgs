@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, libiconv, Security, openssl, pkg-config }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, libiconv, Security, openssl, pkg-config
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-release";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "16v93k8d1aq0as4ab1i972bjw410k07gb3s6xdzb1r019gxg2i2h";
   };
 
-  cargoSha256 = "1jbp8jbpxnchzinjzv36crszdipxp1myknmrxn7r0ijfjdpigk9r";
-
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config (importCargo ./Cargo.lock) ];
   buildInputs = [ openssl ]
   ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
 
