@@ -2,7 +2,8 @@
 #! nix-shell -i sh -p jq
 set -ue
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -eq 0 ]
+then
     echo "Usage: $0 attr" >&2
     exit 69 # EX_USAGE
 fi
