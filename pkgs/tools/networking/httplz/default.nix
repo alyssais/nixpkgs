@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, makeWrapper, rustPlatform
+{ stdenv, lib, fetchFromGitHub, makeWrapper, rustPlatform, importCargo
 , openssl, pkgconfig, darwin, libiconv }:
 
 rustPlatform.buildRustPackage rec {
@@ -12,14 +12,12 @@ rustPlatform.buildRustPackage rec {
     sha256 = "154alxxclz78r29m656c8yahnzq0vd64s4sp19h0ca92dfw4s46y";
   };
 
-  nativeBuildInputs = [ makeWrapper pkgconfig ];
+  nativeBuildInputs = [ makeWrapper pkgconfig (importCargo ./Cargo.lock) ];
   buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [
     libiconv darwin.apple_sdk.frameworks.Security
   ];
 
   cargoBuildFlags = [ "--bin httplz" ];
-  cargoPatches = [ ./cargo-lock.patch ];
-  cargoSha256 = "1rpwzrr9bvw375vn97y5fqhraqz35d3ani9kfflvn2758x3g8gwf";
 
   postInstall = ''
     wrapProgram $out/bin/httplz \
