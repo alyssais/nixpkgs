@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "b3sum";
@@ -13,9 +13,7 @@ rustPlatform.buildRustPackage rec {
 
   sourceRoot = "source/b3sum";
 
-  cargoSha256 = "0n8hp83hw7g260vmf4qcicpca75faam7k0zmb0k4cdzsar96gdrr";
-
-  cargoPatches = [ ./cargo-lock.patch ];
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = {
     description = "BLAKE3 cryptographic hash function";
