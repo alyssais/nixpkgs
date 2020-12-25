@@ -191,6 +191,8 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
 
       exit 1
     fi
+  '' + stdenv.lib.optionalString (cargoSha256 == "unset" && cargoVendorDir == null) ''
+    cp -v $CARGO_HOME/Cargo.lock .
   '' + ''
     unset cargoDepsCopy
   '';

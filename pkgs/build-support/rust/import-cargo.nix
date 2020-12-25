@@ -50,6 +50,7 @@ let
     nativeBuildInputs = [ cargo jq ];
   } ''
     mkdir -p $out/vendor
+    cp ${path} $out/vendor/Cargo.lock
 
     cat >$out/vendor/config <<EOF
     [source.crates-io]
