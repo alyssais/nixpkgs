@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkg-config, openssl, libiconv, curl, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, pkg-config, openssl, libiconv, curl, darwin
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-outdated";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1dbhaaw1c3ww0s33r7z8kxks00f9gxv1ppcbmk2fbflhp7caf7fy";
   };
 
-  cargoSha256 = "0nlfn9g7hrzz72lya2p5qb8wwj66300d33hjhnw2ambpj4347rh4";
-
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config (importCargo ./Cargo.lock) ];
   buildInputs = [ openssl ]
   ++ stdenv.lib.optionals stdenv.isDarwin [
     darwin.apple_sdk.frameworks.Security
