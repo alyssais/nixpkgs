@@ -1,0 +1,16 @@
+[[git]]
+url = 'https://gitlab.com/jD91mZM2/arenatree'
+rev = 'f9bf7efa9a5ef4c2dd9e2acc5a4cc79a987cb648'
+sha256 = '1153ki8rnaiyb24a6vdsa3wywpdp97x92vyc2jik9cnni5nmaxbg'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.com/jD91mZM2/rnix.git'
+rev = '10b86c94291b4864470158ef8750de85ddd8d4ba'
+sha256 = '0c0i42sfwv6wm2zqjfaszf4y03ahm5d0dar3xj3jj0isg6lzylhb'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+

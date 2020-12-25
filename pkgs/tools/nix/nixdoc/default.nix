@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "nixdoc";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "14d4dq06jdqazxvv7fq5872zy0capxyb0fdkp8qg06gxl1iw201s";
   };
 
-  buildInputs =  stdenv.lib.optional stdenv.isDarwin [ darwin.Security ];
-
-  cargoSha256 = "1vamwynkbnffs8ryr2zb1a41cymjvr8zzh1bifyh9hpkx2k11rs3";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
+  buildInputs = stdenv.lib.optional stdenv.isDarwin [ darwin.Security ];
 
   meta = with stdenv.lib; {
     description = "Generate documentation for Nix functions";
