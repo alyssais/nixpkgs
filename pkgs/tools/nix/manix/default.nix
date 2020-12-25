@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "manix";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0fv3sgzwjsgq2h1177r8r1cl5zrfja4ll801sd0bzj3nzmkyww7p";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin [ darwin.Security ];
-
-  cargoSha256 = "0f2q3bj1cmpbma0fjhc2lc92j4al78fhrx3yc37kmbgzaza0yan5";
 
   meta = with stdenv.lib; {
     description = "A Fast Documentation Searcher for Nix";
