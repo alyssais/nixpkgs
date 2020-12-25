@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, openssl, pkgconfig, ronn, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, openssl, pkgconfig, ronn
+}:
 
 let
   blake3-src = fetchFromGitHub {
@@ -19,14 +21,12 @@ in rustPlatform.buildRustPackage rec {
     sha256 = "0w6khry1ncyqy5h6996xw1f6viw4wdrfji5m8lz9gm487xlq5v0b";
   };
 
-  cargoSha256 = "0d4fz0rhqy1n30wfl2pmf76zpp21agr3h0hswp3r5bfnxqp6i54h";
-
   # The BLAKE3 C library is intended to be built by the project depending on it
   # rather than as a standalone library.
   # https://github.com/BLAKE3-team/BLAKE3/blob/0.3.1/c/README.md#building
   BLAKE3_CSRC = "${blake3-src}/c";
 
-  nativeBuildInputs = [ ronn ];
+  nativeBuildInputs = [ ronn (importCargo ./Cargo.lock) ];
 
   postBuild = ''
     make -f nix/Makefile post-build
