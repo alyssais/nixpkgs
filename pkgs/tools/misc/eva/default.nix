@@ -1,10 +1,8 @@
-{ stdenv, fetchFromGitHub, rustPlatform, fetchpatch }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, fetchpatch }:
 
 rustPlatform.buildRustPackage rec {
   pname = "eva";
   version = "0.2.7";
-
-  cargoSha256 = "1lycjw5i169xx73qw8gknbakrxikdbr65fmqx7xq2mafc0hb1zyn";
 
   src = fetchFromGitHub {
     owner = "NerdyPepper";
@@ -12,8 +10,6 @@ rustPlatform.buildRustPackage rec {
     rev = "6ce0fc0212a34ffb647b24d9d903029ac4518165";
     sha256 = "10242vnq2ph0g3p2hdacs4lmx3f474xm04nadplxbpv9xh4nbag3";
   };
-
-  cargoPatches = [ ./Cargo.lock.patch ];
 
   patches = [
     # to fix the test suite (can be removed as soon as #33 is merged).
@@ -28,6 +24,8 @@ rustPlatform.buildRustPackage rec {
       sha256 = "003yxqlyi8jna0rf05q2a006r2pkz6pcwwfl3dv8zb6p83kk1kgj";
     })
   ];
+
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "A calculator REPL, similar to bc";
