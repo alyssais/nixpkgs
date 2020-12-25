@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 }:
 
@@ -15,7 +16,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0hqplgj3i8js42v2kj44khk543a93sk3n6wlfpv3c84pdqlm29br";
   };
 
-  cargoSha256 = "1dzm33cfriwgq4zvg6l6y76d5lp9hpcywdkwpl92qyjqg1hx8a1w";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   doCheck = false;
 
   meta = with lib; {
