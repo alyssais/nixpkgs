@@ -1,4 +1,5 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, importCargo, fetchFromGitHub }:
+
 rustPlatform.buildRustPackage rec {
   pname = "cargo-graph";
   version = "0.2.0-d895af1";
@@ -12,7 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0myg26cssmbakz53dl61lswsbaqnjqlbc30c2571pq8f7gvz2qv5";
   };
 
-  cargoSha256 = "0fzj88iy57c39yi8pf3agfmsf2dck06f0yqmlnsaxvvp4cknkw1n";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "A cargo subcommand for creating GraphViz DOT files and dependency graphs";
