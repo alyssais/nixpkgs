@@ -26,8 +26,6 @@ rustPlatform.buildRustPackage rec {
   ];
   buildInputs = [ openssl ] ++ stdenv.lib.optional stdenv.isDarwin Security;
 
-  cargoSha256 = "sha256-LoNm2/6/FgTKp95ETODY39D8Ou+9X+IXIy625YW9AFI=";
-
   checkInputs = [ ansi2html ];
   # Skip tests that use the network and that include files.
   checkFlags = [
