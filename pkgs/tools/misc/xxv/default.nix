@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform
+{ stdenv, lib, fetchFromGitHub, rustPlatform, importCargo
 , ncurses ? null
 , darwin ? null }:
 
@@ -17,8 +17,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0ppfsgdigza2jppbkg4qanjhlkpnq7p115c4471vc6vpikpfrlk3";
   };
 
-  cargoSha256 = "1gnyig87a0yqgkng52fpn6hv629vym6k7ydljnxrhb5phmj2qbqx";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = lib.optionals useNcurses [ ncurses ]
   ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security ])
   ;
