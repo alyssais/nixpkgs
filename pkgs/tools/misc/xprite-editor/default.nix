@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , gtk3
 , AppKit
 , pkg-config
@@ -27,9 +28,8 @@ rustPlatform.buildRustPackage rec {
   buildInputs = stdenv.lib.optionals stdenv.isLinux [ gtk3 ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ AppKit ];
 
-  nativeBuildInputs = stdenv.lib.optionals stdenv.isLinux [ pkg-config python3 ];
-
-  cargoSha256 = "1a0zy8gfc1gdk8nnv5qr4yspqy1jsip5nql3w74rl6h46cplpf5y";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isLinux [ pkg-config python3 ];
 
   cargoBuildFlags = [ "--bin" "xprite-native" ];
 
