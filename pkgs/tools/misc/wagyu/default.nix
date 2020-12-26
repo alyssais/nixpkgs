@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "wagyu";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1646j0lgg3hhznifvbkvr672p3yqlcavswijawaxq7n33ll8vmcn";
   };
 
-  cargoSha256 = "16d1b3pamkg29nq80n6cbzc4zl9z3cgfvdxjkr2z4xrnzmkn1ysi";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Rust library for generating cryptocurrency wallets";
