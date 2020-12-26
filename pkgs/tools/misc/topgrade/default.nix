@@ -1,4 +1,6 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform, Foundation, installShellFiles }:
+{ stdenv, lib, fetchFromGitHub, rustPlatform, importCargo, installShellFiles
+, Foundation
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "topgrade";
@@ -11,11 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "15ad30svvr775dxp5gwlq73xydsqwfpw650c3c3ma4jshw36w0x4";
   };
 
-  cargoSha256 = "0bwy2y44czhvckipvjn28j6ds1pnbj38i29hvlv4f782imfn92hz";
-
   buildInputs = lib.optional stdenv.isDarwin Foundation;
-
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     installManPage topgrade.8
