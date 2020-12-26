@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/llogiq/mutagen'
+rev = 'c7abc956a10e8a3e2cc71f21279ea0a42f7b7c10'
+sha256 = '0fjii2ac1phrlhq5xwbp9qjiiiz25wxv5b97xhbymdrxz080azfg'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+
