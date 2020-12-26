@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, installShellFiles }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, installShellFiles }:
 
 rustPlatform.buildRustPackage rec {
   pname = "tydra";
@@ -11,9 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1kvyski3qy2lwlpipynq894i0g9x2j4a1iy2mgdwfibfyfkv2jnm";
   };
 
-  cargoSha256 = "11l3fvym16wrrpm9vy4asmqdh8qynwjy0w4gx2bbcnc6300ag43a";
-
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     installManPage doc/{tydra.1,tydra-actions.5}
