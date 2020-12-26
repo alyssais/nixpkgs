@@ -1,4 +1,4 @@
-{ stdenv, git, fetchFromGitHub, rustPlatform }:
+{ stdenv, git, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "fac-build";
@@ -11,10 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1gifrlb31jy8633rnhny58ccp3wlmd338129c6sh0h1a38vkmsxk";
   };
 
-  # workaround for missing Cargo.lock file
-  cargoPatches = [ ./cargo-lock.patch ];
-
-  cargoSha256 = "0hjfq61y1ikdcajr2k514k7fad2zxbwq7yb5nk1wx38f1524709q";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   # fac includes a unit test called ls_files_works which assumes it's
   # running in a git repo. Nix's sandbox runs cargo build outside git,
