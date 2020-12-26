@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, CoreServices, installShellFiles }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, installShellFiles
+, CoreServices
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "watchexec";
@@ -11,10 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0m4hipjgg64572lzqy9hz4iq9c4awc93c9rmnpap5iyi855x7idj";
   };
 
-  cargoSha256 = "0035pqr61mdx699hd4f8hnxknvsdg67l6ys7gxym3fzd9dcmqqff";
-
-  nativeBuildInputs = [ installShellFiles ];
-
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ CoreServices ];
 
   postInstall = ''
