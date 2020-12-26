@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage {
   pname = "shell-hist";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage {
     sha256 = "0kc128xnnp1d56if70vfv0w3qnwhljhbnvzwwb7hfm3x2m0vqrqf";
   };
 
-  cargoSha256 = "0mfgax937na351qvi5n6s1ql9136djqiydzyfyax4684sp3kp613";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Inspect your shell history";
