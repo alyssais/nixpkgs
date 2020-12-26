@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, sqlite }: let
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, sqlite }: let
 
 manifest = {
   description = "Bukubrow extension host application";
@@ -18,8 +18,7 @@ in rustPlatform.buildRustPackage rec {
     sha256 = "1a3gqxj6d1shv3w0v9m8x2xr0bvcynchy778yqalxkc3x4vr0nbn";
   };
 
-  cargoSha256 = "1k6mffcs9g0z5lh8hpflyharx6653cs1f2rjpldab0fc5fjmjfza";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = [ sqlite ];
 
   passAsFile = [ "firefoxManifest" "chromeManifest" ];
