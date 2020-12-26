@@ -1,4 +1,6 @@
-{ rustPlatform, fetchFromGitLab, lib, makeWrapper, gst_all_1, libsixel }:
+{ rustPlatform, importCargo, fetchFromGitLab, lib, makeWrapper
+, gst_all_1, libsixel
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "termplay";
@@ -12,9 +14,8 @@ rustPlatform.buildRustPackage rec {
   };
 
   cargoBuildFlags = ["--features" "bin"];
-  cargoSha256 = "0nxm2k8dx6nxyghvpw44wqfd1n65947v2wqxxvy641hin4d7xzma";
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
   buildInputs = [
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
