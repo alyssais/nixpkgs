@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , pkgconfig
 , cmake
@@ -25,13 +26,11 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1ga632c86l30n6wjj8rc3gz43v93mb7kcl9f8vhig16ycgiw8v09";
   };
 
-  cargoSha256 = "0bgm29v9vmd1xcdazg1psrx6hb1z3zfzr1c4iy8j1r28csbmm6kq";
-
   buildInputs = [ llvmPackages.libclang expat freetype ]
     ++ lib.optionals stdenv.isLinux [ libxcb ]
     ++ lib.optionals stdenv.isDarwin [ AppKit CoreText Security ];
 
-  nativeBuildInputs = [ cmake pkgconfig ]
+  nativeBuildInputs = [ cmake pkgconfig (importCargo ./Cargo.lock) ]
     ++ lib.optionals stdenv.isLinux [ python3 ];
 
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
