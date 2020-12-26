@@ -1,4 +1,5 @@
-{ stdenv, lib, rustPlatform, fetchFromGitHub, openssl, pkgconfig, Security
+{ stdenv, lib, rustPlatform, fetchFromGitHub, importCargo
+, openssl, pkgconfig, Security
 , sqliteSupport ? true, sqlite
 , postgresqlSupport ? true, postgresql
 , mysqlSupport ? true, mysql, zlib, libiconv
@@ -36,11 +37,9 @@ rustPlatform.buildRustPackage rec {
   ];
 
   cargoBuildFlags = [ "--no-default-features --features \"${features}\"" ];
-  cargoPatches = [ ./cargo-lock.patch ];
-  cargoSha256 = "1vbb7r0dpmq8363i040bkhf279pz51c59kcq9v5qr34hs49ish8g";
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ openssl ]
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
     ++ optional stdenv.isDarwin Security
     ++ optional (stdenv.isDarwin && mysqlSupport) libiconv
     ++ optional sqliteSupport sqlite
