@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/tailhook/resolv-conf'
+rev = '83c0f25ebcb0615550488692c5213ca1ae4acd8f'
+sha256 = '12r0chfp16gr35yszxaim8fkq2x9fzcrga4p03v4gvmn2z74m60j'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+

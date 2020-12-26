@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security, fetchpatch }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "bandwhich";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "014blvrv0kk4gzga86mbk7gd5dl1szajfi972da3lrfznck1w24n";
   };
 
-  cargoSha256 = "0b5pqsdggdjq9sl54rmh2gaq31va6b2crdv7ihh3198ixwasaf02";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   meta = with stdenv.lib; {
