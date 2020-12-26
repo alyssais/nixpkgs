@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , pkg-config
 , openssl
 , installShellFiles
@@ -19,7 +20,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0vdfdwsaqrah0hgvr62qsww7s5znb1rg5kk068qpf06lmyc4gd8w";
   };
 
-  nativeBuildInputs = [ installShellFiles ] ++ stdenv.lib.optionals stdenv.isLinux [ pkg-config ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isLinux [ pkg-config ];
 
   buildInputs = stdenv.lib.optionals stdenv.isLinux [ openssl ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
@@ -30,8 +32,6 @@ rustPlatform.buildRustPackage rec {
       installShellCompletion starship.$shell
     done
   '';
-
-  cargoSha256 = "01brsckfa2zy1aqs9vjwrn4w416i8b621bvkhicanz9q56xlnd77";
 
   checkFlags = [
     "--skip=directory_in_home"
