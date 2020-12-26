@@ -1,4 +1,4 @@
-{ stdenv, fetchCrate, rustPlatform }:
+{ stdenv, fetchCrate, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "skim";
@@ -11,11 +11,11 @@ rustPlatform.buildRustPackage rec {
 
   outputs = [ "out" "vim" ];
 
-  cargoSha256 = "07bs23x2vxzlrca5swwq8khmd9fbdhlhm0avwp9y231df6xdi2ys";
-
   postPatch = ''
     sed -i -e "s|expand('<sfile>:h:h')|'$out'|" plugin/skim.vim
   '';
+
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     install -D -m 555 bin/sk-tmux -t $out/bin
