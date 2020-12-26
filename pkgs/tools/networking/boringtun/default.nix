@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "boringtun";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0b57c7z87xwrirmq9aa9jswqyj5bavkifmq7a9hgfphcmwcskmdb";
   };
 
-  cargoSha256 = "0bms93xg75b23ls2hb8dv26y4al4nr67pqcm57rp9d4rbsfafg8c";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.Security;
 
   # Testing this project requires sudo, Docker and network access, etc.
