@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 with rustPlatform;
 
@@ -12,9 +12,8 @@ buildRustPackage rec {
     rev = "v${version}";
     sha256 = "1a0ldmjkhyv5c52gcq8p8avkj0cgj1b367w6hm85bxdf5j4y8rra";
   };
-  cargoPatches = [ ./cargo-lock.patch ];
 
-  cargoSha256 = "0n0xc8b982ra007l6gygssf1n60gfc2rphwyi7n95dbys1chciyg";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   # doc tests fail due to missing dependency
   doCheck = false;
