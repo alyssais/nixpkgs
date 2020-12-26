@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "void";
@@ -11,10 +11,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "08vazw4rszqscjz988k89z28skyj3grm81bm5iwknxxagmrb20fz";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
+
   # The tests are long-running and not that useful
   doCheck = false;
-
-  cargoSha256 = "0fnkcjxcsiw9j0ibh4z7zy0m6r5d84q5hvr2darwpckbn9ryrh3k";
 
   meta = with stdenv.lib; {
     description = "Terminal-based personal organizer";
