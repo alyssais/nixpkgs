@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, installShellFiles, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, installShellFiles, importCargo
+, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "shadowenv";
@@ -11,10 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1h8hfyxxl4bpx8azzxj0snmzccn6xjd9vc2iyp8i2ar7aiyhf5yd";
   };
 
-  cargoSha256 = "1bjkwn57vm3in8lajhm7p9fjwyqhmkrb3fyq1k7lqjvrrh9jysb2";
-
-  nativeBuildInputs = [ installShellFiles ];
-
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security ];
 
   postInstall = ''
