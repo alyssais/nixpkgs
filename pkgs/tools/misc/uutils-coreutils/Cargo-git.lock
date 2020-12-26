@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/uutils/rust-users'
+rev = 'e64253f2b995e7f1a458c68a7eca66e0171d183a'
+sha256 = '1ai26mlvxsihazk5cnxlwrsd10k8mmvdi8cmmb0w0bymlwajqxd8'
+fetchSubmodules = false
+deepClone = false
+leaveDotGit = false
+

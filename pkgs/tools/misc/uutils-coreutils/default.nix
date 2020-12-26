@@ -1,4 +1,5 @@
-{ stdenv, fetchFromGitHub, rustPlatform, cargo, cmake, sphinx, lib, prefix ? "uutils-"
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, cargo, cmake, sphinx, lib, prefix ? "uutils-"
 , Security
 }:
 
@@ -14,13 +15,11 @@ rustPlatform.buildRustPackage {
   # too many impure/platform-dependent tests
   doCheck = false;
 
-  cargoSha256 = "186hwzdpy7j0gw7491qx02vy4di5md47hipf1xxi1qccvmcfghwh";
-
   makeFlags =
     [ "CARGO=${cargo}/bin/cargo" "PREFIX=$(out)" "PROFILE=release" "INSTALLDIR_MAN=$(out)/share/man/man1" ]
     ++ lib.optional (prefix != null) [ "PROG_PREFIX=${prefix}" ];
 
-  nativeBuildInputs = [ cmake cargo sphinx ];
+  nativeBuildInputs = [ cmake cargo sphinx (importCargo ./Cargo.lock) ];
   buildInputs = lib.optional stdenv.isDarwin Security;
 
   # empty {build,install}Phase to use defaults of `stdenv.mkDerivation` rather than rust defaults
