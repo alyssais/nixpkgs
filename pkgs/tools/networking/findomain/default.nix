@@ -2,6 +2,7 @@
 , lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , installShellFiles
 , perl
 , Security
@@ -18,9 +19,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0g0kw1b18kk9jhvw88hcxc04ccj8k22fdzky7l2dv3r37vndd91w";
   };
 
-  cargoSha256 = "0cmp4w86qnzd2b2w4s3w019857pxysgikkl1g7ldkiylrsm5vlpn";
-
-  nativeBuildInputs = [ installShellFiles perl ];
+  nativeBuildInputs = [ installShellFiles perl (importCargo ./Cargo.lock) ];
   buildInputs = lib.optional stdenv.isDarwin Security;
 
   postInstall = ''
