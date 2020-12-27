@@ -1,4 +1,4 @@
-{ stdenv, lib, darwin, fetchFromGitHub, rustPlatform }:
+{ stdenv, lib, darwin, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "kak-lsp";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0nka51szivwhlfkimjiyzj67nxh75m784c28ass6ihlfax631w9m";
   };
 
-  cargoSha256 = "174qy50m9487vv151vm8q6sby79dq3gbqjbz6h4326jwsc9wwi8c";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = lib.optional stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
   meta = with lib; {
