@@ -1,6 +1,7 @@
 { stdenv
 , rustPlatform
 , fetchCrate
+, importCargo
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -12,7 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-ubiVpKFU81Ot9V9oMexWSiUXHepoJ6nXtrWVAFhgcYw=";
   };
 
-  cargoSha256 = "109ij5h31bhn44l0wywgpnnlfjgyairxr5l19s6bz47sbka0xyxk";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "Create asciinema videos from a text file";
