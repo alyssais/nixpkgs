@@ -2,6 +2,7 @@
 , fetchFromGitHub
 , fetchpatch
 , rustPlatform
+, importCargo
 , darwin
 , libiconv
 }:
@@ -10,8 +11,6 @@ rustPlatform.buildRustPackage rec {
   pname = "grex";
   version = "1.1.0";
 
-  cargoSha256 = "0kf2n2j7kfrfzid1h2gd0qf53fah0hpyrrlh2k5vrhd0panv3bwc";
-
   src = fetchFromGitHub {
     owner = "pemistahl";
     repo = pname;
@@ -19,6 +18,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1viph7ki6f2akc5mpbgycacndmxnv088ybfji2bfdbi5jnpyavvs";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
   doInstallCheck = true;
