@@ -1,5 +1,6 @@
-{ fetchFromGitHub, rustPlatform, stdenv, fetchpatch
-, CoreFoundation, libiconv, libresolv, Security }:
+{ fetchFromGitHub, rustPlatform, importCargo, stdenv, fetchpatch
+, CoreFoundation, libiconv, libresolv, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "onefetch";
@@ -12,8 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0c56na9s3g7rdb4cc6ccsnfby2ihf5zrfs3lg9qxiqsfr7mcn4w9";
   };
 
-  cargoSha256 = "05rrww53g3k2c8mpxvyc067qsgs7w9sxnzdlvmca1idbqa0k9060";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = with stdenv;
     lib.optionals isDarwin [ CoreFoundation libiconv libresolv Security ];
 
