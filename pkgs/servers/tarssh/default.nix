@@ -1,4 +1,4 @@
-{ fetchFromGitHub, rustPlatform, stdenv }:
+{ fetchFromGitHub, rustPlatform, stdenv, importCargo }:
 
 with rustPlatform;
 
@@ -13,7 +13,7 @@ buildRustPackage rec {
     sha256 = "0fm0rwknhm39nhd6g0pnxby34i5gpmi5ri795d9ylsw0pqwz6kd0";
   };
 
-  cargoSha256 = "108xdpgfgfd4z455snif0mzbla0rv8gjqxci5qgwjzfyshwkprgv";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "A simple SSH tarpit inspired by endlessh";
