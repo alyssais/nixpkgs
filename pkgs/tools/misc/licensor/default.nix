@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub, fetchpatch }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo, fetchpatch }:
 
 rustPlatform.buildRustPackage rec {
   pname = "licensor";
@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0kfyg06wa2v7swm7hs9kkazjg34mircd4nm4qmljyzjh2yh8icg3";
   })];
 
-  cargoSha256 = "1z2r8nfizifj8sk1ghppyqk5r65sgmbk47fiq95pnwpadm5drvqa";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Write licenses to stdout";
