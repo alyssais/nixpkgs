@@ -47,7 +47,14 @@ let
   # contains a cargo configuration file that redirects to those
   # sources.
   vendorDir = runCommand "cargo-vendor-dir" {
-    nativeBuildInputs = [ cargo jq ];
+    nativeBuildInputs = [
+      (cargo.overrideAttrs ({ patches ? [], ... }: {
+        patches = patches ++ [
+          ../../development/compilers/rust/Make-cargo-metadata-no-deps-print-all-path-deps.patch
+        ];
+      }))
+      jq
+    ];
   } ''
     mkdir -p $out/vendor
     cp ${path} $out/vendor/Cargo.lock
@@ -81,25 +88,39 @@ let
       let dep = gitDep crate; in ''
         crateName=${escapeShellArg name}
         crateVersion=${escapeShellArg version}
+        vendored="$out/vendor/$crateName-$crateVersion"
+
         echo -ne "   \e[32;1mVendoring\e[0m $crateName $crateVersion"
-        echo -e " (${escapeShellArg source})"
-        echo "            ${fetchgit dep}"
+        echo " (${escapeShellArg source})"
+
         dir="$(mktemp -d)"
         cp -r --no-preserve=mode ${fetchgit dep} "$dir"
         pushd "$dir"/* >/dev/null
-        manifestPath="$(cargo metadata --no-deps --format-version 1 |
+
+        # Find the Cargo.toml of this crate.
+        manifestPath="$(cargo metadata --no-deps --offline --format-version 1 |
             jq -r --arg name "$crateName" --arg version "$crateVersion" \
                 '.packages[]
                     | select(.name == $name and .version == $version)
                     | .manifest_path')"
-        vendored="$out/vendor/$crateName-$crateVersion"
+
+        # Remove the workspace root Cargo.lock.  The vendored crate
+        # doesn't need a lockfile, and if there is one cargo package
+        # will try to download the registry.
+        rm -f "$(cargo metadata --no-deps --offline \
+            --manifest-path "$manifestPath" --format-version 1 |
+                jq -r .workspace_root)/Cargo.lock"
+
+        # Copy every crate file to the vendor directory.
         mkdir "$vendored"
         cargo package -l --frozen --no-verify --no-metadata \
             --manifest-path "$manifestPath" |
                 grep -Ev '^Cargo\.(lock|toml\.orig)$' |
                 xargs tar -C "$(dirname "$manifestPath")" -c |
                 tar -C "$vendored" -x
+
         popd >/dev/null
+
         echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
       ''
     ) (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
