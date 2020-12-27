@@ -68,32 +68,41 @@ let
     EOF
 
     ${concatMapStrings ({ name, version, checksum ? oldFormatChecksumFor crate, ... } @ crate: ''
-      vendored="$out/vendor"/${escapeShellArg "${name}-${version}"}
+      crateName=${escapeShellArg name}
+      crateVersion=${escapeShellArg version}
+      vendored="$out/vendor/$crateName-$crateVersion"
+      echo -e "   \e[32;1mVendoring\e[0m $crateName $crateVersion"
       tar -C $out/vendor -xf ${fetchCrate (crate // { inherit checksum; })}
       echo '{"files":{},"package":"${checksum}"}' \
           >"$vendored/.cargo-checksum.json"
     '') (filter ({ source, ... }: hasPrefix "registry+" source) cratesIODeps)}
 
-    ${concatMapStrings ({ name, version, ... } @ crate: let dep = gitDep crate; in ''
-      crateName=${escapeShellArg name}
-      crateVersion=${escapeShellArg version}
-      dir="$(mktemp -d)"
-      cp -r --no-preserve=mode ${fetchgit dep} "$dir"
-      pushd "$dir"/* >/dev/null
-      manifestPath="$(cargo metadata --format-version 1 --no-deps |
-          jq -r --arg name "$crateName" --arg version "$crateVersion" \
-              '.packages[]
-                  | select(.name == $name and .version == $version)
-                  | .manifest_path')"
-      vendored="$out/vendor/$crateName-$crateVersion"
-      mkdir "$vendored"
-      cargo package -l --frozen --no-verify --manifest-path "$manifestPath" |
-          grep -Ev '^Cargo\.(lock|toml\.orig)$' |
-          xargs tar -c |
-          tar -C "$vendored" -x
-      popd >/dev/null
-      echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
-    '') (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
+    ${concatMapStrings ({ name, version, source, ... } @ crate:
+      let dep = gitDep crate; in ''
+        crateName=${escapeShellArg name}
+        crateVersion=${escapeShellArg version}
+        echo -ne "   \e[32;1mVendoring\e[0m $crateName $crateVersion"
+        echo -e " (${escapeShellArg source})"
+        echo "            ${fetchgit dep}"
+        dir="$(mktemp -d)"
+        cp -r --no-preserve=mode ${fetchgit dep} "$dir"
+        pushd "$dir"/* >/dev/null
+        manifestPath="$(cargo metadata --no-deps --format-version 1 |
+            jq -r --arg name "$crateName" --arg version "$crateVersion" \
+                '.packages[]
+                    | select(.name == $name and .version == $version)
+                    | .manifest_path')"
+        vendored="$out/vendor/$crateName-$crateVersion"
+        mkdir "$vendored"
+        cargo package -l --frozen --no-verify --no-metadata \
+            --manifest-path "$manifestPath" |
+                grep -Ev '^Cargo\.(lock|toml\.orig)$' |
+                xargs tar -C "$(dirname "$manifestPath")" -c |
+                tar -C "$vendored" -x
+        popd >/dev/null
+        echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
+      ''
+    ) (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
   '';
 
 in
