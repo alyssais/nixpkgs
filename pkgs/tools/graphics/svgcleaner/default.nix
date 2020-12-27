@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "svgcleaner";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1jpnqsln37kkxz98vj7gly3c2170v6zamd876nc9nfl9vns41s0f";
   };
 
-  cargoSha256 = "1xhwlsq9b6cnafbapm5jf48zqdx5k2vxlr701lh5f8nqvd7nxi6g";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "A tool for tidying and optimizing SVGs";
