@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "resvg";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1qaca8wqwi2wqqx1yladjb4clgqdzsm8b7qsiaw0qascddjw1mcc";
   };
 
-  cargoSha256 = "1y10xzdf5kxbi9930qfsmryrbrkx1wmc5b216l9wcxq6cd77hxy2";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = false;
 
