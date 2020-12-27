@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "procs";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1bxzwcj7jxv1hkbq84wigshni1ivdga7g77k3h9fxzn7c223yccd";
   };
 
-  cargoSha256 = "1bf0r9kymc1w1rxpc0bjgj5faagmad9vh404n9860rpganrdjvkx";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   meta = with stdenv.lib; {
