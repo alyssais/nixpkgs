@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub, installShellFiles }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo, installShellFiles }:
 
 rustPlatform.buildRustPackage rec {
   pname = "page";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1pk3iclmwbkg4nvsgarq4qjpzapjhsl7b7z6zw6havp1zmx9h806";
   };
 
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
   postInstall = ''
     completions_dir=$(find "target" -name "shell_completions" -type d -printf "%T+\t%p\n" | sort | awk 'NR==1{print $2}')
 
@@ -19,8 +19,6 @@ rustPlatform.buildRustPackage rec {
     installShellCompletion --fish $completions_dir/page.fish
     installShellCompletion --zsh $completions_dir/_page
   '';
-
-  cargoSha256 = "0s1iwli5h6qkibi24v80izr38z84zfx1dv71fv06lzq38b6s4nd5";
 
   meta = with lib; {
     description = "Use neovim as pager";
