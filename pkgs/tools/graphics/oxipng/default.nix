@@ -1,4 +1,4 @@
-{ stdenv, fetchCrate, rustPlatform }:
+{ stdenv, fetchCrate, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   version = "4.0.1";
@@ -9,7 +9,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0mgd33cb112yg1bz8jhsbk2w8p2gdiw510bfv4z82b2mg6pl6b9r";
   };
 
-  cargoSha256 = "01g3qansrvvv85b1kxg4609lnj3bizavg3r7651hn03cnlychj2n";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = !stdenv.isAarch64 && !stdenv.isDarwin;
 
