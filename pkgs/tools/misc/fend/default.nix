@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "fend";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0g9zr2afi103cwv6ikpmmyh5v055dh47l3wj9a1kbxgms0953iwh";
   };
 
-  cargoSha256 = "0hydlaibanw2vjyxymfbzgwwk2qjv7jsz15gn66ga5vknsqihcrx";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Arbitrary-precision unit-aware calculator";
