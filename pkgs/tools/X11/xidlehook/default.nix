@@ -1,4 +1,4 @@
-{ lib, stdenv, rustPlatform, fetchFromGitLab, python3
+{ lib, stdenv, rustPlatform, fetchFromGitLab, importCargo, python3
 , xlibsWrapper, xorg, libpulseaudio, pkgconfig, patchelf, Security }:
 
 rustPlatform.buildRustPackage rec {
@@ -16,10 +16,9 @@ rustPlatform.buildRustPackage rec {
   };
 
   cargoBuildFlags = lib.optionals (!stdenv.isLinux) ["--no-default-features" "--features" "pulse"];
-  cargoSha256 = "050ihjhg33223x6pgvhqrjprx1clkj2x3jr6acf716vbwm3m0bmz";
 
   buildInputs = [ xlibsWrapper xorg.libXScrnSaver libpulseaudio ] ++ lib.optional stdenv.isDarwin Security;
-  nativeBuildInputs = [ pkgconfig patchelf python3 ];
+  nativeBuildInputs = [ pkgconfig patchelf python3 (importCargo ./Cargo.lock) ];
 
   postFixup = lib.optionalString stdenv.isLinux ''
     RPATH="$(patchelf --print-rpath $out/bin/xidlehook)"
