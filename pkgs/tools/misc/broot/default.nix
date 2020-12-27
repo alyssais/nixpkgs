@@ -1,6 +1,7 @@
 { stdenv
 , rustPlatform
 , fetchCrate
+, importCargo
 , installShellFiles
 , makeWrapper
 , coreutils
@@ -18,11 +19,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1yzj1k09yd3q2dff6a6m0xv2v6z681x25g0x5ak41lm5rn3hj8vl";
   };
 
-  cargoSha256 = "1axcnr7bzplchpz4cdy5872fmrnzrs1p665c0vmxzs9bgnml5sl8";
-
   nativeBuildInputs = [
     makeWrapper
     installShellFiles
+    (importCargo ./Cargo.lock)
   ];
 
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [
