@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "routinator";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-yH43FPeMohN6zpzEcLpbFBvO8Wz4IjuWRmsE19C7NIA=";
   };
 
-  cargoSha256 = "14cbkvcvbjgc308lh1yj0715rnl035r5qwvfsip17xk5j3y8w1xr";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "An RPKI Validator written in Rust";
