@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "intermodal";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0mn0wm3bihn7ffqk0p79mb1hik54dbhc9diq1wh9ylpld2iqmz68";
   };
 
-  cargoSha256 = "0kf5afarfwcl47b40pwnslfvxmxllmb995vc5ls2lpz4cx0jwahn";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   # include_hidden test tries to use `chflags` on darwin
   checkFlagsArray = stdenv.lib.optionals stdenv.isDarwin [ "--skip=subcommand::torrent::create::tests::include_hidden" ];
