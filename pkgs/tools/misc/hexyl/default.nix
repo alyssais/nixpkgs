@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname   = "hexyl";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0aj2sysl0spf5zlcd5kfzlw97w7dzf9x93pv0d1v9blnbd1rz7lm";
   };
 
-  cargoSha256 = "1am9vs7l2wzgwqakrsl27x1y7jpn9xaqa4kr48wwqzka401h6j4m";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     changelog = "https://github.com/sharkdp/hexyl/releases/tag/v${version}";
