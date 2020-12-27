@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, udev, pkgconfig }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, udev, pkgconfig }:
 
 rustPlatform.buildRustPackage rec {
   pname = "g933-utils";
@@ -11,9 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "06napzpk3nayzixb4l4fzdiwpgmcrsbc5j9m4qip1yn6dfkin3p0";
   };
 
-  cargoSha256 = "16xgk4rc36d6lylh2dzv63ryq9s7fli3h2qva1m1p6f0gpasnk7w";
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
   buildInputs = [ udev ];
 
   meta = with stdenv.lib; {
