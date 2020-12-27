@@ -2,6 +2,7 @@
 , lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , openssl
 , zlib
 , pkg-config
@@ -24,9 +25,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0rbg0jchg59x0g4h0xahdm9qah8l8g4i2s8lkaqzdkm4yv29gqx4";
   };
 
-  cargoSha256 = "1sbgn68n0rqh1m98dm3r2a3pqqqx4v7axw5djw8qlx4gv7xw1ql0";
-
-  nativeBuildInputs = [ pkg-config ]
+  nativeBuildInputs = [ pkg-config (importCargo ./Cargo.lock) ]
     ++ lib.optionals (withStableFeatures && stdenv.isLinux) [ python3 ];
 
   buildInputs = [ openssl ]
