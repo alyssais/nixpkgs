@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitLab, rustPlatform, cmake, pkgconfig, openssl
-, darwin, installShellFiles
+{ stdenv, fetchFromGitLab, rustPlatform, importCargo, installShellFiles
+, cmake, pkgconfig, openssl, darwin
 
 , x11Support ? stdenv.isLinux || stdenv.hostPlatform.isBSD
 , xclip ? null, xsel ? null
@@ -25,9 +25,9 @@ buildRustPackage rec {
     sha256 = "0ga1v4s8ks2v632mim8ljya0gi2j8bbwj98yfm3g00p0z1i526qk";
   };
 
-  cargoSha256 = "1n9pf29xid6jcas5yx94k4cpmqgx0kpqq7gwf83jisjywxzygh6w";
-
-  nativeBuildInputs = [ cmake pkgconfig installShellFiles ];
+  nativeBuildInputs = [
+    cmake pkgconfig installShellFiles (importCargo ./Cargo.lock)
+  ];
   buildInputs =
     if stdenv.isDarwin then (with darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices Security AppKit ])
     else [ openssl ];
