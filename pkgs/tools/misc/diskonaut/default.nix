@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "diskonaut";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1pmbag3r2ka30zmy2rs9jps2qxj2zh0gy4a774v9yhf0b6qjid54";
   };
 
-  cargoSha256 = "0y86ikf235lp5j85fgzawgp4vx66rmzqd6p5n8iy3mqwn3c1ggb8";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "Terminal disk space navigator";
