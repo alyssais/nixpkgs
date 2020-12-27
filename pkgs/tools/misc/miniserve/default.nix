@@ -1,5 +1,6 @@
 { stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , pkg-config
 , zlib
@@ -17,9 +18,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "17m0h0ib7fl0kijagcwdcnvrdcb6z3knix9dl17abg5ivbvkwz8q";
   };
 
-  cargoSha256 = "0ddc8b9wph4r1qcy24p8yiaq9s2knii0d7dh0w0qnzrn6cmm17dg";
-
-  nativeBuildInputs = [ pkg-config zlib ];
+  nativeBuildInputs = [ pkg-config zlib (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security ];
 
   meta = with stdenv.lib; {
