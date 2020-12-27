@@ -2,6 +2,7 @@
 , nixosTests
 , rustPlatform
 , fetchFromGitHub
+, importCargo
 , pkg-config
 , less
 , Security
@@ -21,10 +22,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1kbziqm00skj65gpjq6m83hmfk9g3xyx88gai1r80pzsx8g239w1";
   };
 
-  cargoSha256 = "1pdja5jhk036hpgv77xc3fcvra1sw0z5jc1ry53i0r7362lnwapz";
-
-  nativeBuildInputs = [ pkg-config installShellFiles makeWrapper ];
-
+  nativeBuildInputs = [
+    pkg-config installShellFiles makeWrapper (importCargo ./Cargo.lock)
+  ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security libiconv ];
 
   postInstall = ''
