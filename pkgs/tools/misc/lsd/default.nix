@@ -2,6 +2,7 @@
 , nixosTests
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , installShellFiles
 }:
 
@@ -16,9 +17,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "006fy87jrb77cpa6bywchcvq1p74vlpy151q1j4nsj8npbr02krj";
   };
 
-  cargoSha256 = "0mrvcca9y0vylcrbfxxba45v05qxd8z91vb4in88px60xah0dy3q";
-
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
   postInstall = ''
     installShellCompletion $releaseDir/build/lsd-*/out/{_lsd,lsd.{bash,fish}}
   '';
