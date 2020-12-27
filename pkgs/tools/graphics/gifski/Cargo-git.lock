@@ -1,0 +1,16 @@
+[[git]]
+url = 'https://github.com/kornelski/rust-ffmpeg'
+rev = '4da6d270cdaa868e5488144ed73bfaabe329cfcb'
+sha256 = '0i2cbxfv1lk83rj51ywwmgmj1g1pcmpwgx2p5p0w164k76f7729c'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/meh/rust-ffmpeg-sys'
+rev = '70f711a43eb7ff7447fcffa98bb9f533acc08a1e'
+sha256 = '04g7a5niid5vaxy2q2b7rni2dvb85zby213ca074kbj0a3l0k3hm'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
