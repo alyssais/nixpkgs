@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "mcfly";
@@ -11,6 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "155x745jakfcpr6kmp24cy8xwdhv81jdfjjhd149bnw5ilg0z037";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
+
   postInstall = ''
     substituteInPlace mcfly.bash --replace '$(which mcfly)' $out/bin/mcfly
     substituteInPlace mcfly.zsh  --replace '$(which mcfly)' $out/bin/mcfly
@@ -19,8 +21,6 @@ rustPlatform.buildRustPackage rec {
     install -Dm644 -t $out/share/mcfly mcfly.zsh
     install -Dm644 -t $out/share/mcfly mcfly.fish
   '';
-
-  cargoSha256 = "0y6sjbzg5qqqip9sc9ajyd5ra3n2wwvarj6nhpzjhh05kqz3qja4";
 
   meta = with stdenv.lib; {
     homepage = "https://github.com/cantino/mcfly";
