@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "diskus";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "087w58q5kd3r23a9qnhqgvq4vhv69b5a6a7n3kh09g5cjszy8s05";
   };
 
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security ];
-
-  cargoSha256 = "0bivmjn7h4lfp5azbc6q0xiqq3fk68jdd4kwrwgbxiljg4xd2qy8";
 
   meta = with stdenv.lib; {
     description = "A minimal, fast alternative to 'du -sh'";
