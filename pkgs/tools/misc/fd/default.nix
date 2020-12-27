@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform, installShellFiles }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo, installShellFiles }:
 
 rustPlatform.buildRustPackage rec {
   pname = "fd";
@@ -11,9 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0qzqnsjkq8i4gzn9273algx33kr1hzgxid8lnqp4awy2zxm4ksiq";
   };
 
-  cargoSha256 = "1d7hfgl9l4b9bnq2qcpvdq5rh7lpz33r19hw3wwgnqh142q67m7r";
-
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
 
   preFixup = ''
     installManPage doc/fd.1
