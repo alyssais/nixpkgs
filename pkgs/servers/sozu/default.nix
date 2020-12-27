@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, darwin }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "sozu";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1srg2b8vwc4vp07kg4fizqj1rbm9hvf6hj1mjdh6yvb9cpbw3jz7";
   };
 
-  cargoSha256 = "5WOigCiQZQ5DaTd15vV8pUh8Xl3UIe9yLG1ptUtY+iA=";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs =
     stdenv.lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.Security;
 
