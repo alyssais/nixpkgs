@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "swapview";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0339biydk997j5r72vzp7djwkscsz89xr3936nshv23fmxjh2rzj";
   };
 
-  cargoSha256 = "0z99pqd41y8cci3yvwsnm5zbq7pzli62z8qqqghmz1hcq5pb5q7g";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "A simple program to view processes' swap usage on Linux";
