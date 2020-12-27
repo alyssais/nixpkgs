@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitHub, fetchpatch, rustPlatform, cmake, perl, pkgconfig, zlib
-, darwin, libiconv, installShellFiles
+{ stdenv, fetchFromGitHub, fetchpatch, rustPlatform, importCargo
+, installShellFiles, cmake, perl, pkgconfig, zlib, darwin, libiconv
 }:
 
 with rustPlatform;
@@ -7,8 +7,6 @@ with rustPlatform;
 buildRustPackage rec {
   pname = "exa";
   version = "0.9.0";
-
-  cargoSha256 = "0nl106jlbr8gnnlbi20mrc6zyww7vxgmw6w34ibndxqh9ggxwfvr";
 
   src = fetchFromGitHub {
     owner = "ogham";
@@ -26,7 +24,9 @@ buildRustPackage rec {
     })
   ];
 
-  nativeBuildInputs = [ cmake pkgconfig perl installShellFiles ];
+  nativeBuildInputs = [
+    cmake pkgconfig perl installShellFiles (importCargo ./Cargo.lock)
+  ];
   buildInputs = [ zlib ]
   ++ stdenv.lib.optionals stdenv.isDarwin [
     libiconv darwin.apple_sdk.frameworks.Security ]
