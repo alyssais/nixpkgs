@@ -21829,7 +21829,7 @@ in
 
   windowchef = callPackage ../applications/window-managers/windowchef/default.nix { };
 
-  wmfocus = callPackage ../applications/window-managers/i3/wmfocus.nix { };
+  wmfocus = callPackage ../applications/window-managers/i3/wmfocus { };
 
   wmfs = callPackage ../applications/window-managers/wmfs/default.nix { };
 

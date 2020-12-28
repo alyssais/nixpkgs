@@ -1,5 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform
-, xorg, python3, pkgconfig, cairo, libxkbcommon }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, xorg, python3, pkgconfig, cairo, libxkbcommon
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "wmfocus";
@@ -12,10 +13,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "09xffklpz62h6yiksxdlv3a9s1z0wr3ax9syl399avwdmq3c0y49";
   };
 
-  cargoSha256 = "0rczas6sgcppacz48xx7sarkvc4s2sgcdz6c661d7vcry1y46xms";
-
   nativeBuildInputs = [ python3 pkgconfig ];
-  buildInputs = [ cairo libxkbcommon xorg.xcbutilkeysyms ];
+  buildInputs = [
+    cairo libxkbcommon xorg.xcbutilkeysyms (importCargo ./Cargo.lock)
+  ];
 
   # For now, this is the only available featureset. This is also why the file is
   # in the i3 folder, even though it might be useful for more than just i3
