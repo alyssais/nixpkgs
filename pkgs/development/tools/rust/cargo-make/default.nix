@@ -1,5 +1,6 @@
-{ stdenv, fetchurl, runCommand, fetchCrate, rustPlatform, Security, openssl, pkg-config
-, SystemConfiguration
+{ stdenv, fetchurl, runCommand, fetchCrate, rustPlatform, importCargo
+, openssl, pkg-config
+, Security, SystemConfiguration
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -11,12 +12,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0f6avprq0d65v5fk3kn2kvw3w024f21yq6v8y7d9rbwqxxf87jlf";
   };
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config (importCargo ./Cargo.lock) ];
 
   buildInputs = [ openssl ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ Security SystemConfiguration ];
-
-  cargoSha256 = "0v0657hh8ivqaq4sn0saaiz06shxavhrh9mksjlzj7c2ym6cxkih";
 
   # Some tests fail because they need network access.
   # However, Travis ensures a proper build.
