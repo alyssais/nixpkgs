@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "kondo";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0kl2zn6ir3w75ny25ksgxl93vlyb13gzx2795zyimqqnsrdpbbrf";
   };
 
-  cargoSha256 = "1ax81a2828z3yla1psg5xi8ild65m6zcsvx48ncz902mpzqlj92b";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "Save disk space by cleaning unneeded files from software projects";
