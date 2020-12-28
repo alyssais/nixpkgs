@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "svgbob";
@@ -16,9 +16,9 @@ rustPlatform.buildRustPackage rec {
       --replace '#![deny(warnings)]' ""
   '';
 
-  cargoSha256 = "1y9jsnxmz51zychmmzp6mi29pb5ks2qww7lk5bshkhp56v51sm8d";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
-  # Test tries to build outdated examples
+    # Test tries to build outdated examples
   doCheck = false;
 
   meta = with lib; {
