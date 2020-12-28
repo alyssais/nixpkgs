@@ -3,6 +3,7 @@
 , gtk3
 , lib
 , rustPlatform
+, importCargo
 , wrapGAppsHook
 }:
 
@@ -24,11 +25,10 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     glib
     gtk3
   ];
-
-  cargoSha256 = "1xgyyxd2kz21xan0pk7rbxiym90s7m2qrzg2ddilcszva60bxdd9";
 
   postInstall = ''
     mkdir -p $out/share/glib-2.0/schemas
