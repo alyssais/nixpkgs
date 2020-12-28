@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkg-config }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, pkg-config }:
 
 rustPlatform.buildRustPackage rec {
   pname = "itm-tools";
@@ -11,11 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "19xkjym0i7y52cfhvis49c59nzvgw4906cd8bkz8ka38mbgfqgiy";
   };
 
-  cargoPatches = [ ./cargo-lock.patch ];
-
-  cargoSha256 = "0rl2ph5igwjl7rwpwcf6afnxly5av7cd6va6wn82lxm606giyq75";
-
   nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = false;
 

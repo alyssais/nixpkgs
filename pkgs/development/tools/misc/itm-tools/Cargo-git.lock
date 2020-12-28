@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/rust-embedded/itm'
+rev = '5dd476d03de0738062a876fd3845900ab04833a4'
+sha256 = '18ilxq4gxjlp0jpga9lghgaqcs31iidz1sdwwm4ch47idgamzbag'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
