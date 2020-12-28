@@ -7,6 +7,7 @@
 , perl
 , pkgconfig
 , rustPlatform
+, importCargo
 , curl
 , libiconv
 , CoreFoundation
@@ -26,8 +27,6 @@ buildRustPackage rec {
     sha256 = "1sx6sc2dj3l61gbiqz8vfyhw5w4xjdyfzn1ixz0y8ipm579yc7a2";
   };
 
-  cargoSha256 = "1wjbwd3scx71l2fpxgvgwaw05lkpw13rm6d2i1x5crhs7py96ky6";
-
   nativeBuildInputs = [
     cmake
     pkgconfig
@@ -35,6 +34,7 @@ buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     openssl_1_0_2
     libssh
     zlib
