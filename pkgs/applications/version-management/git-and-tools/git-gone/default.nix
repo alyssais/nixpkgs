@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkgconfig, makeWrapper, openssl, git, libiconv, Security, installShellFiles }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, pkgconfig, makeWrapper, openssl, git, libiconv, Security, installShellFiles
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "git-gone";
@@ -11,11 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0hhy1yazda9r4n753a5m9jf31fbzmm4v8wvl3pksspj2syglmll8";
   };
 
-  cargoSha256 = "1g2jijx8y34lid9qwa26v4svab5v9ki6gn9vcfiy61dqa964c3l9";
-
   nativeBuildInputs = [ pkgconfig makeWrapper installShellFiles ];
-
-  buildInputs = [ openssl ]
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   postInstall = ''
