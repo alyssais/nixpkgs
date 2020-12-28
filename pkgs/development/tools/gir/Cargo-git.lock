@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/GuillaumeGomez/rustdoc-stripper'
+rev = '1c7c652e4aa3eb1d4cf813d8f43bee040740b79c'
+sha256 = '0jvaj4il3q43942c533rlq22n33hyg988y8mzcmjc3czy9fm9clw'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
