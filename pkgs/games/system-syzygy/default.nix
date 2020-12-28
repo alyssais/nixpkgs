@@ -1,4 +1,6 @@
-{lib, rustPlatform, fetchFromGitHub, fetchurl, SDL2, makeWrapper, makeDesktopItem}:
+{ lib, rustPlatform, fetchFromGitHub, fetchurl, importCargo
+, SDL2, makeWrapper, makeDesktopItem
+}:
 
 let
   desktopFile = makeDesktopItem {
@@ -20,10 +22,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "07mzwx8ql33q865snnw4gm3dgf0mnm60lnq1f5fgas2yjy9g9vwa";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
   buildInputs = [ SDL2 ];
-
-  cargoSha256 = "001cwdq8zxji56yahwfsydi7s0j7c5zsip60lxk3qmn078wcipdp";
 
   postInstall = ''
     mkdir -p $out/share/syzygy/

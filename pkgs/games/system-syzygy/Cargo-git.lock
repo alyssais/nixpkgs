@@ -1,0 +1,32 @@
+[[git]]
+url = 'https://github.com/mdsteele/ahi'
+rev = '8dfd2b39ba35d77a3260d95d53369c149e875ecf'
+sha256 = '04bgp88znmi2x16xy497fv8g87c4w76xsasgj9qgsb77phwq0n0j'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/mdsteele/itersynth'
+rev = 'bc1e3ffe726c80e3a931bf9e58f4a98f213c2bf5'
+sha256 = '0525p0p7v37jpr1654x36wbp6203pv20jzx1ik7ck1aw26w3wx3m'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/mdsteele/rust-sdl2'
+rev = 'f277981d55f68be33a64c33871b23c4c405e0763'
+sha256 = '0x6rb2p6pjwi5df2ny9ff1ip9vpgmb7cixp6zrq3fsi23k9acdn1'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/mdsteele/winres'
+rev = 'd88139c3e1c2592bf14d1a4323c18103a21fe190'
+sha256 = '1vflbv0as7bc5sdpyzjgf1ly9i32fby760phrlk6amy1rn0jndpf'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
