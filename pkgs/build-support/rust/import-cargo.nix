@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl, fetchgit
-, runCommand, writeScript, makeSetupHook, linkFarm
+, runCommand, writeScript, writeText, makeSetupHook
 , cargo, jq
 }:
 
@@ -23,7 +23,9 @@ let
   externalDeps = filter (c: c ? source) cargoLock.package;
 
   splitGitSource = source:
-    let matches = match "git\\+([^?]*)(\\?(rev|branch)=(.*))?#(.*)" source; in {
+    let
+      matches = match "git\\+([^?]*)(\\?(rev|branch|tag)=(.*))?#(.*)" source;
+    in {
       url = elemAt matches 0;
       refType = elemAt matches 2;
       ref = elemAt matches 3;
@@ -63,7 +65,7 @@ let
     in
 
     stdenv.mkDerivation {
-      name =  "cargo-vendor-${name}-${version}";
+      name =  "rust-${name}-${version}-vendored";
       crateName = name;
       inherit version source;
 
@@ -90,34 +92,18 @@ let
       builder = ./vendor-crate.sh;
     };
 
-  # Create a directory that symlinks all the crate sources and
-  # contains a cargo configuration file that redirects to those
-  # sources.
-  vendorDir = runCommand "cargo-vendor-dir" {
-    config = ''
-      [source.crates-io]
-      replace-with = "vendored-sources"
-      ${concatMapStrings ({ url, ... }: ''
+  config = writeText "cargo-config.toml" ''
+    [source.crates-io]
+    replace-with = "vendored-sources"
+    ${concatMapStrings ({ url, ... }: ''
 
-      [source."${url}"]
-      git = "${url}"
-      ${with gitSourceForURL url; optionalString (refType != null) ''${refType} = "${ref}"''}
-      replace-with = "vendored-sources"
-      '') gitDeps}
-      [source.vendored-sources]
-      directory = "import-cargo/vendor"
-    '';
-    passAsFile = [ "config" ];
-  } ''
-    mkdir -p $out
-
-    ln -s ${linkFarm "cargo-vendor" (map ({ name, version, ... } @ crate: {
-      name = "${name}-${version}";
-      path = vendorCrate crate;
-    }) externalDeps)} $out/vendor
-
-    cp ${path} $out/Cargo.lock
-    cp $configPath $out/config
+    [source."${url}"]
+    git = "${url}"
+    ${with gitSourceForURL url; optionalString (refType != null) ''${refType} = "${ref}"''}
+    replace-with = "vendored-sources"
+    '') gitDeps}
+    [source.vendored-sources]
+    directory = "import-cargo/vendor"
   '';
 
 in
@@ -128,7 +114,17 @@ in
 makeSetupHook {} (writeScript "make-cargo-home" ''
   if [[ -z ''${CARGO_HOME-} || $CARGO_HOME = /build ]]; then
     export CARGO_HOME=$TMPDIR/import-cargo
-    cp -prd ${vendorDir} $CARGO_HOME
-    chmod -R u+w $CARGO_HOME
+
+    mkdir -p $CARGO_HOME/vendor
+    ${concatMapStrings ({ name, version, ... } @ crate: ''
+      cp -r ${vendorCrate crate} $CARGO_HOME/vendor/${name}-${version}
+    '') externalDeps}
+
+    cp ${path} $CARGO_HOME/Cargo.lock
+    cp ${config} $CARGO_HOME/config
+
+    # config has to be writeable so buildRustPackage can add to it,
+    # and crate sources have to be writeable for build.rs.
+    chmod -R +w $CARGO_HOME/config $CARGO_HOME/vendor
   fi
 '')
