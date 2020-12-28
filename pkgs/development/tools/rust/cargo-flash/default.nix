@@ -1,5 +1,5 @@
 { stdenv, lib
-, rustPlatform, fetchFromGitHub
+, rustPlatform, fetchFromGitHub, importCargo
 , libusb1, pkg-config, rustfmt }:
 
 rustPlatform.buildRustPackage rec {
@@ -13,10 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1bcpv1r4pdpp22w7za7kdy7jl487x3nlwxiz6sqq3iq6wq3j9zj0";
   };
 
-  cargoSha256 = "1pf117fgw9x9diksqv58cw7i0kzmp25yj73y5ll69sk46b6z4j90";
-
   nativeBuildInputs = [ pkg-config rustfmt ];
-  buildInputs = [ libusb1 ];
+  buildInputs = [ libusb1 (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "A cargo extension for working with microcontrollers";
