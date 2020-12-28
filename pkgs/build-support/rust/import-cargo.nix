@@ -1,14 +1,18 @@
-{ lib, fetchurl, fetchgit, runCommand, writeScript, makeSetupHook
+{ stdenv, lib, fetchurl, fetchgit
+, runCommand, writeScript, makeSetupHook, linkFarm
 , cargo, jq
 }:
 
 path:
 
 let
-  inherit (builtins) dirOf elemAt filter head match pathExists;
-  inherit (lib) concatMapStrings escapeShellArg hasPrefix importTOML last
+  inherit (builtins) dirOf elemAt filter head match pathExists toJSON;
+  inherit (lib) concatMapStrings escapeShellArg hasPrefix importTOML
     optionalString optionals;
 
+  # We don't use fetchCrate from elsewhere in Nixpkgs because it
+  # calculates hashes of unpack crates, and the hashes that Cargo
+  # gives us in lockfiles are for the tarballs.
   fetchCrate = { name, version, checksum, ... }: fetchurl {
     name = "${name}-${version}";
     url = "https://crates.io/api/v1/crates/${name}/${version}/download";
@@ -16,7 +20,7 @@ let
   };
 
   cargoLock = importTOML path;
-  cratesIODeps = filter (c: c ? source) cargoLock.package;
+  externalDeps = filter (c: c ? source) cargoLock.package;
 
   splitGitSource = source:
     let matches = match "git\\+([^?]*)(\\?(rev|branch)=(.*))?#(.*)" source; in {
@@ -26,8 +30,8 @@ let
       rev = elemAt matches 4;
     };
 
-  gitDeps = let path' = dirOf path + "/Cargo-git.lock"; in
-            optionals (pathExists path') (importTOML path').git;
+  gitPath = dirOf path + "/Cargo-git.lock";
+  gitDeps = optionals (pathExists gitPath) (importTOML gitPath).git;
 
   gitDep = { source, ... }: let s = splitGitSource source; in
     head (filter (d: d.url == s.url && d.rev == s.rev) gitDeps);
@@ -36,94 +40,84 @@ let
     let
       hasGitSource = { source, ... }:
         hasPrefix "git+${url}?" source || hasPrefix "git+${url}#" source;
-      package = head (filter hasGitSource cratesIODeps);
+      package = head (filter hasGitSource externalDeps);
     in
       splitGitSource package.source;
 
+  # In modern Cargo.lock files, the checksum is included in the table
+  # with all the other crate metadata, but in older ones, checksums
+  # are all in a "metadata" table at the bottom.
   oldFormatChecksumFor = { name, version, source, ... }:
     cargoLock.metadata."checksum ${name} ${version} (${source})";
+
+  vendorCrate =
+    { name, version, source
+    , checksum ? if hasPrefix "registry+" source
+                 then oldFormatChecksumFor crate
+                 else null
+    , ...
+    } @ crate:
+
+    let
+      sourceMatches = match "git\\+(.*)" source;
+    in
+
+    stdenv.mkDerivation {
+      name =  "cargo-vendor-${name}-${version}";
+      crateName = name;
+      inherit version source;
+
+      printableSource = optionalString (sourceMatches != null)
+        (escapeShellArg " (${head sourceMatches})");
+      
+      registrySource = optionalString (hasPrefix "registry+" source)
+        (fetchCrate (crate // { inherit checksum; }));
+      gitSource = optionalString (hasPrefix "git+" source)
+        (fetchgit (gitDep crate));
+
+      checksumFile = toJSON { files = {}; package = checksum; };
+      passAsFile = [ "checksumFile" ];
+
+      nativeBuildInputs = [
+        (cargo.overrideAttrs ({ patches ? [], ... }: {
+          patches = patches ++ [
+            ../../development/compilers/rust/Make-cargo-metadata-no-deps-print-all-path-deps.patch
+          ];
+        }))
+        jq
+      ];
+
+      builder = ./vendor-crate.sh;
+    };
 
   # Create a directory that symlinks all the crate sources and
   # contains a cargo configuration file that redirects to those
   # sources.
   vendorDir = runCommand "cargo-vendor-dir" {
-    nativeBuildInputs = [
-      (cargo.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ [
-          ../../development/compilers/rust/Make-cargo-metadata-no-deps-print-all-path-deps.patch
-        ];
-      }))
-      jq
-    ];
+    config = ''
+      [source.crates-io]
+      replace-with = "vendored-sources"
+      ${concatMapStrings ({ url, ... }: ''
+
+      [source."${url}"]
+      git = "${url}"
+      ${with gitSourceForURL url; optionalString (refType != null) ''${refType} = "${ref}"''}
+      replace-with = "vendored-sources"
+      '') gitDeps}
+      [source.vendored-sources]
+      directory = "import-cargo/vendor"
+    '';
+    passAsFile = [ "config" ];
   } ''
-    mkdir -p $out/vendor
-    cp ${path} $out/vendor/Cargo.lock
+    mkdir -p $out
 
-    cat >$out/vendor/config <<EOF
-    [source.crates-io]
-    replace-with = "vendored-sources"
-    ${concatMapStrings ({ url, ... }: ''
+    ln -s ${linkFarm "cargo-vendor" (map ({ name, version, ... } @ crate: {
+      name = "${name}-${version}";
+      path = vendorCrate crate;
+    }) externalDeps)} $out/vendor
 
-    [source."${url}"]
-    git = "${url}"
-    ${with gitSourceForURL url;
-      optionalString (refType != null) ''${refType} = "${ref}"''}
-    replace-with = "vendored-sources"
-    '') gitDeps}
-    [source.vendored-sources]
-    directory = "vendor"
-    EOF
-
-    ${concatMapStrings ({ name, version, checksum ? oldFormatChecksumFor crate, ... } @ crate: ''
-      crateName=${escapeShellArg name}
-      crateVersion=${escapeShellArg version}
-      vendored="$out/vendor/$crateName-$crateVersion"
-      echo -e "   \e[32;1mVendoring\e[0m $crateName $crateVersion"
-      tar -C $out/vendor -xf ${fetchCrate (crate // { inherit checksum; })}
-      echo '{"files":{},"package":"${checksum}"}' \
-          >"$vendored/.cargo-checksum.json"
-    '') (filter ({ source, ... }: hasPrefix "registry+" source) cratesIODeps)}
-
-    ${concatMapStrings ({ name, version, source, ... } @ crate:
-      let dep = gitDep crate; in ''
-        crateName=${escapeShellArg name}
-        crateVersion=${escapeShellArg version}
-        vendored="$out/vendor/$crateName-$crateVersion"
-
-        echo -ne "   \e[32;1mVendoring\e[0m $crateName $crateVersion"
-        echo " (${escapeShellArg source})"
-
-        dir="$(mktemp -d)"
-        cp -r --no-preserve=mode ${fetchgit dep} "$dir"
-        pushd "$dir"/* >/dev/null
-
-        # Find the Cargo.toml of this crate.
-        manifestPath="$(cargo metadata --no-deps --offline --format-version 1 |
-            jq -r --arg name "$crateName" --arg version "$crateVersion" \
-                '.packages[]
-                    | select(.name == $name and .version == $version)
-                    | .manifest_path')"
-
-        # Remove the workspace root Cargo.lock.  The vendored crate
-        # doesn't need a lockfile, and if there is one cargo package
-        # will try to download the registry.
-        rm -f "$(cargo metadata --no-deps --offline \
-            --manifest-path "$manifestPath" --format-version 1 |
-                jq -r .workspace_root)/Cargo.lock"
-
-        # Copy every crate file to the vendor directory.
-        mkdir "$vendored"
-        cargo package -l --frozen --no-verify --no-metadata \
-            --manifest-path "$manifestPath" |
-                grep -Ev '^Cargo\.(lock|toml\.orig)$' |
-                xargs tar -C "$(dirname "$manifestPath")" -c |
-                tar -C "$vendored" -x
-
-        popd >/dev/null
-
-        echo '{"files":{},"package":null}' >"$vendored/.cargo-checksum.json"
-      ''
-    ) (filter ({ source, ... }: hasPrefix "git+" source) cratesIODeps)}
+    cp ${path} $out/Cargo.lock
+    cp $configPath $out/config
   '';
 
 in
@@ -132,11 +126,9 @@ in
 # we don't point CARGO_HOME at the vendor tree directly
 # because then we end up with a runtime dependency on it.
 makeSetupHook {} (writeScript "make-cargo-home" ''
-  if [[ -z "''${CARGO_HOME-}" || "''${CARGO_HOME-}" = /build ]]; then
-    export CARGO_HOME=$TMPDIR/vendor
-    # FIXME: work around Rust 1.36 wanting a $CARGO_HOME/.package-cache file.
-    #ln -s ${vendorDir}/vendor $CARGO_HOME
-    cp -prd ${vendorDir}/vendor $CARGO_HOME
+  if [[ -z ''${CARGO_HOME-} || $CARGO_HOME = /build ]]; then
+    export CARGO_HOME=$TMPDIR/import-cargo
+    cp -prd ${vendorDir} $CARGO_HOME
     chmod -R u+w $CARGO_HOME
   fi
 '')
