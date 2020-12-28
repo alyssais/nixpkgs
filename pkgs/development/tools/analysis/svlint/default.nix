@@ -1,5 +1,6 @@
 { lib
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 }:
 
@@ -14,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1anbanvaikj8g5jcmjd165krzvjdwj1cl8f3vm1nmy997x8vxihf";
   };
 
-  cargoSha256 = "18xnqsrnf2gc9zny8ayzf1bah8mq1fy5k807cz039gqz36cvnma0";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "SystemVerilog linter";
