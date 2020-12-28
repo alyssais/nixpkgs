@@ -1,5 +1,6 @@
 { lib
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , cmake
 , llvmPackages
@@ -18,9 +19,8 @@ rustPlatform.buildRustPackage rec {
     fetchSubmodules = true;
   };
 
-  cargoSha256 = "1ssmgx9fjvkq7ycyzjanqmlm5b80akllq6qyv3mj0k5fvs659wcq";
-
   nativeBuildInputs = [ cmake pkg-config ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
 
