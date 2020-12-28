@@ -20812,7 +20812,7 @@ in
     conf = config.dwm.conf or null;
   };
 
-  dwm-status = callPackage ../applications/window-managers/dwm/dwm-status.nix { };
+  dwm-status = callPackage ../applications/window-managers/dwm/status { };
 
   dynamips = callPackage ../applications/virtualization/dynamips { };
 
