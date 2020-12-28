@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub, installShellFiles }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo, installShellFiles }:
 
 rustPlatform.buildRustPackage rec {
   pname = "pueue";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0rqnbils0r98qglhm2jafw5d119fqdzszmk825yc0bma4icm7xzp";
   };
 
-  cargoSha256 = "1f3g5i0yh82qll1hyihrvv08pbd4h9vzs6jy6bf94bzabyjsgnzv";
-
   nativeBuildInputs = [ installShellFiles ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   checkFlags = [ "--skip=test_single_huge_payload" "--skip=test_create_unix_socket" ];
 
