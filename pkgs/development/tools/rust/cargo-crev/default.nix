@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , perl
 , pkg-config
 , Security
@@ -20,11 +21,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1ccwa44hpmpd57ff6w02rvrs63wxwmgls2i1rn285rxypmbysrp0";
   };
 
-  cargoSha256 = "1sffivpgrn4my57pcrg46b2yg6fmhxj61d2sqvg60fjljrg595zn";
-
   nativeBuildInputs = [ perl pkg-config ];
-
-  buildInputs = [ openssl ] ++ stdenv.lib.optionals stdenv.isDarwin [ Security libiconv curl ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ Security libiconv curl ];
 
   meta = with stdenv.lib; {
     description = "A cryptographically verifiable code review system for the cargo (Rust) package manager";
