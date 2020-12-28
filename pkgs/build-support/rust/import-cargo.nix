@@ -70,7 +70,7 @@ let
       inherit version source;
 
       printableSource = optionalString (sourceMatches != null)
-        (escapeShellArg " (${head sourceMatches})");
+        " (${head sourceMatches})";
       
       registrySource = optionalString (hasPrefix "registry+" source)
         (fetchCrate (crate // { inherit checksum; }));
