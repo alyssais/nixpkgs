@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
 , pkgconfig, curl, libgit2, openssl, Security }:
 
 rustPlatform.buildRustPackage rec {
@@ -13,9 +13,7 @@ rustPlatform.buildRustPackage rec {
   };
   sourceRoot = "source/impl";
 
-  cargoSha256 = "1z20xc508a3slc1ii3hy09swvlyib14zwf9akxc0h24d5m48as1c";
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
   buildInputs = [ curl libgit2 openssl ]
     ++ stdenv.lib.optional stdenv.isDarwin Security;
 
