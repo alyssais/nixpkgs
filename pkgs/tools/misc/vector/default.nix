@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform
+{ stdenv, lib, fetchFromGitHub, rustPlatform, importCargo
 , openssl, pkg-config, protobuf
 , Security, libiconv, rdkafka
 , tzdata
@@ -26,8 +26,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0q6x3fvwwh18iyznqlr09n3zppzgw9jaz973s8haz54hnxj16wx0";
   };
 
-  cargoSha256 = "Y/vDYXWQ65zZ86vTwP4aCZYCMZuqbz6tpfv4uRkFAzc=";
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config (importCargo ./Cargo.lock) ];
   buildInputs = [ openssl protobuf rdkafka ]
                 ++ stdenv.lib.optional stdenv.isDarwin [ Security libiconv coreutils CoreServices ];
 

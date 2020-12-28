@@ -1,0 +1,48 @@
+[[git]]
+url = 'https://github.com/bytecodealliance/lucet.git'
+rev = 'd4fc14a03bdb99ac83173d27fddf1aca48412a86'
+sha256 = '1fc40bl96scaqvp9j357gwhn2r8f9vsvqbpkj28pwc5n03f03d8f'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/kyren/rlua'
+rev = '25bd7e6bffef9597466a98bfca80a3056c9e6320'
+sha256 = '1922rxzp3jh60ny1wjw4kk4gw5danih4f7m0vnnhm54hi00mkj6h'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/timberio/leveldb'
+rev = '64265815bcf1b69f30e6cb35bf687fbd6dd64afb'
+sha256 = '1n53i33dd5szrmm94sclc234ss9ibx1k9lp0z7qw4xgrf88rxzri'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/timberio/leveldb-sys'
+rev = 'bbdd99a6fab0a7444a8c6eb0cc86a1a5a75f7fa1'
+sha256 = '1qh4d3zl19wpd7jx501s1065csnckxwj1qv3fq0gk3x8xfyzla0v'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/tokio-rs/tracing'
+rev = '65547d8809fcc726b8187db85b23c42e32ef5dce'
+sha256 = '1hsbamd9d5sfdgrdlajkkxma1aqc9qsbvkx7gqq98x7zv0f1af25'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/tower-rs/tower'
+rev = 'c87fdd9c1e4c0728fdaa87d3fafe3e48da9b498a'
+sha256 = '1aar2lxlfqdmx9cai6283hcw535dq0m88mcgv8sp1blsqrh5q2z2'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
