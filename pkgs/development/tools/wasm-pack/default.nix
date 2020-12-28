@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , pkgconfig
 , libressl
 , curl
@@ -18,9 +19,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1rqyfg6ajxxyfx87ar25nf5ck9hd0p12qgv98dicniqag8l4rvsr";
   };
 
-  cargoSha256 = "0fw04hgxxqsbp1pylp32yd087r9bb8bpa05v90qdshkgp6znfl9s";
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
 
   buildInputs = [
     # LibreSSL works around segfault issues caused by OpenSSL being unable to
