@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, rustPlatform
+{ lib, fetchFromGitHub, rustPlatform, importCargo
 , openssl, zeromq, czmq, pkgconfig, cmake, zlib }:
 
 with rustPlatform;
@@ -14,11 +14,9 @@ buildRustPackage rec {
     sha256 = "0j27qdgyxybaixggh7k57mpm6rifimn4z2vydk463msc8b3kgywj";
   };
 
-  cargoSha256 = "1is1cbbwxf00dc64h76h57s0wxsai0zm5vfrrss7598cim6a4yxb";
-
   buildInputs = [ openssl zeromq czmq zlib ];
 
-  nativeBuildInputs = [ pkgconfig cmake ];
+  nativeBuildInputs = [ pkgconfig cmake (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Authentication client/server for Intecture components";

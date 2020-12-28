@@ -4795,7 +4795,7 @@ in
 
   input-utils = callPackage ../os-specific/linux/input-utils { };
 
-  intecture-agent = callPackage ../tools/admin/intecture/agent.nix { };
+  intecture-agent = callPackage ../tools/admin/intecture/agent { };
 
   intecture-auth = callPackage ../tools/admin/intecture/auth { };
 
