@@ -1,43 +1,30 @@
-{ stdenv, fetchFromGitHub, cmake, SDL2, boost, fltk, rustPlatform }:
-let
+{ fetchFromGitHub, rustPlatform, importCargo
+, cmake, SDL2, boost, fltk
+}:
+
+rustPlatform.buildRustPackage rec {
+  pname = "ja2-stracciatella";
   version = "0.16.1";
+
   src = fetchFromGitHub {
     owner = "ja2-stracciatella";
     repo = "ja2-stracciatella";
     rev = "v${version}";
     sha256 = "1pyn23syg70kiyfbs3pdlq0ixd2bxhncbamnic43rym3dmd52m29";
   };
-  lockfile = ./Cargo.lock;
-  libstracciatellaSrc = stdenv.mkDerivation {
-    name = "libstracciatella-${version}-src";
-    src = "${src}/rust";
-    installPhase = ''
-      mkdir -p $out
-      cp -R ./* $out/
-      cp ${lockfile} $out/Cargo.lock
-    '';
-  };
-  libstracciatella = rustPlatform.buildRustPackage {
-    pname = "libstracciatella";
-    inherit version;
-    src = libstracciatellaSrc;
-    cargoSha256 = "15djs4xaz4y1hpfyfqxdgdasxr0b5idy9i5a7c8cmh0jkxjv8bqc";
-    doCheck = false;
-  };
-in
-stdenv.mkDerivation {
-  pname = "ja2-stracciatella";
-  inherit src;
-  inherit version;
 
-  buildInputs = [ cmake SDL2 fltk boost ];
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ SDL2 fltk boost (importCargo ./Cargo.lock) ];
 
-  patches = [
-    ./remove-rust-buildstep.patch
-  ];
+  configurePhase = "cmakeConfigurePhase";
+
+  # Use the stdenv default phases (./configure; make) instead of the
+  # ones from buildRustPackage.
+  buildPhase = "buildPhase";
+  checkPhase = "checkPhase";
+  installPhase = "installPhase";
 
   preConfigure = ''
-    sed -i -e 's|rust-stracciatella|${libstracciatella}/lib/libstracciatella.so|g' CMakeLists.txt
     cmakeFlagsArray+=("-DEXTRA_DATA_DIR=$out/share/ja2")
   '';
 
