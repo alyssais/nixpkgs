@@ -1,4 +1,4 @@
-{ stdenvNoCC, buildPackages, makeRustPlatform }:
+{ stdenvNoCC, buildPackages, makeRustPlatform, importCargo }:
 
 let
   rpath = stdenvNoCC.lib.makeLibraryPath [
@@ -52,6 +52,8 @@ redoxRustPlatform.buildRustPackage rec {
     fetchSubmodules = true;
   };
 
+  buildInputs = [ (importCargo ./Cargo.lock) ];
+
   RUSTC_BOOTSTRAP = 1;
 
   dontInstall = true;
@@ -65,8 +67,6 @@ redoxRustPlatform.buildRustPackage rec {
 
   # TODO: should be hostPlatform
   TARGET = buildPackages.rust.toRustTargetSpec stdenvNoCC.targetPlatform;
-
-  cargoSha256 = "1fzz7ba3ga57x1cbdrcfrdwwjr70nh4skrpxp4j2gak2c3scj6rz";
 
   meta = with stdenvNoCC.lib; {
     homepage = "https://gitlab.redox-os.org/redox-os/relibc";

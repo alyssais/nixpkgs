@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://gitlab.redox-os.org/redox-os/syscall'
+rev = '4115e0f43547449ce56f7d7749732813e9505955'
+sha256 = '1q89d1pv4gj0isa9vamfsv86x0vfl6a7fq5h7mglswvfp03cj1lz'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
