@@ -1,4 +1,5 @@
-{ stdenv, lib, rustPlatform, fetchFromGitHub, dbus, gdk-pixbuf, libnotify, makeWrapper, pkgconfig, xorg
+{ stdenv, lib, rustPlatform, fetchFromGitHub, importCargo
+, dbus, gdk-pixbuf, libnotify, makeWrapper, pkgconfig, xorg
 , enableAlsaUtils ? true, alsaUtils, coreutils
 , enableNetwork ? true, dnsutils, iproute, wirelesstools }:
 
@@ -19,9 +20,9 @@ rustPlatform.buildRustPackage rec {
   };
 
   nativeBuildInputs = [ makeWrapper pkgconfig ];
-  buildInputs = [ dbus gdk-pixbuf libnotify xorg.libX11 ];
-
-  cargoSha256 = "041sd9zm1c3v6iihnwjcya2xg5yxb2y4biyxpjlfblz2srxa15dm";
+  buildInputs = [
+    dbus gdk-pixbuf libnotify xorg.libX11 (importCargo ./Cargo.lock)
+  ];
 
   postInstall = lib.optionalString (bins != [])  ''
     wrapProgram $out/bin/dwm-status --prefix "PATH" : "${stdenv.lib.makeBinPath bins}"
