@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/system76/ecflash.git'
+rev = 'ee9d69d4edf3bee6b2fb6dddb021bb58ee3bbbbb'
+sha256 = '04jgz3ajam1snc6364lmcfzsiyhzq0is4fmvzswixqdrnp0pgbav'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
