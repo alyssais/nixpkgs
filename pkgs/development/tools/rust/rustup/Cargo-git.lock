@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/rbtcollins/home'
+rev = 'a243ee2fbee6022c57d56f5aa79aefe194eabe53'
+sha256 = '06fmn2mzk06b2lfbnxv7n4ag0jllkh2qapcpwax1k746k4c8bgwm'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

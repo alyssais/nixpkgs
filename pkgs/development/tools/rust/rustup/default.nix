@@ -1,5 +1,5 @@
 { stdenv, lib, runCommand, patchelf
-, fetchFromGitHub, rustPlatform, makeWrapper
+, fetchFromGitHub, rustPlatform, makeWrapper, importCargo
 , pkgconfig, curl, zlib, Security, CoreServices }:
 
 let
@@ -19,9 +19,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0nf42pkyn87y0n93vd63bihx74h4bpisv74aqldg3vcav2iv35s1";
   };
 
-  cargoSha256 = "0ghjrx7y25s6rjp06h0iyv4195x7daj57bqza01i1j4hm5nkhqhi";
-
-  nativeBuildInputs = [ makeWrapper pkgconfig ];
+  nativeBuildInputs = [ makeWrapper pkgconfig (importCargo ./Cargo.lock) ];
 
   buildInputs = [
     curl zlib
