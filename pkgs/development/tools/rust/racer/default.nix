@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, makeWrapper, substituteAll, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, makeWrapper, substituteAll, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "racer";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0c00b81s7abnadjbf4i39lhdkipx7z44sr8p78jd1fl61yyrspli";
   };
 
-  cargoSha256 = "1nbp2jp65fqwsq9i04iyi4pbszs035w6id50p5ypw234cqxznikm";
-
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   # a nightly compiler is required unless we use this cheat code.
