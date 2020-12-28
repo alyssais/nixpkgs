@@ -1,4 +1,4 @@
-{ lib, pkgconfig, rustPlatform, fetchFromGitHub, openssl }:
+{ lib, pkgconfig, rustPlatform, fetchFromGitHub, importCargo, openssl }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-tarpaulin";
@@ -14,9 +14,8 @@ rustPlatform.buildRustPackage rec {
   nativeBuildInputs = [
     pkgconfig
   ];
-  buildInputs = [ openssl ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ];
 
-  cargoSha256 = "0pn9xgryfb7f0plx50v9i7hsv1wib87pi0fl43cv6hgqyrdb52ny";
   #checkFlags = [ "--test-threads" "1" ];
   doCheck = false;
 
