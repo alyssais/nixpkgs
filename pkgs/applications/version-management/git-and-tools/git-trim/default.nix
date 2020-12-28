@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, pkg-config, openssl, libiconv, Security }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, pkg-config, openssl, libiconv, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "git-trim";
@@ -11,11 +13,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1rb9dhj7b7mjrhsvm9vw5gzjfxj10idnzv488jkfdz7sfhd3fcvz";
   };
 
-  cargoSha256 = "1q62gqqhf78ljcvzp7yrnr0vk65rif2f7axzjq0b87prbcsr7ij4";
-
   nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = [ openssl ] ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   postInstall = ''
     install -Dm644 -t $out/share/man/man1/ docs/git-trim.1
