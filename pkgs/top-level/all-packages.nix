@@ -4797,7 +4797,7 @@ in
 
   intecture-agent = callPackage ../tools/admin/intecture/agent.nix { };
 
-  intecture-auth = callPackage ../tools/admin/intecture/auth.nix { };
+  intecture-auth = callPackage ../tools/admin/intecture/auth { };
 
   intecture-cli = callPackage ../tools/admin/intecture/cli {
     openssl = openssl_1_0_2;
