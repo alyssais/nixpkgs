@@ -1,6 +1,7 @@
 { stdenv
 , fetchCrate
 , rustPlatform
+, importCargo
 , pkg-config
 , clang
 , libclang
@@ -22,14 +23,14 @@ rustPlatform.buildRustPackage rec {
     sha256 = "01wag3ckqsa7r6zc7cla428w8hr49n2ybp31s42dqmsbak3xbc14";
   };
 
-  cargoSha256 = "1hh4xmkhbbbkag3v25vh6zpn0r4fmipxmkcr8ahgrxf71dvyxj8x";
-
   cargoBuildFlags = stdenv.lib.optional gitImportSupport "--features=git";
   LIBCLANG_PATH = "${libclang}/lib";
 
   doCheck = false;
   nativeBuildInputs = [ pkg-config clang ];
-  buildInputs = [ openssl libclang libsodium xxHash zstd ]
+  buildInputs = [
+    openssl libclang libsodium xxHash zstd (importCargo ./Cargo.lock)
+  ]
     ++ (stdenv.lib.optionals gitImportSupport [ libgit2 ])
     ++ (stdenv.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
       CoreServices Security SystemConfiguration
