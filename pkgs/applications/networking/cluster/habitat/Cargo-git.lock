@@ -1,0 +1,24 @@
+[[git]]
+url = 'https://github.com/habitat-sh/ipc-channel'
+rev = 'b6679d1adfebaecd6ab9f5966720556993f94529'
+sha256 = '1c5ii94cixd7kwx427hj4j75pscl2gzgqx8k1mbafvzcykgdcab6'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/habitat-sh/rust-nats'
+rev = 'a4c24be66fc54c0038af383b6df18d2ed0b5f376'
+sha256 = '0mfkprhvqidad9h843w0bi0r7p4z70bzchl4n56a3vy5ri4m5dkr'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/habitat-sh/rust-zmq'
+rev = '20a73b9225b3903778420c3211d8e9439bb73a2a'
+sha256 = '1cf4z50yayrkry9qvrd7j7gy464njsfrn9ybfcbb7g2773nly9v7'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
