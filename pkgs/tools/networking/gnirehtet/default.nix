@@ -1,4 +1,7 @@
-{stdenv, rustPlatform, fetchFromGitHub, fetchzip, androidenv, substituteAll}:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, fetchzip, androidenv, substituteAll
+}:
+
 let
 version = "2.4";
 apk = stdenv.mkDerivation {
@@ -25,7 +28,6 @@ rustPlatform.buildRustPackage {
       sha256 = "1c99d6zpjxa8xlrg0n1825am20d2pjiicfcjwv8iay9ylfdnvygl";
   };
   sourceRoot = "source/relay-rust";
-  cargoSha256 = "0rb5xcqg5ikgrxpmzrql5n298j50aqgkkp45znbfv2x2n40dywad";
 
   patchFlags = [ "-p2" ];
   patches = [
@@ -35,6 +37,8 @@ rustPlatform.buildRustPackage {
       inherit apk;
     })
   ];
+
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "Reverse tethering over adb for Android";
