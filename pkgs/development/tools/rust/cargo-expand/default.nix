@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-expand";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "09jdqf1f8kl2c3k4cp8j3qqb96gclhncvfdwg2l3bmh5r10id9b3";
   };
 
-  cargoSha256 = "0mx01h2zv7mpyi8s1545b7hjxn9aslzpbngrq4ii9rfqznz3r8k9";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description =
