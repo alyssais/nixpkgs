@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "librustzcash";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0d28k29sgzrg9clynz29kpw50kbkp0a4dfdayqhmpjmsh05y6261";
   };
 
-  cargoSha256 = "1wzyrcmcbrna6rjzw19c4lq30didzk4w6fs6wmvxp0xfg4qqdlax";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   installPhase = ''
     mkdir -p $out/lib
