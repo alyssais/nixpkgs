@@ -1,4 +1,5 @@
-{ stdenv, fetchFromGitHub, fetchurl, rustPlatform, runCommand } :
+{ stdenv, fetchFromGitHub, fetchurl, rustPlatform, importCargo, runCommand }:
+
 with rustPlatform;
 
 buildRustPackage rec {
@@ -36,5 +37,5 @@ buildRustPackage rec {
       cp ${cargo-lock} $out/Cargo.lock
     '';
 
-  cargoSha256 = "0wx5x7ll21bb6v34csk63kkvxdk3as720hdkaj0izdkpy0xf1knr";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 }
