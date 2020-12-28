@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-insta";
@@ -11,10 +11,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1lcbdzh139lhmpz3pyik8nbgrbfc42z9ydz2hkg2lzjdpfdsz3ag";
   };
 
-  cargoPatches = [ ./cargo-lock.patch ];
-  cargoSha256 = "0qjzbcaznnmb0p0r23s82jjbfs5mhhkacg26lf8fq4vvlkr1hsqf";
-
   patches = [ ./ignore-rustfmt-test.patch ];
+
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   cargoBuildFlags = [ "-p cargo-insta" ];
 
