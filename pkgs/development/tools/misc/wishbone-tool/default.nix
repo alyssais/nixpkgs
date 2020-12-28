@@ -1,27 +1,18 @@
-{ lib, fetchFromGitHub, rustPlatform, libusb-compat-0_1 }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo, libusb-compat-0_1 }:
 
-let
+rustPlatform.buildRustPackage rec {
+  pname = "wishbone-tool";
   version = "0.6.9";
+
   src = fetchFromGitHub {
     owner = "litex-hub";
     repo = "wishbone-utils";
     rev = "v${version}";
     sha256 = "0gq359ybxnqvcp93cn154bs9kwlai62gnm71yvl2nhzjdlcr3fhp";
   };
-in
-rustPlatform.buildRustPackage {
-  pname = "wishbone-tool";
-  inherit version;
+  sourceRoot = "source/wishbone-tool";
 
-  src = "${src}/wishbone-tool";
-
-  # N.B. The cargo vendor consistency checker searches in "source" for lockfile
-  cargoDepsHook = ''
-    ln -s wishbone-tool source
-  '';
-  cargoSha256 = "0d5kcwy0cgxqfxf2xysw65ng84q4knhp4fgvh6dwqhf0nsca9gvs";
-
-  buildInputs = [ libusb-compat-0_1 ];
+  buildInputs = [ libusb-compat-0_1 (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "Manipulate a Wishbone device over some sort of bridge";
