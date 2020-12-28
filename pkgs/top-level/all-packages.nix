@@ -21823,7 +21823,7 @@ in
 
   i3status = callPackage ../applications/window-managers/i3/status.nix { };
 
-  i3status-rust = callPackage ../applications/window-managers/i3/status-rust.nix { };
+  i3status-rust = callPackage ../applications/window-managers/i3/status-rust { };
 
   i3-wk-switch = callPackage ../applications/window-managers/i3/wk-switch.nix { };
 
