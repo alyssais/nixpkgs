@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, libiconv, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, libiconv, darwin }:
 
 rustPlatform.buildRustPackage rec {
   pname = "tokei";
@@ -11,11 +11,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0vj6xpp5ss82n1zxljy5893s8l1pdhar5xqay5vvglkp8bzblin6";
   };
 
-  cargoSha256 = "02c2pdjzd49qznm1yj3rnli48267ajjdklrb1cpj0rhpirw4rh1j";
-
-  buildInputs = stdenv.lib.optionals stdenv.isDarwin [
-    libiconv darwin.apple_sdk.frameworks.Security
-  ];
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [
+      libiconv darwin.apple_sdk.frameworks.Security
+    ];
 
   # enable all output formats
   cargoBuildFlags = [ "--features" "all" ];
