@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cntr";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0dhfz7aj3cqi974ybf0axchih40rzrs9m8bxhwz1hgig57aisfc0";
   };
 
-  cargoSha256 = "088drkpkgq8psv5j6igxyhfvvbalzg6nd98r9z0nxkawck5i2clz";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with stdenv.lib; {
     description = "A container debugging tool based on FUSE";
