@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, llvmPackages }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo, llvmPackages }:
 
 rustPlatform.buildRustPackage rec {
   pname = "parinfer-rust";
@@ -11,10 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0hj5in5h7pj72m4ag80ing513fh65q8xlsf341qzm3vmxm3y3jgd";
   };
 
-  cargoSha256 = "16ylk125p368mcz8nandmfqlygrqjlf8mqaxlbpixqga378saidl";
-
   nativeBuildInputs = [ llvmPackages.clang ];
-  buildInputs = [ llvmPackages.libclang ];
+  buildInputs = [ llvmPackages.libclang (importCargo ./Cargo.lock) ];
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
 
   postInstall = ''
