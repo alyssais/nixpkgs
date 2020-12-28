@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, coreutils, bash, installShellFiles }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, installShellFiles
+, coreutils, bash
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "just";
@@ -11,9 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "07fjixz8y5rxfwpyr1kiimnn27jhc20gacd17i0yvfcpy5qf8z5p";
   };
 
-  cargoSha256 = "1zn0kiqi8p25lscjd661gczay631nwzadl36cfzqnbww6blayy1j";
-
   nativeBuildInputs = [ installShellFiles ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     installManPage man/just.1
