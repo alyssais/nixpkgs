@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub, makeWrapper, z3 }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo, makeWrapper, z3 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "zz";
@@ -12,8 +12,7 @@ rustPlatform.buildRustPackage rec {
   };
 
   nativeBuildInputs = [ makeWrapper ];
-
-  cargoSha256 = "0yllcqxyyhwr9h0z8q84l0ms8x6jrqhpg79ik4xng6h5yf4ab0pq";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     wrapProgram $out/bin/zz --prefix PATH ":" "${lib.getBin z3}/bin"

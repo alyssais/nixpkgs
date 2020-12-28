@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/kino-mc/rsmt2'
+rev = 'ebce2e403d25ca739cfd717817be68844f80f13c'
+sha256 = '145fybyzw5mqs1m8d93c8gph7h57y3q4wcv8bs7cnyz09i5nq0s7'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
