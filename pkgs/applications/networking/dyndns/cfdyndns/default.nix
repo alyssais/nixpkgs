@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkg-config, openssl }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, pkg-config, openssl }:
 
 with rustPlatform;
 
@@ -12,10 +12,8 @@ buildRustPackage rec {
     sha256 = "1fba0w2979dmc2wyggqx4fj52rrl1s2vpjk6mkj1811a848l1hdi";
   };
 
-  cargoSha256 = "04ryin24z3pfxjxy4smngy66xs7k85g6gdzsl77cij8ifb29im99";
-
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ openssl ];
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ];
 
   installPhase = ''
     mkdir -p $out/bin
