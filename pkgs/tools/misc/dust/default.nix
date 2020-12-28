@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "du-dust";
@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
     '';
   };
 
-  cargoSha256 = "1q15xy15hk6r3sai9wry2jm57dhinx6r84yxg9fwvq354613k645";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = false;
 
