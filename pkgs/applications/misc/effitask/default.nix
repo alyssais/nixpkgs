@@ -1,5 +1,6 @@
 { stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , pkg-config
 , openssl
@@ -18,14 +19,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "09bffxdp43s8b1rpmsgqr2kyz3i4jbd2yrwbxw21fj3sf3mwb9ig";
   };
 
-  # workaround for missing Cargo.lock file https://github.com/sanpii/effitask/issues/48
-  cargoPatches = [ ./cargo-lock.patch ];
-
-  cargoSha256 = "0dvmp23kny6rlv6c0mfyy3cmz1bi5wcm1mxps4z67lym5kxfd362";
-
-  buildInputs = [ openssl gtk3 ];
-
   nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ (importCargo ./Cargo.lock) openssl gtk3 ];
 
   # default installPhase don't install assets
   installPhase = ''
