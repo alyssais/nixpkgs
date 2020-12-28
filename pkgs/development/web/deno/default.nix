@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , rust
 , rustPlatform
+, importCargo
 , installShellFiles
 , Security
 , CoreServices
@@ -27,10 +28,13 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0dxjcab10kqfkflq1x9np5wxlysq33swdwi2f28bi7q312sw5x2y";
     fetchSubmodules = true;
   };
-  cargoSha256 = "0lhdrsvmf5b4fq2yg9vc00q1sgc1fjk0fh5axs2zffcpsp73ay2k";
 
-  # Install completions post-install
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [
+    (importCargo ./Cargo.lock)
+
+    # Install completions post-install
+    installShellFiles
+  ];
 
   buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security CoreServices ];
 
