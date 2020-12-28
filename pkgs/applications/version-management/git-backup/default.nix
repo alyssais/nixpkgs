@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkg-config, openssl, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, pkg-config, openssl, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "git-backup";
@@ -11,11 +13,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0h31j8clvk4gkw4mgva9p0ypf26zhf7f0y564fdmzyw6rsz9wzcj";
   };
 
-  cargoSha256 = "09nfvzvgpdl5glzjays4lm50iwvjzbz364y6agya1a94qqwkaj7f";
-
   nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = [ openssl ] ++ stdenv.lib.optionals stdenv.isDarwin [ Security ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ Security ];
 
   meta = with stdenv.lib; {
     homepage = "https://github.com/jsdw/git-backup";
