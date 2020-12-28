@@ -1,4 +1,6 @@
-{ rustPlatform, lib, fetchFromGitHub, ncurses, openssl, pkgconfig, Security, stdenv }:
+{ rustPlatform, lib, fetchFromGitHub, importCargo
+, ncurses, openssl, pkgconfig, Security, stdenv
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "taizen";
@@ -11,10 +13,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "09izgx7icvizskdy9kplk0am61p7550fsd0v42zcihq2vap2j92z";
   };
 
-  buildInputs = [ ncurses openssl ] ++ lib.optional stdenv.isDarwin Security;
   nativeBuildInputs = [ pkgconfig ];
-
-  cargoSha256 = "0chrgwm97y1a3gj218x25yqk1y1h74a6gzyxjdm023msvs58nkni";
+  buildInputs = [ (importCargo ./Cargo.lock) ncurses openssl ]
+    ++ lib.optional stdenv.isDarwin Security;
 
   meta = with lib; {
     homepage = "https://crates.io/crates/taizen";
