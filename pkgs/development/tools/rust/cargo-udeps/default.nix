@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, pkgconfig, openssl, CoreServices, Security, libiconv }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, pkgconfig, openssl, CoreServices, Security, libiconv
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-udeps";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1h89xq91gbnbagfmvig5lkxyl08qwgdaf9vr55p599pmv190xq8s";
   };
 
-  cargoSha256 = "17931z5nbigfzvvhr6k64s2j9p1sp9nvmy5fyf92j3ci02dplm5c";
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig (importCargo ./Cargo.lock) ];
 
   buildInputs = [ openssl ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ CoreServices Security libiconv ];
