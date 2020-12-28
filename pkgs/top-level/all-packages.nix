@@ -4799,7 +4799,7 @@ in
 
   intecture-auth = callPackage ../tools/admin/intecture/auth.nix { };
 
-  intecture-cli = callPackage ../tools/admin/intecture/cli.nix {
+  intecture-cli = callPackage ../tools/admin/intecture/cli {
     openssl = openssl_1_0_2;
   };
 
