@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, libX11, libXinerama, makeWrapper }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, libX11, libXinerama, makeWrapper }:
 
 let
     rpath = stdenv.lib.makeLibraryPath [ libXinerama libX11 ];
@@ -17,7 +17,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "0m4sv4chxzk60njixlyja44rpn04apf3bm04fgd3v7abpr169f2s";
 
-  buildInputs = [ makeWrapper libX11 libXinerama ];
+  buildInputs = [ makeWrapper libX11 libXinerama (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     wrapProgram $out/bin/leftwm --prefix LD_LIBRARY_PATH : "${rpath}"
