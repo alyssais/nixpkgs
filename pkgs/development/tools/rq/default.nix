@@ -1,4 +1,6 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform, libiconv, llvmPackages, v8 }:
+{ stdenv, lib, fetchFromGitHub, rustPlatform, importCargo
+, libiconv, llvmPackages, v8
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "rq";
@@ -11,9 +13,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0km9d751jr6c5qy4af6ks7nv3xfn13iqi03wq59a1c73rnf0zinp";
   };
 
-  cargoSha256 = "0c5vwy3c5ji602dj64z6jqvcpi2xff03zvjbnwihb3ydqwnb3v67";
-
-  buildInputs = [ llvmPackages.clang-unwrapped v8 ]
+  buildInputs = [ llvmPackages.clang-unwrapped v8 (importCargo ./Cargo.lock) ]
   ++ lib.optionals stdenv.isDarwin [ libiconv ];
 
   configurePhase = ''
