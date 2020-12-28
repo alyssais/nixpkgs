@@ -1,0 +1,16 @@
+[[git]]
+url = 'https://github.com/clap-rs/clap'
+rev = '335f34bee26ceb31c63c17206bd56bb5847e697a'
+sha256 = '09izkxznr5252b0kai6nfflihshjx10laq0bykvmn5w092cdjjml'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/clap-rs/clap_derive'
+rev = '4a46684b1c522fe3fd45d653d6ba6c7cb885baa5'
+sha256 = '1xblymyq667gc2p8dpjirxkhdh8gr0gzciy2aacf4nbqf3wwfa2n'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

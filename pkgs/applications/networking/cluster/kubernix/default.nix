@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "kubernix";
@@ -11,7 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "04dzfdzjwcwwaw9min322g30q0saxpq5kqzld4f22fmk820ki6gp";
   };
 
-  cargoSha256 = "17agwqx7nhzi124yq1s6zpqb227drrhp9c11r3jbicc08dz88bwg";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
+
   doCheck = false;
 
   meta = with stdenv.lib; {
