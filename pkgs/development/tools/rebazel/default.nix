@@ -1,4 +1,5 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub, importCargo }:
+
 rustPlatform.buildRustPackage rec {
   pname = "rebazel";
   version = "0.1.4";
@@ -10,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-v84ZXhtJpejQmP61NmP06+qrtMu/0yb7UyD7U12xlME=";
   };
 
-  cargoSha256 = "sha256-2FmtbvtNfNoocj3Ly553KBLfOgBAa/eAxOrfZ3NGzzw=";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "tool for expediting bazel build workflows";
