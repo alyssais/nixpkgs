@@ -2,7 +2,7 @@
 , rustPlatform
 , fetchFromGitHub
 , makeWrapper
-
+, importCargo
 , cargo
 , nix
 , nix-prefetch-git
@@ -12,17 +12,15 @@ rustPlatform.buildRustPackage rec {
   pname = "crate2nix";
   version = "0.8.0";
 
-  src = fetchFromGitHub
-    {
-      owner = "kolloch";
-      repo = pname;
-      rev = version;
-      sha256 = "sha256-pqg1BsEq3kGmUzt1zpQvXgdnRcIsiuIyvtUBi3VxtZ4=";
-    } + "/crate2nix";
+  src = fetchFromGitHub {
+    owner = "kolloch";
+    repo = pname;
+    rev = version;
+    sha256 = "sha256-pqg1BsEq3kGmUzt1zpQvXgdnRcIsiuIyvtUBi3VxtZ4=";
+  };
+  sourceRoot = "source/crate2nix";
 
-  cargoSha256 = "sha256-dAMWrGNMleQ3lDbG46Hr4qvCyxR+QcPOUZw9r2/CxV4=";
-
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
 
   # Tests use nix(1), which tries (and fails) to set up /nix/var inside the
   # sandbox
