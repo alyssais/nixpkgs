@@ -1,4 +1,4 @@
-{ fetchFromGitHub, fzf, lib, makeWrapper, rustPlatform, wget }:
+{ fetchFromGitHub, lib, makeWrapper, rustPlatform, importCargo, fzf, wget }:
 
 rustPlatform.buildRustPackage rec {
   pname = "navi";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1vrj8ad004h6jgmcb56f3f19s4xk6gvcpwysj78bxzgpa1998r3r";
   };
 
-  cargoSha256 = "0yifgcf2pfszzny523ax7pb9a5r3012nynbnhdqg0j1ia1pdymf3";
-
   nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   postInstall = ''
     wrapProgram $out/bin/navi \
