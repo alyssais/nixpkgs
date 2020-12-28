@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, cmake, pkg-config, openssl, oniguruma, CoreServices }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, cmake, pkg-config, openssl, oniguruma, CoreServices
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "zola";
@@ -11,10 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256:0fb227kgani32ljnw73a0h5zn5361z5lraf79y34a0chcby2qv35";
   };
 
-  cargoSha256 = "sha256:0ilfr32zcajag05qcpwi5ixz250s427i4xrjf4wrk7qy32bblnr5";
-
   nativeBuildInputs = [ cmake pkg-config ];
-  buildInputs = [ openssl oniguruma ]
+  buildInputs = [ (importCargo ./Cargo.lock) openssl oniguruma ]
     ++ stdenv.lib.optional stdenv.isDarwin CoreServices;
 
   RUSTONIG_SYSTEM_LIBONIG = true;
