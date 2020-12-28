@@ -1,4 +1,6 @@
-{ stdenv, ncurses5, fetchFromGitHub, rustPlatform, libiconv, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, ncurses5, libiconv, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "git-interactive-rebase-tool";
@@ -11,9 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "10z3di2qypgsmg2z7xfs9nlrf9vng5i7l8dvqadv1l4lb9zz7i8q";
   };
 
-  cargoSha256 = "0jc6mhszxmwsdjk73wkfi0jjp9vkzzl9kk0dbnry6w7dyr5if8cc";
-
-  buildInputs = [ ncurses5 ] ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
+  buildInputs = [ ncurses5 (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   cargoParallelTestThreads = false;
 
