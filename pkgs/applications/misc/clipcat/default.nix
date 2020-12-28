@@ -1,5 +1,6 @@
-{ lib, fetchFromGitHub, installShellFiles, rustPlatform, rustfmt, xorg
-, pkgconfig, llvmPackages, clang, protobuf, python3 }:
+{ lib, fetchFromGitHub, installShellFiles, rustPlatform, importCargo
+, rustfmt, xorg, pkgconfig, llvmPackages, clang, protobuf, python3
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "clipcat";
@@ -11,8 +12,6 @@ rustPlatform.buildRustPackage rec {
     rev = "v${version}";
     sha256 = "1lhnm521qqy3aw2iyk1dv4yc5ms0c5x5iipx96bz6v6y0cnmf4kw";
   };
-
-  cargoSha256 = "04iflyvz8g53z658rkxafiyi2m9kzxwl3p1xgkjq7vacmz5jk15c";
 
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
 
@@ -33,7 +32,7 @@ rustPlatform.buildRustPackage rec {
 
     installShellFiles
   ];
-  buildInputs = [ xorg.libxcb ];
+  buildInputs = [ (importCargo ./Cargo.lock) xorg.libxcb ];
 
   cargoBuildFlags = [ "--features=all" ];
 

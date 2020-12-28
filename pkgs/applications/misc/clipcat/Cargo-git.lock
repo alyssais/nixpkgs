@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/xrelkd/x11-clipboard'
+rev = 'de648ede312e6b236e3b92119a014cac064b9e38'
+sha256 = '1f4s6h2cmlk3hhc6gjlna1w9zp1vl9m3yb79ivyjw95rss8pdb3l'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
