@@ -1,4 +1,6 @@
-{ lib, pkgconfig, curl, openssl, zlib, fetchFromGitHub, rustPlatform }:
+{ lib, fetchFromGitHub, rustPlatform, importCargo
+, pkgconfig, curl, openssl, zlib
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "elan";
@@ -11,11 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0ycw1r364g5gwh8796dpv1israpg7zqwx8mcvnacv2lqj5iijmby";
   };
 
-  cargoSha256 = "0hcaiy046d2gnkp6sfpnkkprb3nd94i9q8dgqxxpwrc1j157x6z9";
-
   nativeBuildInputs = [ pkgconfig ];
-
-  buildInputs = [ curl zlib openssl ];
+  buildInputs = [ (importCargo ./Cargo.lock) curl zlib openssl ];
 
   cargoBuildFlags = [ "--features no-self-update" ];
 
