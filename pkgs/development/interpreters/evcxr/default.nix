@@ -1,4 +1,6 @@
-{ cargo, fetchFromGitHub, makeWrapper, pkgconfig, rustPlatform, stdenv, gcc, Security, cmake }:
+{ stdenv, fetchFromGitHub, makeWrapper, rustPlatform, importCargo
+, cargo, cmake, gcc, pkgconfig, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "evcxr";
@@ -11,12 +13,11 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-QpUhUE65/IuT/VenziPX6z+CbJswbPPIv/ZnTthZpEU=";
   };
 
-  cargoSha256 = "sha256-iUzVd4XtD+41yTV/BmqWLenzAUNPfS7vIHm1KfuPe9A=";
-
   RUST_SRC_PATH = "${rustPlatform.rustLibSrc}";
 
   nativeBuildInputs = [ pkgconfig makeWrapper cmake ];
-  buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optional stdenv.isDarwin Security;
   postInstall = let
     wrap = exe: ''
       wrapProgram $out/bin/${exe} \
