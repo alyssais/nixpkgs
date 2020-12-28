@@ -2,6 +2,7 @@
 , cargo
 , lib
 , rustPlatform
+, importCargo
 , stdenv
 }:
 
@@ -16,7 +17,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1xr1szh4dfrcmi6s6dj791k1ix2zbv75rqkqbyb1lmh5548kywkg";
   };
 
-  cargoSha256 = "1rsnb4kzfb577xw7jk0939n42sv94vvspvbz783bmpy9vl53i38k";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   # Sanity check.
   checkPhase = ''
