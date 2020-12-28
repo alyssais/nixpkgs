@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , rustPlatform
+, importCargo
 , fetchpatch
 , fetchFromGitHub
 , pkg-config
@@ -20,12 +21,12 @@ rustPlatform.buildRustPackage rec {
     sha256 = "11kjndd4rzj83hzhcqvvp9nxjkana63m0h5r51xwp1ww9sn63km9";
   };
 
-  cargoSha256 = "079ns78acsff2qb59s7q0ck3j2fygcfqy8is6vfa71jyq7a0rjqm";
-
   RUSTC_BOOTSTRAP = 1;
 
   nativeBuildInputs = lib.optional stdenv.isLinux pkg-config;
-  buildInputs = lib.optionals stdenv.isLinux [ dbus openssl ] ++ lib.optional stdenv.isDarwin Foundation;
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ lib.optionals stdenv.isLinux [ dbus openssl ]
+    ++ lib.optional stdenv.isDarwin Foundation;
 
   meta = with lib; {
     description = "A console IRC client";
