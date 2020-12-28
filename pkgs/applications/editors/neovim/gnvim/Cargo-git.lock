@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/KillTheMule/nvim-rs'
+rev = '9efc7480f976d80f9e57443d62c1da2f37805186'
+sha256 = '1mrfarpr93pnz0zw0chrn4czaa1rzq9y5ihgmq5rbkbp5hpbqzn2'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
