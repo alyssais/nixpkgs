@@ -1,4 +1,8 @@
-{ rustPlatform, lib, fetchFromGitHub, lzma, pkgconfig, openssl, dbus, glib, udev, cairo, pango, atk, gdk-pixbuf, gtk3, wrapGAppsHook }:
+{ rustPlatform, lib, fetchFromGitHub, importCargo
+, lzma, pkgconfig, openssl, dbus, glib, udev, cairo, pango, atk, gdk-pixbuf, gtk3
+, wrapGAppsHook
+}:
+
 rustPlatform.buildRustPackage rec {
   pname = "firmware-manager";
   version = "0.1.1";
@@ -10,8 +14,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0x9604jsflqxvbkfp139mzjicpyx8v21139jj8bp88c14ngvmdlw";
   };
 
-  nativeBuildInputs = [ pkgconfig wrapGAppsHook ];
-
+  nativeBuildInputs = [ pkgconfig wrapGAppsHook (importCargo ./Cargo.lock) ];
   buildInputs = [ lzma openssl dbus glib udev cairo pango atk gdk-pixbuf gtk3 ];
 
   depsExtraArgs.postPatch = "make prefix='$(out)' toml-gen";
@@ -23,8 +26,6 @@ rustPlatform.buildRustPackage rec {
   buildPhase = "make prefix='$(out)'";
 
   installPhase = "make prefix='$(out)' install";
-
-  cargoSha256 = "0byc0pqa1w2qnfrx3psrzdq1c8qjslbmzxg872b9v6fr5d4c9cvg";
 
   doCheck = false;
 
