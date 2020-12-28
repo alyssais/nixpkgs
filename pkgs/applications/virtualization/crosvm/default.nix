@@ -1,4 +1,4 @@
-{ stdenv, lib, rustPlatform, fetchgit, runCommand, symlinkJoin
+{ stdenv, lib, rustPlatform, importCargo, fetchgit, runCommand, symlinkJoin
 , pkgconfig, minijail, dtc, libusb1, libcap, linux
 }:
 
@@ -53,11 +53,8 @@ in
       ./default-seccomp-policy-dir.diff
     ];
 
-    cargoSha256 = "0lhivwvdihslwp81i3sa5q88p5hr83bzkvklrcgf6x73arwk8kdz";
-
     nativeBuildInputs = [ pkgconfig ];
-
-    buildInputs = [ dtc libcap libusb1 minijail ];
+    buildInputs = [ dtc libcap libusb1 minijail (importCargo ./Cargo.lock) ];
 
     postPatch = ''
       sed -i "s|/usr/share/policy/crosvm/|$out/share/policy/|g" \
