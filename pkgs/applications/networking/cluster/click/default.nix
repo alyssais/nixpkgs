@@ -1,4 +1,4 @@
-{ darwin, fetchFromGitHub, rustPlatform, stdenv }:
+{ darwin, fetchFromGitHub, rustPlatform, importCargo, stdenv }:
 
 with rustPlatform;
 
@@ -13,9 +13,8 @@ buildRustPackage rec {
     sha256 = "18mpzvvww2g6y2d3m8wcfajzdshagihn59k03xvcknd5d8zxagl3";
   };
 
-  cargoSha256 = "1f9yn4pvp58laylngdrfdkwygisnzkhkm7pndf6l33k3aqxhz5mm";
-
-  buildInputs = stdenv.lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
   meta = with stdenv.lib; {
     description = ''The "Command Line Interactive Controller for Kubernetes"'';
