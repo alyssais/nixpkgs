@@ -25151,7 +25151,7 @@ in
   pivx = libsForQt5.callPackage ../applications/blockchains/pivx.nix { withGui = true; };
   pivxd = callPackage ../applications/blockchains/pivx.nix { withGui = false; };
 
-  ethabi = callPackage ../applications/blockchains/ethabi.nix { };
+  ethabi = callPackage ../applications/blockchains/ethabi { };
 
   stellar-core = callPackage ../applications/blockchains/stellar-core.nix { };
 
