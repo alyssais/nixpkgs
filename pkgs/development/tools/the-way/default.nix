@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, installShellFiles, AppKit, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, installShellFiles, importCargo
+, AppKit, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "the-way";
@@ -11,11 +13,10 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1whmvzpqm8x1q45mzrp4p40nj251drcryj9z4qjxgjlfsd5d1fxq";
   };
 
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [ installShellFiles (importCargo ./Cargo.lock) ];
 
   buildInputs = stdenv.lib.optionals stdenv.isDarwin  [ AppKit Security ];
 
-  cargoSha256 = "0adhgp6blwx7s1hlwqzzsgkzc43q9avxx8a9ykvvv2s1w7m9ql78";
   checkFlagsArray = stdenv.lib.optionals stdenv.isDarwin [ "--skip=copy" ];
   cargoParallelTestThreads = false;
 
