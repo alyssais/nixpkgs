@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkgconfig, openssl
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, pkgconfig, openssl
 , withALSA ? true, alsaLib ? null
 , withPulseAudio ? false, libpulseaudio ? null
 , withPortAudio ? false, portaudio ? null
@@ -18,8 +18,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "08i0zm7kgprixqjpgaxk7xid1njgj6lmi896jf9fsjqzdzlblqk8";
   };
 
-  cargoSha256 = "0200apqbx769ggjnjr0m72g61ikhml2xak5n1il2pvfx1yf5nw0n";
-
   cargoBuildFlags = [
     "--no-default-features"
     "--features"
@@ -27,8 +25,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   nativeBuildInputs = [ pkgconfig ];
-
-  buildInputs = [ openssl ]
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ]
     ++ stdenv.lib.optional withALSA alsaLib
     ++ stdenv.lib.optional withPulseAudio libpulseaudio
     ++ stdenv.lib.optional withPortAudio portaudio
