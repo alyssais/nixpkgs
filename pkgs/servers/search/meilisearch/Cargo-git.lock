@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/qdequele/assert-json-diff'
+rev = '9012a0c8866d0f2db0ef9a6242e4a19d1e8c67e4'
+sha256 = '1inv5y75acrw0vhpsc32rh5h0701vnm7c4lcsqcdzd8sdy76cisl'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
