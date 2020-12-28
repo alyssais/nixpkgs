@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/saresend/selenium-rs.git'
+rev = '0314a2420da78cce7454a980d862995750771722'
+sha256 = '1qqcmsh692gvcrp2j3cb60n2dx90l6psxwckm9pj36389fj8sy33'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

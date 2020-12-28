@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, cargo, rustc, rustPlatform, pkgconfig, glib, openssl, darwin }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, cargo, rustc, pkgconfig, glib, openssl, darwin
+}:
 
 rustPlatform.buildRustPackage rec {
   version = "0.2.13";
@@ -10,14 +12,13 @@ rustPlatform.buildRustPackage rec {
     rev = version;
     sha256 = "19z9fdkn3bnr8q33m66h2by6bs6kmhw3a2lq2n8bywmnhrjwhxpw";
   };
-  cargoSha256 = "1pm7il0x7i9mqx4vsmkcs8nq0dqr5ck3x3x7la6k39igaxn9vkwz";
 
   cargoBuildFlags = [ "--features=all" ];
   nativeBuildInputs = [
     pkgconfig cargo rustc
   ];
   buildInputs = [
-    openssl
+    openssl (importCargo ./Cargo.lock)
   ] ++ stdenv.lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.Security;
   # Tests fail because of client server setup which is not possible inside the pure environment,
   # see https://github.com/mozilla/sccache/issues/460
