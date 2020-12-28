@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/naim94a/tokio'
+rev = '4fb99d0fe2c3deb8dac774edd11316384ebb6667'
+sha256 = '0p136mgki67nc5gmza226y4kbixn2rm72cw3xikh6yl6k9xsk9p2'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
