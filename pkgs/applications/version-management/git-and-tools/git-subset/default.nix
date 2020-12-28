@@ -1,4 +1,6 @@
-{ stdenv, rustPlatform, fetchFromGitHub, pkg-config, openssl, curl, libiconv, Security }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, pkg-config, openssl, curl, libiconv, Security
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "git-subset";
@@ -11,11 +13,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "02z2r0kcd0nnn1zjslp6xxam5ddbhrmzn67qzxhlamsw0p9vvkbb";
   };
 
-  cargoSha256 = "1ydrrq35h1h5s59mx8kwwf3bp7lsmla3jl53ccdlsq29x0rj2jhs";
-
   nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = [ openssl ] ++ stdenv.lib.optionals stdenv.isDarwin [ curl libiconv Security ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ curl libiconv Security ];
 
   meta = with stdenv.lib; {
     description = "Super fast Git tree filtering";
