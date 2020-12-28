@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "rust-cbindgen";
@@ -11,8 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "19bwllrajks286wl4zc5axgh4m9qqxdnc5024c30hyk0xnjffd0c";
   };
 
-  cargoSha256 = "1lzzckzcgj496chbfd6lhwxcangv0krx8m5k2jwffnb9mfgac7hx";
-
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   checkFlags = [
