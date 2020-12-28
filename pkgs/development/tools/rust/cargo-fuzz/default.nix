@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-fuzz";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1d4bq9140bri8cd9zcxh5hhc51vr0s6jadjhwkp688w7k10rq7w8";
   };
 
-  cargoSha256 = "0zxhak79f50m8nw95ny733mk4x2f7kyk6q9v4f7jr2rkcldhgrpr";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = false;
 
