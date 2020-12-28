@@ -1,6 +1,7 @@
-{ lib, stdenv, callPackage, python3Packages, fetchFromGitLab, cacert,
-  rustPlatform, bubblewrap, git, perlPackages, imagemagick7, fetchurl, fetchzip,
-  jre, makeWrapper, tr-patcher, tes3cmd }:
+{ lib, stdenv, fetchurl, fetchFromGitLab, rustPlatform, importCargo, callPackage
+, python3Packages, cacert, bubblewrap, git, perlPackages, imagemagick7, fetchzip
+, jre, makeWrapper, tr-patcher, tes3cmd
+}:
 
 let
   version = "2.0_beta9";
@@ -16,9 +17,7 @@ let
     inherit src version;
     pname = "portmod-rust";
 
-    cargoSha256 = "14p1aywwbkf2pk85sir5g9ni08zam2hid0kaz111718b006nrxh7";
-
-    nativeBuildInputs = [ python3Packages.python ];
+    nativeBuildInputs = [ python3Packages.python (importCargo ./Cargo.lock) ];
 
     doCheck = false;
   };
