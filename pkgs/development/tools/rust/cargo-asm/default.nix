@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, Security }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-asm";
@@ -11,9 +11,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1f6kzsmxgdms9lq5z9ynnmxymk9k2lzlp3caa52wqjvdw1grw0rb";
   };
 
-  cargoSha256 = "0d797cisiydblh64vqpfdjf37wmxrvs77phdrqh582lbrvnfhx2j";
-
-  buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optional stdenv.isDarwin Security;
 
   # Test checks against machine code output, which fails with some
   # LLVM/compiler versions.
