@@ -1,5 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, clang, llvmPackages, rustfmt, writeScriptBin,
-  runtimeShell }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, writeScriptBin
+, clang, llvmPackages, rustfmt, runtimeShell
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "rust-bindgen";
@@ -14,11 +15,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0cbc78zrhda4adza88g05sy04chixqay2ylgdjgmf13h607hp3kn";
   };
 
-  cargoSha256 = "1dv1ywdy701bnc2jv5jq0hnpal1snlizaj9w6k1wxyrp9szjd48w";
-
   libclang = llvmPackages.libclang.lib; #for substituteAll
 
-  buildInputs = [ libclang ];
+  buildInputs = [ libclang (importCargo ./Cargo.lock) ];
 
   propagatedBuildInputs = [ clang ]; # to populate NIX_CXXSTDLIB_COMPILE
 
