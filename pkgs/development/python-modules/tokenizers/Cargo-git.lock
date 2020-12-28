@@ -1,0 +1,16 @@
+[[git]]
+url = 'https://github.com/n1t0/rayon-cond'
+rev = 'c56e4f1ded0fcb92eac70e0533703bba3ca2983f'
+sha256 = '0158xxn325798hmyfj9ckmgi8r35p803b0l32dvlpaglm8klr13p'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/pyo3/rust-numpy/'
+rev = 'e331befa27fede78d4662edf08fa0508db39be01'
+sha256 = '1sr4k5iwhbdm27caxjgqjd911ijsm478jdm3f6q1rfqh2qd6an70'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

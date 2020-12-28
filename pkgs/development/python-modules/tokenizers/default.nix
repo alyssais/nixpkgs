@@ -1,5 +1,6 @@
 { stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , fetchurl
 , pipInstallHook
@@ -59,8 +60,6 @@ in rustPlatform.buildRustPackage rec {
     hash = "sha256-JXoH9yfhMIFg5qDY5zrF6iWb7XKugjMfk1NxSizfaWg=";
   };
 
-  cargoSha256 = "sha256-u9qitrOxJSABs0VjwHUZgmw7VTQXNbp6l8fKKE/RQ7M=";
-
   sourceRoot = "source/bindings/python";
 
   nativeBuildInputs = [
@@ -69,6 +68,10 @@ in rustPlatform.buildRustPackage rec {
     wheel
   ];
 
+  buildInputs = [
+    (importCargo ./Cargo.lock)
+  ];
+  
   propagatedBuildInputs = [
     numpy
     python
