@@ -1,6 +1,7 @@
 { lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -14,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1qqqmdk0v1d3ckasmmw5lbrkvhkv0nws4bzi9cfi1ndhrbvbkbxb";
   };
 
-  cargoSha256 = "1fv13rbghfw7114h7sda04gpqrjrsgnnki0p9kdd6r6sk5cbhn9x";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = with lib; {
     description = "A simple, user-friendly alternative to sort | uniq";
