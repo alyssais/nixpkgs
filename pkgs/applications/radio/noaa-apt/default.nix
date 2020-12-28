@@ -1,6 +1,7 @@
 { lib
 , rustPlatform
 , fetchFromGitHub
+, importCargo
 , pkg-config
 , atk
 , cairo
@@ -27,6 +28,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     atk
     cairo
     gdk-pixbuf
@@ -35,8 +37,6 @@ rustPlatform.buildRustPackage rec {
     openssl
     pango
   ];
-
-  cargoSha256 = "0w4rbbz8lsh31xkgibzndiic47690nfcjrn1411dskf7ali6djy8";
 
   preBuild = ''
     # Used by macro pointing to resource location at compile time.

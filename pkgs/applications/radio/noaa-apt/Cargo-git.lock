@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/richinfante/satellite-rs'
+rev = '1f957264057882192e467e07df7fe10c5f29c008'
+sha256 = '1gwzq72a8h2ww40v4237m8h12v1yaswgqcb968kh372irbhg7527'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
