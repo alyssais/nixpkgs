@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitHub
 , installShellFiles
 , pkg-config
@@ -20,17 +21,13 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1lvwv238p8hrl4sc5pmnvaargl2dd25p44gxl3kibq5ng03afd0n";
   };
 
-  cargoSha256 = "1ibn22v24brdlrar6j7fryiwimbbw7byak265hrw7a5agf1799x0";
-
   nativeBuildInputs = [
     installShellFiles
     pkg-config
   ];
 
-  buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [
-    libiconv
-    Security
-  ];
+  buildInputs = [ openssl (importCargo ./Cargo.lock) ]
+    ++ lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   postInstall = ''
     installManPage man/*.1
