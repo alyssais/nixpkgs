@@ -4,7 +4,9 @@
 , llvmPackages
 , protobuf
 , rustPlatform
+, importCargo
 }:
+
 rustPlatform.buildRustPackage rec {
   pname = "polkadot";
   version = "0.8.26-1";
@@ -16,9 +18,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "17ji1gjrx3gzw4msaz9kgvm132y14wgh8z183l3mfw1cj44a6kqk";
   };
 
-  cargoSha256 = "07zwlwx02xw1y20br2c4grwv7bprhynqy7gav4qh3vw117ijpiqk";
-
   nativeBuildInputs = [ clang ];
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
   PROTOC = "${protobuf}/bin/protoc";

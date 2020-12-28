@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/paritytech/substrate'
+rev = '668ecade60abe5a644868aefd3d231c9839fe652'
+sha256 = '0jm3dhk0l1gkiva8w0zawm0zm9xfw3mw1l1fjpyrlr36lh7bp437'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
