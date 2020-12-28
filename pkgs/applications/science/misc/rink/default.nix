@@ -1,4 +1,6 @@
-{ stdenv, fetchFromGitHub, rustPlatform, openssl, pkg-config, ncurses }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo
+, openssl, pkg-config, ncurses
+}:
 
 rustPlatform.buildRustPackage rec {
   version = "0.5.1";
@@ -11,10 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1s67drjzd4cf93hpm7b2facfd6y1x0s60aq6pygj7i02bm0cb9l9";
   };
 
-  cargoSha256 = "1wd70y13lly7nccaqlv7w8znxfal0fzyf9d67y5c3aikj7hkzfin";
-
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ openssl ncurses ];
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ncurses ];
 
   # Some tests fail and/or attempt to use internet servers.
   doCheck = false;
