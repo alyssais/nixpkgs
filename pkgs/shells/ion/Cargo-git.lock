@@ -1,0 +1,48 @@
+[[git]]
+url = 'https://github.com/AdminXVII/nix'
+rev = '64b3ea0fb108b9933766fd7e049e2c320636b972'
+sha256 = '0f61pb884b42g43dkk9bz8cmnsv2myma3mvx665v9077anysxz1j'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/alkis/decimal.git'
+rev = '972c8547a0a76c7ad9a314e28a335aa57d46a543'
+sha256 = '10q117rn1p3rmvbyacaqvrbjghb1dih8aif72lsnxcg53b0hx36x'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.redox-os.org/redox-os/calc'
+rev = '1da4d1b970c8a94fcd8b299829661ab693d6d764'
+sha256 = '0lszvgczchijzi9ba3jmb9spzc70asqj25vgfl08249l062v878n'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.redox-os.org/redox-os/liner'
+rev = 'de63c6f6c4efa9c542dd27d49598cadefa8bba0d'
+sha256 = '0pd1l7rk3xb1y80qzsqz9b10bajzm6d5n8vkmnihi8zkghk61qb0'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.redox-os.org/redox-os/small'
+rev = '42641eb80f89cc007b178b5bda5105f26f5f0f92'
+sha256 = '101fsnn9kgvdmlym3qnsyi79hqlkdy4iz4f0bd9l261wgrqbmdh9'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.redox-os.org/redox-os/termion'
+rev = 'a448f510f0b525896fed9f14a53030203d7f19ad'
+sha256 = '0jkmfiig3gw0778h04z0p618igz37sc9rxs2d4h9cn899lhl8r9h'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
