@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform, qt5, git, cmake
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, qt5, git, cmake
 , pkgconfig, makeWrapper }:
 
 rustPlatform.buildRustPackage rec {
@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage rec {
   };
 
   nativeBuildInputs = [ cmake pkgconfig ];
-  buildInputs = [ makeWrapper ];
+  buildInputs = [ makeWrapper (importCargo ./Cargo.lock) ];
   propagatedBuildInputs = with qt5; [
      qt5.qtbase
      qtdeclarative
@@ -23,7 +23,6 @@ rustPlatform.buildRustPackage rec {
      git
   ];
 
-  cargoSha256 = "1hdsn011y9invfy7can8c02zwa7birj9y1rxhrj7wyv4gh3659i0";
   doCheck = false;
 
   postInstall = ''
