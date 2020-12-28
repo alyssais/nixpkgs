@@ -1,6 +1,7 @@
 { stdenv
 , rustPlatform
 , fetchFromGitHub
+, importCargo
 , installShellFiles
 , Security
 }:
@@ -16,11 +17,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0iydkbmx9z7xpwaif0han5jvy9xh1afmfyldl7fcyy4r906dsmhx";
   };
 
-  cargoSha256 = "0iibjh2ll181j69vld1awvjgyv3xwmq0abh10651la4k4jpppx46";
-
   nativeBuildInputs = [ installShellFiles ];
-
-  buildInputs = stdenv.lib.optionals stdenv.isDarwin [ Security ];
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ Security ];
 
   postInstall = ''
     installManPage texlab.1

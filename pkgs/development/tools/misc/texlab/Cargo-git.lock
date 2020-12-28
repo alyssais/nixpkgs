@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/cormacrelf/citeproc-rs'
+rev = '68c7a7c16088b5d7751641ab37299ad064cdb221'
+sha256 = '1ancl9p8faj4pvls07b1kdbimcwg1vwxgd6y0rw6jfxvskbw9jhz'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
