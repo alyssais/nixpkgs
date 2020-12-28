@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "todiff";
@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1y0v8nkaqb8kn61xwarpbyrq019gxx1f5f5p1hzw73nqxadc1rcm";
   };
 
-  cargoSha256 = "1vyc230a2b0dry2057mkdkrjb7s9d0p43fnz4q67aqrpyr4jxwx2";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   checkPhase = "cargo test --features=integration_tests";
 
