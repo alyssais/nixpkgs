@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , pkgconfig
 , extra-cmake-modules
 , libX11
@@ -23,14 +24,13 @@ rustPlatform.buildRustPackage rec {
     sha256 = "11b02i254dn5nwk8m2g21ixz22qcqgcf90vwll0n3yny78p40hn0";
   };
 
-  cargoSha256 = "1cnz6rbqbb08j67bw485qi22pi31b3l3yzgr6w1qx780ldf1zd54";
-
   nativeBuildInputs = [
     extra-cmake-modules
     pkgconfig
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     libX11
     libXtst
     libXi
