@@ -1,6 +1,7 @@
 { lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , cmake
 , llvmPackages
 , openssl
@@ -21,8 +22,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "cs84Zz0nhagGDu5sDFTaFZF3SPEgJU8F4vGX7KLihOM=";
   };
 
-  cargoSha256 = "6suNkHw1BbISb0MkYkUaD+mpUal+kn3y1SFVqzJFqJc=";
-
   LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
   nativeBuildInputs = [
     cmake
@@ -31,7 +30,7 @@ rustPlatform.buildRustPackage rec {
     pkg-config
   ];
 
-  buildInputs = [ openssl ]
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ]
     ++ stdenv.lib.optionals stdenv.isLinux [ systemd ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ darwin.Security ];
 

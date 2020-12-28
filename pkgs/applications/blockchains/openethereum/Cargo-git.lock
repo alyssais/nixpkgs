@@ -1,0 +1,48 @@
+[[git]]
+url = 'https://github.com/cheme/heapsize.git'
+rev = 'c07ffe843acb9da570682e290a48540741afdce1'
+sha256 = '1b0crl8h6l3vvqvsg17czj5c3shdqgm7dfy4dx7bhy62a4as4xjg'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/matter-labs/eip1962.git'
+rev = 'ece6cbabc41948db4200e41f0bfdab7ab94c7af8'
+sha256 = '1gnwpn1knh3dpmd1lk9c1217vfpbh7n5wjnjvgsf291bw2wg58ns'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/openethereum/app-dirs-rs'
+rev = '0b37f9481ce29e9d5174ad185bca695b206368eb'
+sha256 = '185s8xl82rqh0n2dqldi1x98lrmsascgfkdaxha0xfallmppyzyf'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/paritytech/bn'
+rev = '6079255e65793038b9a6e5292203eab482737cc2'
+sha256 = '09fks2i45g7l2jlh1ar9yqdviks5ic3x1wscy3m5l0bn0dklina9'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/paritytech/rust-ctrlc.git'
+rev = 'b523017108bb2d571a7a69bd97bc406e63bc7a9d'
+sha256 = '055r7h6abvjc5a38n6mmiiykb56dyiibfzmkfggiz78g3vc538h2'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/paritytech/rust-secp256k1'
+rev = 'ccc06e7480148b723eb44ac56cf4d20eec380b6f'
+sha256 = '11ip03kr2mz5286j1hnfqk6mdbgmx73ihnr39sgvk6sjmhy7xgys'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
