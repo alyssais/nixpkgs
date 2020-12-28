@@ -1,4 +1,4 @@
-{ fetchFromGitHub, rustPlatform, stdenv }:
+{ fetchFromGitHub, rustPlatform, importCargo, stdenv }:
 
 with rustPlatform;
 
@@ -13,7 +13,7 @@ buildRustPackage rec {
     sha256 = "1wxglc4n1dar5qphhj5pab7ps34cjr7jy611fwn72lz0f6c7jp3z";
   };
 
-  cargoSha256 = "1s7g9mcjyp0pjjxma1mb290fi7fk54qy2khh1zksxhr4d3mciv08";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   meta = {
     description = "Generate changelogs from local git metadata";
