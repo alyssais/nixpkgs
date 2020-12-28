@@ -2,6 +2,7 @@
 , lib
 , fetchgit
 , rustPlatform
+, importCargo
 , pkgconfig
 , openssl
 , dbus
@@ -24,14 +25,11 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0ycyksrrp4llwklzx3ipac8hmpfxa1pa7dqsm82wic0f6p5d1dp6";
   };
 
-  cargoSha256 = "sha256:0lxwhb2c16w5z7rqzch0ij8n8hxb5xcin31w9i28mzv1xm7sg8ks";
-
   cargoBuildFlags = lib.optional withNotmuch "--features=notmuch";
 
   nativeBuildInputs = [ pkgconfig gzip makeWrapper ];
-
-  buildInputs = [ openssl dbus sqlite ] ++ lib.optional withNotmuch notmuch;
-
+  buildInputs = [ (importCargo ./Cargo.lock) openssl dbus sqlite ]
+    ++ lib.optional withNotmuch notmuch;
   checkInputs = [ file ];
 
   postInstall = ''
