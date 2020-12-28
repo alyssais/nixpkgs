@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, rustPlatform }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo }:
 
 rustPlatform.buildRustPackage rec {
   pname = "unpfs";
@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage rec {
 
   sourceRoot = "source/example/unpfs";
 
-  cargoSha256 = "13mk86d8ql2196039qb7z0rx4svwffw1mzpiyxp35gg5fhcphriq";
+  nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
   RUSTC_BOOTSTRAP = 1;
 
