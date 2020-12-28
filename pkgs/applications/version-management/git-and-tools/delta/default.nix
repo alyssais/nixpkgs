@@ -2,6 +2,7 @@
 , lib
 , fetchFromGitHub
 , rustPlatform
+, importCargo
 , installShellFiles
 , libiconv
 , Security
@@ -18,11 +19,9 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1ng22g9h1l1v2yav8zh6w4nn6ifv8sfz8566m8155d0cza2iimw6";
   };
 
-  cargoSha256 = "0b3qv1ksk8fmpawih2qrz29wlpj1gvq9hw4yqm7hdk6awl5h8lvv";
-
   nativeBuildInputs = [ installShellFiles ];
-
-  buildInputs = lib.optionals stdenv.isDarwin [ libiconv Security ];
+  buildInputs = [ (importCargo ./Cargo.lock) ]
+    ++ lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   postInstall = ''
     installShellCompletion --bash --name delta.bash etc/completion/completion.bash
