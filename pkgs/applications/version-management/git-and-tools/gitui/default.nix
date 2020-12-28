@@ -1,4 +1,7 @@
-{ stdenv, rustPlatform, fetchFromGitHub, libiconv, xorg, python3, Security, AppKit }:
+{ stdenv, rustPlatform, fetchFromGitHub, importCargo
+, libiconv, xorg, python3, Security, AppKit
+}:
+
 rustPlatform.buildRustPackage rec {
   pname = "gitui";
   version = "0.10.1";
@@ -10,10 +13,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1ifwbi6nydh66z6cprjmz2qvy9z52rj9jg2xf054i249gy955hah";
   };
 
-  cargoSha256 = "1454dn7k1fc4yxhbcmx0z3hj9d9srnlc2k1qp707h1vq46ib1rsf";
-
   nativeBuildInputs = [ python3 ];
-  buildInputs = [ ]
+  buildInputs = [ (importCargo ./Cargo.lock) ]
     ++ stdenv.lib.optional stdenv.isLinux xorg.libxcb
     ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv Security AppKit ];
 
