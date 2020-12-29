@@ -14,7 +14,8 @@ do
     path="$(dirname "$position")/Cargo.lock"
 
     src="$(nix-build --no-out-link -A "$attr.src")"
-    sourceRoot="$(nix-instantiate --eval --json -A "$attr.sourceRoot" | jq -r .)"
+    sourceRoot="$(nix-instantiate -E --eval --json --argstr attr "$attr" \
+        '{ attr }: (import ./. {}).${attr}.sourceRoot or "source"' | jq -r .)/"
 
-    cp -v --no-preserve=mode "$src/${sourceRoot#*/}/Cargo.lock" "$path"
+    cp -v --no-preserve=mode "$src/${sourceRoot#*/}Cargo.lock" "$path" || true
 done
