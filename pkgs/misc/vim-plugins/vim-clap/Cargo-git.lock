@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/hniksic/rust-subprocess'
+rev = 'fa60ef18244d8edcc1b3146f100e595e264cdd9b'
+sha256 = '1ljpnxlg12y0m1wmgp229r5rs32ja1amlmbj55734bf40r4lz472'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

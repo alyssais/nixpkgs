@@ -624,6 +624,7 @@ self: super: {
         ];
 
         buildInputs = [
+          (importCargo vim-clap/Cargo.lock)
           openssl
         ] ++ stdenv.lib.optionals stdenv.isDarwin [
           CoreServices
@@ -631,8 +632,6 @@ self: super: {
           libgit2
           libiconv
         ];
-
-        cargoSha256 = "QUi3GyAsakAtDQkiVA7ez05s5CixqsVSp92svYmcWdQ=";
       };
     in ''
       ln -s ${maple-bin}/bin/maple $target/bin/maple
