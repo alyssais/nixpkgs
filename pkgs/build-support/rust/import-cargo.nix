@@ -7,8 +7,8 @@ path:
 
 let
   inherit (builtins) dirOf elemAt filter head match pathExists toJSON;
-  inherit (lib) concatMapStrings escapeShellArg hasPrefix importTOML
-    optionalString optionals;
+  inherit (lib) concatMapStrings escapeShellArg escapeShellArgs hasPrefix
+    importTOML optionalString optionals;
 
   # We don't use fetchCrate from elsewhere in Nixpkgs because it
   # calculates hashes of unpack crates, and the hashes that Cargo
@@ -103,28 +103,38 @@ let
     replace-with = "vendored-sources"
     '') gitDeps}
     [source.vendored-sources]
-    directory = "import-cargo/vendor"
+    directory = "/build/.cargo/vendor"
   '';
 
 in
 
-# Create a setup hook that will initialize CARGO_HOME. Note:
-# we don't point CARGO_HOME at the vendor tree directly
-# because then we end up with a runtime dependency on it.
+# Cargo walks recursively up the directory tree looking for
+# .cargo/config, so we can put our configuration there without
+# conflicting with repository configuration.
 makeSetupHook {} (writeScript "make-cargo-home" ''
-  if [[ -z ''${CARGO_HOME-} || $CARGO_HOME = /build ]]; then
-    export CARGO_HOME=$TMPDIR/import-cargo
+  mkdir -p $NIX_BUILD_TOP/.cargo/vendor
 
-    mkdir -p $CARGO_HOME/vendor
-    ${concatMapStrings ({ name, version, ... } @ crate: ''
-      cp -r ${vendorCrate crate} $CARGO_HOME/vendor/${name}-${version}
-    '') externalDeps}
+  importCrate() {
+      local name="$1"
+      local version="$2"
+      local path="$3"
 
-    cp ${path} $CARGO_HOME/Cargo.lock
-    cp ${config} $CARGO_HOME/config
+      if [[ -f $path/build.rs ]]
+      then
+          # build.rs might want to write into the crate sources, so
+          # make sure it's writeable.
+          cp -rvn "$path" "$NIX_BUILD_TOP/.cargo/vendor/$name-$version"
+      else
+          ln -sv "$path" "$NIX_BUILD_TOP/.cargo/vendor/$name-$version"
+      fi
+  }
 
-    # config has to be writeable so buildRustPackage can add to it,
-    # and crate sources have to be writeable for build.rs.
-    chmod -R +w $CARGO_HOME/config $CARGO_HOME/vendor
-  fi
+  ${concatMapStrings ({ name, version, ... } @ crate: ''
+    importCrate ${escapeShellArgs [ name version (vendorCrate crate) ]}
+  '') externalDeps}
+  # crate sources have to be writeable for build.rs.
+  chmod -R +w $NIX_BUILD_TOP/.cargo/vendor
+
+  cp ${path} $NIX_BUILD_TOP/.cargo/Cargo.lock
+  cat ${config} >> $NIX_BUILD_TOP/.cargo/config
 '')

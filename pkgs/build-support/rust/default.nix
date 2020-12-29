@@ -138,7 +138,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
 
     cat >> .cargo/config <<'EOF'
   '' else ''
-    cat >> $CARGO_HOME/config <<'EOF'
+    cat >> $NIX_BUILD_TOP/.cargo/config <<'EOF'
   '') + ''
     [target."${rust.toRustTarget stdenv.buildPlatform}"]
     "linker" = "${ccForBuild}"
@@ -192,7 +192,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
       exit 1
     fi
   '' + stdenv.lib.optionalString (cargoSha256 == "unset" && cargoVendorDir == null) ''
-    cp $CARGO_HOME/Cargo.lock .
+    cp $NIX_BUILD_TOP/.cargo/Cargo.lock .
   '' + ''
     unset cargoDepsCopy
   '';
