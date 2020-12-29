@@ -1,5 +1,6 @@
 { stdenv
 , rustPlatform
+, importCargo
 , fetchFromGitLab
 , fetchpatch
 , meson
@@ -31,8 +32,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0y2332zjq7vf1v38wzwz98fs19vpzy9kl7y0xbdzqr303l59hjb1";
   };
 
-  cargoSha256 = "1jbii9k4bkrivdk1ffr6556q1sgk9j4jbzwnn8vbxmksyl1x328q";
-
   nativeBuildInputs = [
     meson
     ninja
@@ -46,6 +45,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     glib
     gtk3
     libhandy_0

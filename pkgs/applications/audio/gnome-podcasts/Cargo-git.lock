@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/danigm/gettext-rs'
+rev = '61938b9f5f1d3bdc31f9839f53fabe5ccf136a78'
+sha256 = '1n70vpw72smzpfn7qq09r8l2h5cm39hxh8h1y8lc8598zmnpa9n3'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
