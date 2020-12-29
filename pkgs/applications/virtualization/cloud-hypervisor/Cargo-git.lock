@@ -1,0 +1,64 @@
+[[git]]
+url = 'https://github.com/cloud-hypervisor/kvm-bindings'
+rev = '3a6780089e0e2d69aaf77666524e81801c814bdd'
+sha256 = '1w9gfwfm28nlbxymrw4x1kq7jrmr3czaylmavv1jzj46mmznyp6k'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/cloud-hypervisor/kvm-ioctls'
+rev = '5b7f1cc5de6d9664ee30e7d6a2f183499de0f685'
+sha256 = '0wdz5xlvi1q63myzn5xbb86bwhsl4dxrv0wq5cjqs4fn69jkvqbl'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/cloud-hypervisor/vfio-ioctls'
+rev = 'f6f81ee865cb60a24ad5d4ba8200940ed1d5d1f4'
+sha256 = '1jwdn40lgknm54cp4bvqcp9c67z75dcd6mhg6s694qqa33zpl98s'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/cloud-hypervisor/vhost'
+rev = '3e80cf531d278aeb7f947335a4eeca655e0f2c54'
+sha256 = '0kq912cnzq41vffzlkxny9r7mlp9qy2myfq3rzlkc4s98iq4sagf'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/cloud-hypervisor/vm-memory'
+rev = '708e9aa5d4317f7044d9835fe5080287e9c76f21'
+sha256 = '11z8vcn1jwhhfbn6d7p9swyvgwj5kd6w1034vc7cb83b9cz2slkj'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/firecracker-microvm/firecracker'
+rev = '047a379eb041f9ceae35df5fa072d88cac55340e'
+sha256 = '00yiaw44sz544hygmfjx1hdm3wphq5l0qr8pq36nq84ywvxllz2s'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/firecracker-microvm/micro-http'
+rev = 'c9ffb90aebdc77a8fade2e4196f311f9bbfcce82'
+sha256 = '1zizc6hypza7mdzrgwk8lm292cp4ajnp8jjk6fikwc0bxlbx95il'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/rust-vmm/linux-loader'
+rev = '1af92d21adfab105e05146625d7dace58892612d'
+sha256 = '05r16z9nxglsjfrwgwaqvjvmz8xxq9xvjab9r71xpgr965vbdhyv'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

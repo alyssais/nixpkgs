@@ -1,0 +1,11 @@
+diff --git a/pci/Cargo.toml b/pci/Cargo.toml
+index 9c6955c7..4ecf8e6b 100644
+--- a/pci/Cargo.toml
++++ b/pci/Cargo.toml
+@@ -23,5 +23,5 @@ vm-memory = "0.2.1"
+ vm-migration = { path = "../vm-migration" }
+ 
+ [dependencies.vfio-bindings]
+-git = "https://github.com/rust-vmm/vfio-bindings"
++version = "0.2.0"
+ features = ["fam-wrappers"]
