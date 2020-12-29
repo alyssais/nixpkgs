@@ -15,9 +15,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "03kk3vg0r88317zv8j2bj44wq2fwxi25rv1aasvayrh1i5j6zr10";
   };
 
-  cargoSha256 = "0m4sv4chxzk60njixlyja44rpn04apf3bm04fgd3v7abpr169f2s";
-
-  buildInputs = [ makeWrapper libX11 libXinerama (importCargo ./Cargo.lock) ];
+  buildInputs = [ (importCargo ./Cargo.lock) makeWrapper libX11 libXinerama ];
 
   postInstall = ''
     wrapProgram $out/bin/leftwm --prefix LD_LIBRARY_PATH : "${rpath}"
