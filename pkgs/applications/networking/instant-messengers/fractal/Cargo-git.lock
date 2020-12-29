@@ -1,0 +1,24 @@
+[[git]]
+url = 'https://github.com/danigm/either.git'
+rev = '60c99bc0723491e2dfd42bbe9b485c5f9323e96b'
+sha256 = '1s1x4njm1dxdbdspg6vhcv378z6skb5yqzj3kbnvw4aayqwgssrf'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://github.com/danigm/gettext-rs'
+rev = '61938b9f5f1d3bdc31f9839f53fabe5ccf136a78'
+sha256 = '1n70vpw72smzpfn7qq09r8l2h5cm39hxh8h1y8lc8598zmnpa9n3'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
+[[git]]
+url = 'https://gitlab.gnome.org/World/Rust/sourceview4-rs.git'
+rev = 'fa8819fa7ecbe56f44d951656d3825f468915754'
+sha256 = '1bm1y4k3czplyf796cxgs4k6lrdhkjb7f52ligml73pakz9s1q26'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

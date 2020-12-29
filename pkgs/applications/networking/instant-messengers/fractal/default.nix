@@ -9,6 +9,7 @@
 , rustc
 , python3
 , rustPlatform
+, importCargo
 , pkg-config
 , gtksourceview4
 , glib
@@ -36,8 +37,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "DSNVd9YvI7Dd3s3+M0+wE594tmL1yPNMnD1W9wLhSuw=";
   };
 
-  cargoSha256 = "xim5sOzeXJjRXbTOg2Gk/LHU0LioiyMK5nSr1LwMPjc=";
-
   nativeBuildInputs = [
     cargo
     gettext
@@ -51,6 +50,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     cairo
     dbus
     gdk-pixbuf
