@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://gitlab.gnome.org/haecker-felix/libhandy-rs.git'
+rev = '62e7abf44d419cf3fe83da64285f2905da4e333e'
+sha256 = '0ipljm2kmnxp727cj0f4xj707pr6kni335llw0likvl1brmrsakg'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

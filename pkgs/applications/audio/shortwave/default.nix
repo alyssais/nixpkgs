@@ -17,6 +17,7 @@
 , rust
 , rustc
 , rustPlatform
+, importCargo
 , sqlite
 , wrapGAppsHook
 }:
@@ -33,8 +34,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1vlhp2ss06j41simjrrjg38alp85jddhqyvccy6bhfzm0gzynwld";
   };
 
-  cargoSha256 = "181699rlpr5dszc18wg0kbss3gfskxaz9lpxpgsc4yfb6ip89qnk";
-
   nativeBuildInputs = [
     cargo
     desktop-file-utils
@@ -49,6 +48,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     dbus
     gdk-pixbuf
     glib
