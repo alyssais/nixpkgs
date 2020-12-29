@@ -1,5 +1,5 @@
 { stdenv, lib, fetchFromGitHub
-, rustPlatform, pkgconfig, openssl
+, rustPlatform, importCargo, pkgconfig, openssl
 # darwin dependencies
 , Security, CoreFoundation, libiconv
 }:
@@ -14,9 +14,6 @@ rustPlatform.buildRustPackage rec {
     rev = "${pname}-${version}";
     sha256 = "0kvmjahyx5dcjhry2hkvcshi0lbgipfj0as74a3h3bllfvdfkkg0";
   };
-
-  cargoSha256 = "0v50fkyf0a77l7whxalwnfqfi8lxy82z2gpd0fa0ib80qjla2n5z";
-  cargoPatches = [ ./cargo-lock.patch ];
 
   # Multiple tests require internet connectivity, so they are disabled here.
   # If we ever get cargo-insta (https://crates.io/crates/insta) in tree,
@@ -35,7 +32,8 @@ rustPlatform.buildRustPackage rec {
     --skip test_package::case_6
   '';
 
-  buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [ Security libiconv ];
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ]
+    ++ lib.optionals stdenv.isDarwin [ Security libiconv ];
   nativeBuildInputs = [ pkgconfig ];
 
   # FIXME: Use impure version of CoreFoundation because of missing symbols.
