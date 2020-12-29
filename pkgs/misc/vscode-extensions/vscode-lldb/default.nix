@@ -1,5 +1,6 @@
-{ lib, stdenv, vscode-utils, fetchFromGitHub, rustPlatform, makeWrapper, jq
-, nodePackages, cmake, nodejs, unzip, python3, lldb, breakpointHook
+{ lib, stdenv, vscode-utils, fetchFromGitHub, rustPlatform, importCargo
+, makeWrapper, jq, nodePackages, cmake, nodejs, unzip, python3, lldb
+, breakpointHook
 , setDefaultLldbPath ? true
 }:
 assert lib.versionAtLeast python3.version "3.5";
@@ -22,12 +23,10 @@ let
     pname = "${name}-adapter";
     inherit version src;
 
-    cargoSha256 = "0jl4msf2jcjxddwqkx8fr0c35wg4vwvg5c19mihri1v34i09zc5r";
-
-    # It will pollute the build environment of `buildRustPackage`.
-    cargoPatches = [ ./reset-cargo-config.patch ];
+    patches = [ ./reset-cargo-config.patch ];
 
     nativeBuildInputs = [ makeWrapper ];
+    buildInputs = [ (importCargo ./Cargo.lock) ];
 
     buildAndTestSubdir = "adapter";
 
