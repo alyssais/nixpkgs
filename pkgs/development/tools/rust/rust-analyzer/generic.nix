@@ -3,12 +3,12 @@
 , doCheck ? true
 
 # Version specific args
-, rev, version, sha256, cargoSha256
+, rev, version, sha256, vendoredDeps
 }:
 
 rustPlatform.buildRustPackage {
   pname = "rust-analyzer-unwrapped";
-  inherit version cargoSha256;
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
@@ -22,8 +22,9 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = lib.optional useMimalloc cmake;
 
-  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin
-    [ darwin.apple_sdk.frameworks.CoreServices ];
+  buildInputs = [ vendoredDeps ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin
+      [ darwin.apple_sdk.frameworks.CoreServices ];
 
   RUST_ANALYZER_REV = rev;
 
