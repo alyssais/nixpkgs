@@ -477,7 +477,7 @@ self: super: {
     vim-markdown-composer-bin = rustPlatform.buildRustPackage rec {
       pname = "vim-markdown-composer-bin";
       inherit (super.vim-markdown-composer) src version;
-      cargoSha256 = "iuhq2Zhdkib8hw4uvXBjwE5ZiN1kzairlzufaGuVkWc=";
+      buildInputs = [ (importCargo vim-markdown-composer/Cargo.lock) ];
     };
   in super.vim-markdown-composer.overrideAttrs(oldAttrs: rec {
     preFixup = ''
