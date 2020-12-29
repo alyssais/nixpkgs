@@ -1,6 +1,9 @@
-{ stdenv, fetchFromGitHub, rustPlatform, pkgconfig, openssl, withRodio ? true
-, withALSA ? true, alsaLib ? null, withPulseAudio ? false, libpulseaudio ? null
-, withPortAudio ? false, portaudio ? null }:
+{ stdenv, fetchFromGitHub, rustPlatform, importCargo, pkgconfig, openssl
+, withRodio ? true
+, withALSA ? true, alsaLib ? null
+, withPulseAudio ? false, libpulseaudio ? null
+, withPortAudio ? false, portaudio ? null
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "librespot";
@@ -12,10 +15,6 @@ rustPlatform.buildRustPackage rec {
     rev = "v${version}";
     sha256 = "1ixh47yvaamrpzagqsiimc3y6bi4nbym95843d23am55zkrgnmy5";
   };
-
-  cargoSha256 = "1csls8kzzx28ng6w9vdwhnnav5sqp2m5fj430db5z306xh5acg3d";
-
-  cargoPatches = [ ./cargo-lock.patch ];
 
   cargoBuildFlags = with stdenv.lib; [
     "--no-default-features"
@@ -31,7 +30,8 @@ rustPlatform.buildRustPackage rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  buildInputs = [ openssl ] ++ stdenv.lib.optional withALSA alsaLib
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ]
+    ++ stdenv.lib.optional withALSA alsaLib
     ++ stdenv.lib.optional withPulseAudio libpulseaudio
     ++ stdenv.lib.optional withPortAudio portaudio;
 
