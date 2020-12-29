@@ -1,7 +1,7 @@
 { lib
 , rustPlatform
+, importCargo
 , python
-, fetchpatch
 , fetchFromGitHub
 , pipInstallHook
 , maturin
@@ -22,15 +22,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "1xqp6d39apkjvd0ad9vw81cp2iqzhpagfa4p171xqm3bwfn2imdc";
   };
 
-  cargoSha256 = "0bma0l14jv5qhcsxck7vw3ak1w3c8v84cq4hii86i4iqk523zns5";
-  cargoPatches = [
-      ( fetchpatch {
-        name = "retworkx-cargo-lock.patch";
-        url = "https://github.com/Qiskit/retworkx/commit/a02fd33d357a92dbe9530696a6d85aa59fe8a5b9.patch";
-        sha256 = "0gvxr1nqp9ll4skfks4p4d964pshal25kb1nbfzhpyipnzddizr5";
-      } )
-  ];
-
+  buildInputs = [ (importCargo ./Cargo.lock) ];
   propagatedBuildInputs = [ python ];
 
   nativeBuildInputs = [ pipInstallHook maturin pip ];
