@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, rustPlatform, pkgconfig, openssl }:
+{ stdenv, fetchgit, rustPlatform, importCargo, pkgconfig, openssl }:
 
 rustPlatform.buildRustPackage rec {
   pname = "eidolon";
@@ -9,12 +9,9 @@ rustPlatform.buildRustPackage rec {
     rev = version;
     sha256 = "1yn3k569pxzw43mmsk97088xpkdc714rks3ncchbb6ccx25kgxrr";
   };
-  cargoPatches = [ ./cargo-lock.patch ];
-
-  cargoSha256 = "1i8qfphynwi42pkhhgllxq42dnw9f0dd6f829z94a3g91czyqvsw";
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ openssl ];
+  buildInputs = [ (importCargo ./Cargo.lock) openssl ];
 
   meta = with stdenv.lib; {
     description = "A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu";
