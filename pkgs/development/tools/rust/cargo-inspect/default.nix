@@ -14,8 +14,6 @@ rustPlatform.buildRustPackage rec {
   buildInputs = [ (importCargo ./Cargo.lock) ]
     ++ lib.optional stdenv.isDarwin Security;
 
-  cargoSha256 = "1ryi5qi1zz2yljyj4rn84q9zkzafc9w4nw3zc01hlzpnb1sjw5sw";
-
   meta = with lib; {
     description = "See what Rust is doing behind the curtains";
     homepage = "https://github.com/mre/cargo-inspect";
