@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/zwilias/isahc.git'
+rev = '4d3c784de5a0def0d5d730d9ff60254f98cae7d2'
+sha256 = '0m5dhvm2m86qq6hhgmy4rv3917dbxmfq99c2vgpb2vlacxm4imys'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+

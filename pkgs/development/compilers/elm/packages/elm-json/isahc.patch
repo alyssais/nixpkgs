@@ -1,0 +1,13 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index adfab25..37ae0c2 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -21,7 +21,7 @@ colored = "1.9"
+ dialoguer = "0.6"
+ dirs = "2.0"
+ fs2 = "0.4"
+-isahc = { version = "0.9", features = ["static-ssl"] }
++isahc = "0.9"
+ 
+ [dev-dependencies]
+ assert_cmd = "0.11"

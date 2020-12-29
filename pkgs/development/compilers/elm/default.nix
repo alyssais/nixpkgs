@@ -2,7 +2,7 @@
 , haskell, nodejs
 , fetchurl, fetchpatch, makeWrapper, writeScriptBin
   # Rust dependecies
-, rustPlatform, openssl, pkg-config }:
+, rustPlatform, importCargo, openssl, pkg-config }:
 let
   fetchElmDeps = import ./fetchElmDeps.nix { inherit stdenv lib fetchurl; };
 
@@ -118,8 +118,8 @@ let
     };
 
 in hsPkgs.elmPkgs // elmNodePackages // {
-  elm-json = import ./packages/elm-json.nix {
-    inherit rustPlatform fetchurl openssl stdenv pkg-config;
+  elm-json = import ./packages/elm-json {
+    inherit rustPlatform importCargo fetchurl openssl stdenv pkg-config;
   };
   lib = elmLib;
 }
