@@ -14,6 +14,7 @@
 , python3
 , rustc
 , rustPlatform
+, importCargo
 , wrapGAppsHook
 }:
 
@@ -30,8 +31,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0kk3mv7a6y258109xvgicmsi0lw0rcs00gfyivl5hdz7qh47iccy";
   };
 
-  cargoSha256 = "0vi8nv4hkhsgqgz36xacwkk5cxirg6li44nbmk3x7vx7c64hzybq";
-
   nativeBuildInputs = [
     desktop-file-utils
     gettext
@@ -44,6 +43,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
     cairo
     dbus
     glib
