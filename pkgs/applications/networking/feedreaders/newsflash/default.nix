@@ -1,5 +1,6 @@
 { lib
 , rustPlatform
+, importCargo
 , fetchFromGitLab
 , meson
 , ninja
@@ -28,8 +29,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0kh1xqvxfz58gnrl8av0zkig9vcgmx9iaxw5p6gdm8a7gv18nvp3";
   };
 
-  cargoSha256 = "059sppidbxzjk8lmjq41d5qbymp9j9v2qr0jxd7xg9avr0klwc2s";
-
   patches = [
     ./no-post-install.patch
   ];
@@ -53,6 +52,8 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    (importCargo ./Cargo.lock)
+
     gtk3
     libhandy_0
     openssl
