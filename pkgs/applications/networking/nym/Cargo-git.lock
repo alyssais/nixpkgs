@@ -1,0 +1,8 @@
+[[git]]
+url = 'https://github.com/nymtech/sphinx'
+rev = '18aa34e1a39a5f3f14ba493ded9209658ff2cbfa'
+sha256 = '07nabi7qcpvcnfmsrmvc7n27llkqvsv4yhlvl176ql4hbw6hhr99'
+fetchSubmodules = true
+deepClone = false
+leaveDotGit = false
+
