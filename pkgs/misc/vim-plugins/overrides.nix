@@ -1,7 +1,7 @@
 { lib, stdenv
 , python, cmake, meson, vim, ruby
 , which, fetchFromGitHub, fetchgit, fetchurl, fetchzip, fetchpatch
-, llvmPackages, rustPlatform, buildGoModule
+, llvmPackages, rustPlatform, importCargo, buildGoModule
 , pkgconfig, curl, openssl, libgit2, libiconv
 , xkb-switch, fzf, skim, stylish-haskell
 , python3, boost, icu, ncurses
@@ -72,8 +72,8 @@ self: super: {
       inherit version;
       src = LanguageClient-neovim-src;
 
-      cargoSha256 = "0mf94j85awdcqa6cyb89bipny9xg13ldkznjf002fq747f55my2a";
-      buildInputs = stdenv.lib.optionals stdenv.isDarwin [ CoreServices ];
+      buildInputs = [ (importCargo LanguageClient-neovim/Cargo.lock) ]
+        ++ stdenv.lib.optionals stdenv.isDarwin [ CoreServices ];
 
       # FIXME: Use impure version of CoreFoundation because of missing symbols.
       #   Undefined symbols for architecture x86_64: "_CFURLResourceIsReachable"
