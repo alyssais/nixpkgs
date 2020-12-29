@@ -1,4 +1,4 @@
-{ lib, rustPlatform, fetchFromGitHub
+{ lib, rustPlatform, fetchFromGitHub, importCargo
 , fetchpatch
 , fuse
 , pkg-config
@@ -15,19 +15,8 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0zca0c4n2p9s5kn8c9f9lyxdf3df88a63nmhprpgflj86bh8wgf5";
   };
 
-  cargoSha256 = "0v6lxwj4vcph32np68awpncafvf1dwcik9a2asa0lkb7kmfdjsjk";
-
-  cargoPatches = [
-    # update cargo lock
-    (fetchpatch {
-      url = "https://github.com/kahing/catfs/commit/f838c1cf862cec3f1d862492e5be82b6dbe16ac5.patch";
-      sha256 = "1r1p0vbr3j9xyj9r1ahipg4acii3m4ni4m9mp3avbi1rfgzhblhw";
-    })
-  ];
-
   nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = [ fuse ];
+  buildInputs = [ (importCargo ./Cargo.lock) fuse ];
 
   # require fuse module to be active to run tests
   # instead, run command
