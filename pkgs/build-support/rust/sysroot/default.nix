@@ -1,4 +1,4 @@
-{ stdenv, rust, rustPlatform, buildPackages }:
+{ stdenv, rust, rustPlatform, importCargo, buildPackages }:
 
 { shortTarget, originalCargoToml, target, RUSTFLAGS }:
 
@@ -24,6 +24,7 @@ in rustPlatform.buildRustPackage {
   RUSTC_BOOTSTRAP = 1;
   __internal_dontAddSysroot = true;
   cargoSha256 = "0y6dqfhsgk00y3fv5bnjzk0s7i30nwqc1rp0xlrk83hkh80x81mw";
+  buildInputs = [ (importCargo ./Cargo.lock) ];
 
   doCheck = false;
 

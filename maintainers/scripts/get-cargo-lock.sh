@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i sh -p jq
+#! nix-shell -i sh -p jq nix-prefetch-git
 set -ue
 
 if [ "$#" -eq 0 ]
@@ -18,4 +18,9 @@ do
         '{ attr }: (import ./. {}).${attr}.sourceRoot or "source"' | jq -r .)/"
 
     cp -v --no-preserve=mode "$src/${sourceRoot#*/}Cargo.lock" "$path" || true
+
+    if grep -q '^source = "git+' "$path"
+    then
+	~/src/cargo-dump-git-sources/target/debug/cargo-dump-git-sources "$path" > "$(dirname "$position")/Cargo-git.lock"
+    fi
 done

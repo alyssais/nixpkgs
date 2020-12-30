@@ -1,4 +1,4 @@
-{ lib, rust, rustPlatform, fetchFromGitHub }:
+{ lib, rust, rustPlatform, fetchFromGitHub, importCargo }:
 
 let
   mkBlogOsTest = target: rustPlatform.buildRustPackage rec {
@@ -11,7 +11,7 @@ let
         sha256 = "0k9ipm9ddm1bad7bs7368wzzp6xwrhyfzfpckdax54l4ffqwljcg";
     };
 
-    cargoSha256 = "1cbcplgz28yxshyrp2krp1jphbrcqdw6wxx3rry91p7hiqyibd30";
+    nativeBuildInputs = [ (importCargo ./Cargo.lock) ];
 
     inherit target;
 

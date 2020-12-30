@@ -276,7 +276,7 @@ stdenv.mkDerivation ((removeAttrs args ["depsExtraArgs"]) // stdenv.lib.optional
     runHook postInstall
   '';
 
-  passthru = { inherit cargoDeps; } // (args.passthru or {});
+  passthru = { inherit cargoDeps sysroot; } // (args.passthru or {});
 
   meta = {
     # default to Rust's platforms
