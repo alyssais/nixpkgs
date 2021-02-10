@@ -101,6 +101,12 @@ stdenv.mkDerivation rec {
     })
   ];
 
+  # Otherwise tries to ensure /var/run exists.
+  postPatch = ''
+    sed -i "/install_subdir('run', install_dir: get_option('localstatedir'))/d" \
+        qga/meson.build
+  '';
+
   hardeningDisable = [ "stackprotector" ];
 
   preConfigure = ''
@@ -117,6 +123,7 @@ stdenv.mkDerivation rec {
       "--enable-docs"
       "--enable-tools"
       "--enable-guest-agent"
+      "--localstatedir=/var"
     ]
     # disable sysctl check on darwin.
     ++ optional stdenv.isDarwin "--cpu=x86_64"
