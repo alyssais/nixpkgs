@@ -958,6 +958,17 @@ passthru.updateScript = [ ../../update.sh pname "--requested-release=unstable" ]
       </para>
      </listitem>
     </varlistentry>
+    <varlistentry xml:id="var-stdenv-make">
+     <term>
+      <varname>make</varname>
+     </term>
+     <listitem>
+      <para>
+       The make command to run (useful if package requires an
+       alternate Make implementation like BSD make).
+      </para>
+     </listitem>
+    </varlistentry>
     <varlistentry xml:id="var-stdenv-makefile">
      <term>
       <varname>makefile</varname>
