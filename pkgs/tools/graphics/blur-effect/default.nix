@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     description = "Off-screen image blurring utility using OpenGL ES 3.0";
     license = licenses.gpl3;
     platforms = platforms.unix;
-    broken = stdenv.hostPlatform.isDarwin; # packages 'libdrm' and 'gbm' not found
+    broken = stdenv.isDarwin; # packages 'libdrm' and 'gbm' not found
     maintainers = with maintainers; [ romildo ];
   };
 }

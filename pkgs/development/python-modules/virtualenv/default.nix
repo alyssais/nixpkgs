@@ -35,7 +35,7 @@ buildPythonPackage rec {
     six
   ] ++ lib.optionals isPy27 [
     contextlib2
-  ] ++ lib.optionals (isPy27 && !stdenv.hostPlatform.isWindows) [
+  ] ++ lib.optionals (isPy27 && !stdenv.isWindows) [
     pathlib2
   ] ++ lib.optionals (pythonOlder "3.7") [
     importlib-resources

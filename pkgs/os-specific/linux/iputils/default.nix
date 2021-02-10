@@ -39,11 +39,11 @@ in stdenv.mkDerivation rec {
     "-DINSTALL_SYSTEMD_UNITS=true"
   ]
     # Disable idn usage w/musl (https://github.com/iputils/iputils/pull/111):
-    ++ optional stdenv.hostPlatform.isMusl "-DUSE_IDN=false";
+    ++ optional stdenv.isMusl "-DUSE_IDN=false";
 
   nativeBuildInputs = [ meson ninja pkg-config gettext libxslt.bin docbook_xsl_ns ];
   buildInputs = [ libcap ]
-    ++ optional (!stdenv.hostPlatform.isMusl) libidn2;
+    ++ optional (!stdenv.isMusl) libidn2;
 
   meta = {
     description = "A set of small useful utilities for Linux networking";

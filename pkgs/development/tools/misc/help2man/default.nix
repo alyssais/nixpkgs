@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   doCheck = false;                                # target `check' is missing
 
-  patches = if stdenv.hostPlatform.isCygwin then [ ./1.40.4-cygwin-nls.patch ] else null;
+  patches = if stdenv.isCygwin then [ ./1.40.4-cygwin-nls.patch ] else null;
 
   # We don't use makeWrapper here because it uses substitutions our
   # bootstrap shell can't handle.
@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     cat > $out/bin/help2man <<EOF
     #! $SHELL -e
     export PERL5LIB=\''${PERL5LIB:+:}${perlPackages.LocaleGettext}/${perlPackages.perl.libPrefix}
-    ${lib.optionalString stdenv.hostPlatform.isCygwin
+    ${lib.optionalString stdenv.isCygwin
         ''export PATH=\''${PATH:+:}${gettext}/bin''}
     exec -a \$0 $out/bin/.help2man-wrapped "\$@"
     EOF

@@ -15,7 +15,7 @@ buildGoPackage rec {
     sha256 = "02ybxjsfga89gpg0k21zmykhhnpx1vy3ny8fcwj0qsg73i11alvw";
   };
 
-  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ CoreFoundation ];
+  buildInputs = lib.optionals stdenv.isDarwin [ CoreFoundation ];
 
   buildFlags = [ "--tags" "release" ];
 

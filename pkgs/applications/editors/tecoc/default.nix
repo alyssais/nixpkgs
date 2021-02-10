@@ -17,13 +17,13 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ ncurses ];
 
-  makefile = if stdenv.hostPlatform.isDarwin
+  makefile = if stdenv.isDarwin
              then "makefile.osx"
-             else if stdenv.hostPlatform.isFreeBSD
+             else if stdenv.isFreeBSD
              then "makefile.bsd"
-             else if stdenv.hostPlatform.isOpenBSD
+             else if stdenv.isOpenBSD
              then "makefile.bsd"
-             else if stdenv.hostPlatform.isWindows
+             else if stdenv.isWindows
              then "makefile.win"
              else "makefile.linux"; # I think Linux is a safe default...
 

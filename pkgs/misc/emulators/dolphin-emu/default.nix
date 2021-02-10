@@ -106,7 +106,7 @@ stdenv.mkDerivation rec {
     sfml
   ];
 
-  postInstall = lib.optionalString stdenv.hostPlatform.isLinux ''
+  postInstall = lib.optionalString stdenv.isLinux ''
     install -D $src/Data/51-usb-device.rules $out/etc/udev/rules.d/51-usb-device.rules
   '';
 

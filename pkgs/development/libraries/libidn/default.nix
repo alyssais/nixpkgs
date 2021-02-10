@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "out" "info" "devdoc" ];
 
   # broken with gcc-7
-  #doCheck = !stdenv.isDarwin && !stdenv.hostPlatform.isMusl;
+  #doCheck = !stdenv.isDarwin && !stdenv.isMusl;
 
   hardeningDisable = [ "format" ];
 

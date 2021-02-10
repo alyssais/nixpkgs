@@ -25,6 +25,6 @@ stdenv.mkDerivation rec {
     license = licenses.bsd2;
     maintainers = with maintainers; [ sikmir ];
     platforms = with platforms; linux ++ darwin;
-    broken = stdenv.hostPlatform.isAarch64;
+    broken = stdenv.isAarch64;
   };
 }

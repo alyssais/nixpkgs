@@ -69,7 +69,7 @@ in stdenv.mkDerivation rec {
     # https://developer.palemoon.org/build/linux/
     echo > $MOZCONFIG '
     # Clear this if not a 64bit build
-    _BUILD_64=${lib.optionalString stdenv.hostPlatform.is64bit "1"}
+    _BUILD_64=${lib.optionalString stdenv.is64bit "1"}
 
     # Set GTK Version to 2 or 3
     _GTK_VERSION=${gtkVersion}

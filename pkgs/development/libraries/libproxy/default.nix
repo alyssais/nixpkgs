@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
     pcre
     python3
     zlib
-  ] ++ (if stdenv.hostPlatform.isDarwin then [
+  ] ++ (if stdenv.isDarwin then [
     SystemConfiguration
     CoreFoundation
     JavaScriptCore

@@ -11,7 +11,7 @@ stdenv.mkDerivation {
     export LIBCXXABI_INCLUDE_DIR="$PWD/$(ls -d libcxxabi-${version}*)/include"
   '';
 
-  patches = lib.optionals stdenv.hostPlatform.isMusl [
+  patches = lib.optionals stdenv.isMusl [
     ../../libcxx-0001-musl-hacks.patch
   ];
 
@@ -22,12 +22,12 @@ stdenv.mkDerivation {
   preConfigure = ''
     # Get headers from the cxxabi source so we can see private headers not installed by the cxxabi package
     cmakeFlagsArray=($cmakeFlagsArray -DLIBCXX_CXX_ABI_INCLUDE_PATHS="$LIBCXXABI_INCLUDE_DIR")
-  '' + lib.optionalString stdenv.hostPlatform.isMusl ''
+  '' + lib.optionalString stdenv.isMusl ''
     patchShebangs utils/cat_files.py
   '';
   nativeBuildInputs = [ cmake ]
-    ++ lib.optional stdenv.hostPlatform.isMusl python3
-    ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+    ++ lib.optional stdenv.isMusl python3
+    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
   buildInputs = [ libcxxabi ];
 
@@ -35,7 +35,7 @@ stdenv.mkDerivation {
     "-DLIBCXX_LIBCXXABI_LIB_PATH=${libcxxabi}/lib"
     "-DLIBCXX_LIBCPPABI_VERSION=2"
     "-DLIBCXX_CXX_ABI=libcxxabi"
-  ] ++ lib.optional stdenv.hostPlatform.isMusl "-DLIBCXX_HAS_MUSL_LIBC=1";
+  ] ++ lib.optional stdenv.isMusl "-DLIBCXX_HAS_MUSL_LIBC=1";
 
   passthru = {
     isLLVM = true;

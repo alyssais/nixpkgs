@@ -12,8 +12,8 @@ let
   };
 
   compileFlags = lib.concatStringsSep " " ([ "-O3" "-DNDEBUG" ]
-    ++ lib.optional (stdenv.hostPlatform.isUnix) "-Dunix -pthread"
-    ++ lib.optional (!stdenv.hostPlatform.isx86) "-DNOJIT");
+    ++ lib.optional (stdenv.isUnix) "-Dunix -pthread"
+    ++ lib.optional (!stdenv.isx86) "-DNOJIT");
 in
 stdenv.mkDerivation {
   inherit (s) name version;

@@ -15,7 +15,7 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ glib ];
   nativeBuildInputs = [ meson ninja pkg-config gettext gobject-introspection glib ]
-    ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
   outputs = [ "out" "dev" ];
 

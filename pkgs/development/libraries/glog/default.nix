@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     sha256 = "1xd3maiipfbxmhc9rrblc5x52nxvkwxp14npg31y5njqvkvzax9b";
   };
 
-  patches = lib.optionals stdenv.hostPlatform.isMusl [
+  patches = lib.optionals stdenv.isMusl [
     # TODO: Remove at next release that includes this commit.
     (fetchpatch {
       name = "glog-Fix-symbolize_unittest-for-musl-builds.patch";

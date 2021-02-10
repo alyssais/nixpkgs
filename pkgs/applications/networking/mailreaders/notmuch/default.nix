@@ -79,7 +79,7 @@ stdenv.mkDerivation rec {
     mkdir -p test/test-databases
     ln -s ${test-database} test/test-databases/database-v1.tar.xz
   '';
-  doCheck = !stdenv.hostPlatform.isDarwin && (versionAtLeast gmime.version "3.0.3");
+  doCheck = !stdenv.isDarwin && (versionAtLeast gmime.version "3.0.3");
   checkTarget = "test";
   checkInputs = [
     which dtach openssl bash

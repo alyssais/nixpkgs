@@ -1,7 +1,7 @@
 { stdenv, lib, fetchurl, fetchFromGitHub, fetchpatch, fixDarwinDylibNames
 , autoconf, boost, brotli, cmake, flatbuffers, gflags, glog, gtest, lz4
 , perl, python3, rapidjson, re2, snappy, thrift, utf8proc, which, zlib, zstd
-, enableShared ? !stdenv.hostPlatform.isStatic
+, enableShared ? !stdenv.isStatic
 }:
 
 let
@@ -119,7 +119,7 @@ in stdenv.mkDerivation rec {
   GTEST_FILTER =
     if doInstallCheck then let
       # Upstream Issue: https://issues.apache.org/jira/browse/ARROW-11398
-      filteredTests = lib.optionals stdenv.hostPlatform.isAarch64 [
+      filteredTests = lib.optionals stdenv.isAarch64 [
         "TestFilterKernelWithNumeric/3.CompareArrayAndFilterRandomNumeric"
         "TestFilterKernelWithNumeric/7.CompareArrayAndFilterRandomNumeric"
         "TestCompareKernel.PrimitiveRandomTests"

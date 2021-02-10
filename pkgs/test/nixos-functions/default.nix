@@ -17,7 +17,7 @@ let
     versionSuffix = "test";
     label = "test";
   };
-in lib.optionalAttrs stdenv.hostPlatform.isLinux (
+in lib.optionalAttrs stdenv.isLinux (
   pkgs.recurseIntoAttrs {
 
     nixos-test = (pkgs.nixos {

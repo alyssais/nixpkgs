@@ -68,7 +68,7 @@ stdenv.mkDerivation rec {
     # VTE needs a small patch to work with musl:
     # https://gitlab.gnome.org/GNOME/vte/issues/72
     lib.optional
-      stdenv.hostPlatform.isMusl
+      stdenv.isMusl
       (fetchpatch {
             name = "0001-Add-W_EXITCODE-macro-for-non-glibc-systems.patch";
             url = "https://gitlab.gnome.org/GNOME/vte/uploads/c334f767f5d605e0f30ecaa2a0e4d226/0001-Add-W_EXITCODE-macro-for-non-glibc-systems.patch";

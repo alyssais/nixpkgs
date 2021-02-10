@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, nasm, which
-, enableStatic ? stdenv.hostPlatform.isStatic
+, enableStatic ? stdenv.isStatic
 , enableShared ? !enableStatic
 }:
 
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
 
   installTargets = [ "install-lib" ];
   installFlags = [ "LDCONF=true" ];
-  postInstall = lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
+  postInstall = lib.optionalString (!stdenv.isDarwin) ''
     ln -sr $out/lib/libcryptopp.so.${version} $out/lib/libcryptopp.so.${lib.versions.majorMinor version}
     ln -sr $out/lib/libcryptopp.so.${version} $out/lib/libcryptopp.so.${lib.versions.major version}
   '';

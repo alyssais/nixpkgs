@@ -29,7 +29,7 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     scikit-build cmake cython
-  ] ++ lib.optionals stdenv.hostPlatform.isLinux [
+  ] ++ lib.optionals stdenv.isLinux [
     # On Linux the .so files ends up referring to libh3.so instead of the full
     # Nix store path. I'm not sure why this is happening! On Darwin it works
     # fine.
@@ -38,7 +38,7 @@ buildPythonPackage rec {
 
   # This is not needed per-se, it's only added for autoPatchelfHook to work
   # correctly. See the note above ^^
-  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [ h3 ];
+  buildInputs = lib.optionals stdenv.isLinux [ h3 ];
 
   propagatedBuildInputs = [ numpy ];
 

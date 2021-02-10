@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "out" "man" ];
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
-  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isMusl
+  nativeBuildInputs = lib.optionals stdenv.isMusl
     [ autoconf automake libtool ];
   buildInputs = lib.optional enablePython python;
 
@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
   # TODO: Remove the musl patches when
   #         https://github.com/linux-audit/audit-userspace/pull/25
   #       is available with the next release.
-  patches = lib.optional stdenv.hostPlatform.isMusl [
+  patches = lib.optional stdenv.isMusl [
     (
       let patch = fetchpatch {
             url = "https://github.com/linux-audit/audit-userspace/commit/d579a08bb1cde71f939c13ac6b2261052ae9f77e.patch";

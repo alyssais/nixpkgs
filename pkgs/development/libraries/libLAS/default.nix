@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     sha256 = "0xjfxb3ydvr2258ji3spzyf81g9caap19ql2pk91wiivqsc4mnws";
   };
 
-  nativeBuildInputs = [ cmake ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+  nativeBuildInputs = [ cmake ] ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
   buildInputs = [ boost gdal libgeotiff libtiff LASzip2 ];
 
   cmakeFlags = [

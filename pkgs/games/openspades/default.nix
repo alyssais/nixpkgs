@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     freetype SDL2 SDL2_image libGL zlib curl glew opusfile openal libogg
-  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+  ] ++ lib.optionals stdenv.isDarwin [
     Cocoa
   ];
 

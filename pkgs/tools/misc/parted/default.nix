@@ -11,7 +11,7 @@
 , python3
 , util-linux
 , check
-, enableStatic ? stdenv.hostPlatform.isStatic
+, enableStatic ? stdenv.isStatic
 }:
 
 stdenv.mkDerivation rec {
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
 
   # Tests were previously failing due to Hydra running builds as uid 0.
   # That should hopefully be fixed now.
-  doCheck = !stdenv.hostPlatform.isMusl; /* translation test */
+  doCheck = !stdenv.isMusl; /* translation test */
   checkInputs = [ check dosfstools e2fsprogs perl python3 util-linux ];
 
   meta = {

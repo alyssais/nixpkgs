@@ -170,7 +170,7 @@ let
           # tries to include <Foundation/Foundation.h>,
           # and Interactive Ruby (irb) requires OpenSSL
           # headers.
-          lib.optionals stdenv.hostPlatform.isDarwin [ Foundation openssl ];
+          lib.optionals stdenv.isDarwin [ Foundation openssl ];
 
         doInstallCheck = true;
         installCheckPhase = ''

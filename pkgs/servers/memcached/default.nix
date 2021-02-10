@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   };
 
   configureFlags = [
-     "ac_cv_c_endian=${if stdenv.hostPlatform.isBigEndian then "big" else "little"}"
+     "ac_cv_c_endian=${if stdenv.isBigEndian then "big" else "little"}"
   ];
 
   buildInputs = [cyrus_sasl libevent];

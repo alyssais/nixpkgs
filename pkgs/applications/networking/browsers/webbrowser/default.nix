@@ -64,7 +64,7 @@ in stdenv.mkDerivation rec {
       --replace "mk_add_options AUTOCONF=/usr/bin/autoconf-2.13" "mk_add_options AUTOCONF=${autoconf213}/bin/autoconf" \
       --replace 'mk_add_options MOZ_OBJDIR=$HOME/build/wbobjects/' "" \
       --replace "ac_add_options --x-libraries=/usr/lib64" "ac_add_options --x-libraries=${lib.makeLibraryPath [ xorg.libX11 ]}" \
-      --replace "_BUILD_64=1" "_BUILD_64=${lib.optionalString stdenv.hostPlatform.is64bit "1"}" \
+      --replace "_BUILD_64=1" "_BUILD_64=${lib.optionalString stdenv.is64bit "1"}" \
       --replace "--enable-ccache" "--disable-ccache"
 
     echo >> $MOZCONFIG '

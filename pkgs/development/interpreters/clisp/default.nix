@@ -98,7 +98,7 @@ stdenv.mkDerivation rec {
     maintainers = with lib.maintainers; [raskin tohl];
     platforms = lib.platforms.unix;
     # problems on Darwin: https://github.com/NixOS/nixpkgs/issues/20062
-    broken = stdenv.hostPlatform.isDarwin || stdenv.hostPlatform.isAarch64;
+    broken = stdenv.isDarwin || stdenv.isAarch64;
     license = lib.licenses.gpl2;
   };
 }

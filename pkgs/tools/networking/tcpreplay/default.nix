@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [ libpcap ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    ++ lib.optionals stdenv.isDarwin [
       Carbon CoreServices
     ];
 

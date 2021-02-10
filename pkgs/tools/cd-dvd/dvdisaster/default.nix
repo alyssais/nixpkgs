@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
     "--docdir=share/doc"
     "--with-nls=yes"
     "--with-embedded-src-path=no"
-  ] ++ lib.optional (stdenv.hostPlatform.isx86_64) "--with-sse2=yes";
+  ] ++ lib.optional (stdenv.isx86_64) "--with-sse2=yes";
 
   # fatal error: inlined-icons.h: No such file or directory
   enableParallelBuilding = false;

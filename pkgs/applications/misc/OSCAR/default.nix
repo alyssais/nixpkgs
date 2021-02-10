@@ -41,6 +41,6 @@ mkDerivation rec {
     maintainers = [ maintainers.roconnor ];
     # Someone needs to create a suitable installPhase for Darwin and Windows.
     # See https://gitlab.com/pholy/OSCAR-code/-/tree/master/Building.
-    broken = !stdenv.hostPlatform.isLinux;
+    broken = !stdenv.isLinux;
   };
 }

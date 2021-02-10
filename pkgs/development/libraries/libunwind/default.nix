@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   patches = [ ./backtrace-only-with-glibc.patch ];
 
-  postPatch = lib.optionalString stdenv.hostPlatform.isMusl ''
+  postPatch = lib.optionalString stdenv.isMusl ''
     substituteInPlace configure.ac --replace "-lgcc_s" "-lgcc_eh"
   '';
 
@@ -41,5 +41,5 @@ stdenv.mkDerivation rec {
     license = licenses.mit;
   };
 
-  passthru.supportsHost = !stdenv.hostPlatform.isRiscV;
+  passthru.supportsHost = !stdenv.isRiscV;
 }

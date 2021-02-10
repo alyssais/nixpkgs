@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ ncurses ];
 
-  patches = lib.optional stdenv.hostPlatform.isMusl
+  patches = lib.optional stdenv.isMusl
     (fetchpatch {
       name = "sysmalloc.patch";
       url = "https://git.alpinelinux.org/aports/plain/community/tcsh/001-sysmalloc.patch?id=184585c046cdd56512f1a76e426dd799b368f8cf";

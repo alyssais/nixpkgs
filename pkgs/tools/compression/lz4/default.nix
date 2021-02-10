@@ -1,6 +1,6 @@
 { lib, stdenv, fetchFromGitHub, valgrind, fetchpatch
-, enableStatic ? stdenv.hostPlatform.isStatic
-, enableShared ? !stdenv.hostPlatform.isStatic
+, enableStatic ? stdenv.isStatic
+, enableShared ? !stdenv.isStatic
 }:
 
 stdenv.mkDerivation rec {
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
     "WINDRES:=${stdenv.cc.bintools.targetPrefix}windres"
   ]
     # TODO make full dictionary
-    ++ lib.optional stdenv.hostPlatform.isMinGW "TARGET_OS=MINGW"
+    ++ lib.optional stdenv.isMinGW "TARGET_OS=MINGW"
     ;
 
   doCheck = false; # tests take a very long time
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
 
   # TODO(@Ericson2314): Make resusable setup hook for this issue on Windows.
   postInstall =
-    lib.optionalString stdenv.hostPlatform.isWindows ''
+    lib.optionalString stdenv.isWindows ''
       mv $out/bin/*.dll $out/lib
       ln -s $out/lib/*.dll
     ''

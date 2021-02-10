@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
   ];
 
   patches = [ ./sixel-256.support.patch ]
-    ++ lib.optional stdenv.hostPlatform.isMusl (fetchpatch {
+    ++ lib.optional stdenv.isMusl (fetchpatch {
       name = "posix-ptys.patch";
       url =
         "https://git.alpinelinux.org/aports/plain/community/xterm/posix-ptys.patch?id=3aa532e77875fa1db18c7fcb938b16647031bcc1";

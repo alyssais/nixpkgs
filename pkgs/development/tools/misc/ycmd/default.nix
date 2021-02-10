@@ -19,9 +19,9 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [ cmake ]
-    ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
   buildInputs = [ boost llvmPackages.libclang ]
-    ++ lib.optional stdenv.hostPlatform.isDarwin Cocoa;
+    ++ lib.optional stdenv.isDarwin Cocoa;
 
   buildPhase = ''
     export EXTRA_CMAKE_ARGS=-DPATH_TO_LLVM_ROOT=${llvmPackages.clang-unwrapped}

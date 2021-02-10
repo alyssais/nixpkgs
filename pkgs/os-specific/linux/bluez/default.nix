@@ -75,7 +75,7 @@ in stdenv.mkDerivation rec {
 
   makeFlags = [ "rulesdir=${placeholder "out"}/lib/udev/rules.d" ];
 
-  doCheck = stdenv.hostPlatform.isx86_64;
+  doCheck = stdenv.isx86_64;
 
   postInstall = lib.optionalString doCheck ''
     mkdir -p $test/{bin,test}

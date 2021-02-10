@@ -2,7 +2,7 @@
 , fetchFromGitHub
 , autoreconfHook
 , pkg-config
-, enableUdev ? stdenv.isLinux && !stdenv.hostPlatform.isMusl
+, enableUdev ? stdenv.isLinux && !stdenv.isMusl
 , udev
 , libobjc
 , IOKit

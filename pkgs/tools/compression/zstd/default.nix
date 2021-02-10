@@ -2,7 +2,7 @@
 , fixDarwinDylibNames
 , file
 , legacySupport ? false
-, static ? stdenv.hostPlatform.isStatic
+, static ? stdenv.isStatic
 }:
 
 stdenv.mkDerivation rec {
@@ -18,13 +18,13 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ]
    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
-  buildInputs = lib.optional stdenv.hostPlatform.isUnix bash;
+  buildInputs = lib.optional stdenv.isUnix bash;
 
   patches = [
     ./playtests-darwin.patch
   ] # This I didn't upstream because if you use posix threads with MinGW it will
     # work fine, and I'm not sure how to write the condition.
-    ++ lib.optional stdenv.hostPlatform.isWindows ./mcfgthreads-no-pthread.patch;
+    ++ lib.optional stdenv.isWindows ./mcfgthreads-no-pthread.patch;
 
   postPatch = lib.optionalString (!static) ''
     substituteInPlace build/cmake/CMakeLists.txt \
@@ -69,7 +69,7 @@ stdenv.mkDerivation rec {
   '';
 
   outputs = [ "bin" "dev" ]
-    ++ lib.optional stdenv.hostPlatform.isUnix "man"
+    ++ lib.optional stdenv.isUnix "man"
     ++ [ "out" ];
 
   meta = with lib; {

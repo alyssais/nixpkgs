@@ -4,11 +4,11 @@
 , qmake
 , qtbase
 , qttools
-, alsaSupport ? stdenv.hostPlatform.isLinux
+, alsaSupport ? stdenv.isLinux
 , alsaLib
-, pulseSupport ? stdenv.hostPlatform.isLinux
+, pulseSupport ? stdenv.isLinux
 , libpulseaudio
-, jackSupport ? stdenv.hostPlatform.isUnix
+, jackSupport ? stdenv.isUnix
 , libjack2
 }:
 let

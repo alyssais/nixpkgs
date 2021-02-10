@@ -20,7 +20,7 @@ let
 
     nativeBuildInputs = [ cmake python3 lld ]
       ++ lib.optional enableManpages python3.pkgs.sphinx
-      ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+      ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
     buildInputs = [ libxml2 llvm ];
 
@@ -49,9 +49,9 @@ let
 
       # Patch for standalone doc building
       sed -i '1s,^,find_package(Sphinx REQUIRED)\n,' docs/CMakeLists.txt
-    '' + lib.optionalString stdenv.hostPlatform.isMusl ''
+    '' + lib.optionalString stdenv.isMusl ''
       sed -i -e 's/lgcc_s/lgcc_eh/' lib/Driver/ToolChains/*.cpp
-    '' + lib.optionalString stdenv.hostPlatform.isDarwin ''
+    '' + lib.optionalString stdenv.isDarwin ''
       substituteInPlace tools/extra/clangd/CMakeLists.txt \
         --replace "NOT HAVE_CXX_ATOMICS64_WITHOUT_LIB" FALSE
     '';

@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     ./spooles.patch
   ];
 
-  postPatch = lib.optionalString stdenv.hostPlatform.isDarwin ''
+  postPatch = lib.optionalString stdenv.isDarwin ''
     substituteInPlace makefile --replace '-Wl,-soname' '-Wl,-install_name'
   '';
 

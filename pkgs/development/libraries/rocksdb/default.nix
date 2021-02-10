@@ -10,7 +10,7 @@
 , zstd
 , enableJemalloc ? false, jemalloc
 , enableLite ? false
-, enableShared ? !stdenv.hostPlatform.isStatic
+, enableShared ? !stdenv.isStatic
 }:
 
 stdenv.mkDerivation rec {
@@ -48,14 +48,14 @@ stdenv.mkDerivation rec {
     "-DUSE_RTTI=1"
     "-DROCKSDB_INSTALL_ON_WINDOWS=YES" # harmless elsewhere
     (lib.optional
-        (stdenv.hostPlatform.isx86 && stdenv.hostPlatform.isLinux)
+        (stdenv.isx86 && stdenv.isLinux)
         "-DFORCE_SSE42=1")
     (lib.optional enableLite "-DROCKSDB_LITE=1")
-    "-DFAIL_ON_WARNINGS=${if stdenv.hostPlatform.isMinGW then "NO" else "YES"}"
+    "-DFAIL_ON_WARNINGS=${if stdenv.isMinGW then "NO" else "YES"}"
   ] ++ lib.optional (!enableShared) "-DROCKSDB_BUILD_SHARED=0";
 
   # otherwise "cc1: error: -Wformat-security ignored without -Wformat [-Werror=format-security]"
-  hardeningDisable = lib.optional stdenv.hostPlatform.isWindows "format";
+  hardeningDisable = lib.optional stdenv.isWindows "format";
 
   meta = with lib; {
     homepage = "https://rocksdb.org";

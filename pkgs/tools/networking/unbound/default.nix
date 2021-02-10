@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
     "--with-rootkey-file=${dns-root-data}/root.key"
     "--enable-pie"
     "--enable-relro-now"
-  ] ++ lib.optional stdenv.hostPlatform.isStatic [
+  ] ++ lib.optional stdenv.isStatic [
     "--disable-flto"
   ] ++ lib.optionals withSystemd [
     "--enable-systemd"
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     make unbound-event-install
   '';
 
-  preFixup = lib.optionalString (stdenv.isLinux && !stdenv.hostPlatform.isMusl) # XXX: revisit
+  preFixup = lib.optionalString (stdenv.isLinux && !stdenv.isMusl) # XXX: revisit
     # Build libunbound again, but only against nettle instead of openssl.
     # This avoids gnutls.out -> unbound.lib -> openssl.out.
     # There was some problem with this on Darwin; let's not complicate non-Linux.

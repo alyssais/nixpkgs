@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
     ./autogen.sh
   '';
 
-  configureFlags = lib.optional stdenv.hostPlatform.isx86 "--enable-fat=yes";
+  configureFlags = lib.optional stdenv.isx86 "--enable-fat=yes";
 
   nativeBuildInputs = [ autoconf automake libtool pkg-config ];
 

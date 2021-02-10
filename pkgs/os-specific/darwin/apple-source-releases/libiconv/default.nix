@@ -1,12 +1,12 @@
 { stdenv, appleDerivation, lib
-, enableStatic ? stdenv.hostPlatform.isStatic
-, enableShared ? !stdenv.hostPlatform.isStatic
+, enableStatic ? stdenv.isStatic
+, enableShared ? !stdenv.isStatic
 }:
 
 appleDerivation {
   postUnpack = "sourceRoot=$sourceRoot/libiconv";
 
-  preConfigure = lib.optionalString stdenv.hostPlatform.isiOS ''
+  preConfigure = lib.optionalString stdenv.isiOS ''
     sed -i 's/darwin\*/ios\*/g' configure libcharset/configure
   '';
 

@@ -23,8 +23,8 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ gmp ];
 
   configureFlags =
-    lib.optional stdenv.hostPlatform.isSunOS "--disable-thread-safe" ++
-    lib.optional stdenv.hostPlatform.is64bit "--with-pic";
+    lib.optional stdenv.isSunOS "--disable-thread-safe" ++
+    lib.optional stdenv.is64bit "--with-pic";
 
   doCheck = true; # not cross;
 

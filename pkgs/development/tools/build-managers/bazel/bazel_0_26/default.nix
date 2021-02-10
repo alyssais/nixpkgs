@@ -280,7 +280,7 @@ stdenv'.mkDerivation rec {
 
       patchShebangs .
     '';
-    in lib.optionalString stdenv.hostPlatform.isDarwin darwinPatches
+    in lib.optionalString stdenv.isDarwin darwinPatches
      + genericPatches;
 
   buildInputs = [

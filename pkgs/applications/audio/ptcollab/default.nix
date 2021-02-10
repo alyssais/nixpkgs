@@ -29,6 +29,6 @@ mkDerivation rec {
     maintainers = with maintainers; [ OPNA2608 ];
     platforms = platforms.all;
     # Requires Qt5.15
-    broken = stdenv.hostPlatform.isDarwin;
+    broken = stdenv.isDarwin;
   };
 }

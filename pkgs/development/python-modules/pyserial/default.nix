@@ -10,7 +10,7 @@ buildPythonPackage rec {
   };
 
   checkPhase = "python -m unittest discover -s test";
-  doCheck = !stdenv.hostPlatform.isDarwin; # broken on darwin
+  doCheck = !stdenv.isDarwin; # broken on darwin
 
   meta = with lib; {
     homepage = "https://github.com/pyserial/pyserial";

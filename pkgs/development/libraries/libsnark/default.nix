@@ -7,9 +7,9 @@ in stdenv.mkDerivation rec {
   version = lib.substring 0 8 rev;
 
   nativeBuildInputs = [ cmake pkg-config ];
-  buildInputs = [ openssl boost gmp ] ++ lib.optional stdenv.hostPlatform.isLinux procps;
+  buildInputs = [ openssl boost gmp ] ++ lib.optional stdenv.isLinux procps;
 
-  cmakeFlags = lib.optionals stdenv.hostPlatform.isDarwin [ "-DWITH_PROCPS=OFF" "-DWITH_SUPERCOP=OFF" ];
+  cmakeFlags = lib.optionals stdenv.isDarwin [ "-DWITH_PROCPS=OFF" "-DWITH_SUPERCOP=OFF" ];
 
   src = fetchFromGitHub {
     inherit rev;

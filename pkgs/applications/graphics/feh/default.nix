@@ -1,7 +1,7 @@
 { lib, stdenv, fetchurl, makeWrapper
 , xorg, imlib2, libjpeg, libpng
 , curl, libexif, jpegexiforient, perlPackages
-, enableAutoreload ? !stdenv.hostPlatform.isDarwin }:
+, enableAutoreload ? !stdenv.isDarwin }:
 
 with lib;
 

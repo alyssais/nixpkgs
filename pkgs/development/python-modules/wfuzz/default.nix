@@ -38,7 +38,7 @@ buildPythonPackage rec {
   ] ++ lib.optionals isPy27 [
     mock
     future
-  ] ++ lib.optionals stdenv.hostPlatform.isWindows [
+  ] ++ lib.optionals stdenv.isWindows [
     colorama
   ];
 

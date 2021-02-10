@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
       "--with-rpcgen=${buildPackages.rpcsvc-proto}/bin/rpcgen"
     ];
 
-  patches = lib.optionals stdenv.hostPlatform.isMusl [
+  patches = lib.optionals stdenv.isMusl [
     (fetchpatch {
       url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/0011-exportfs-only-do-glibc-specific-hackery-on-glibc.patch";
       sha256 = "0rrddrykz8prk0dcgfvmnz0vxn09dbgq8cb098yjjg19zz6d7vid";

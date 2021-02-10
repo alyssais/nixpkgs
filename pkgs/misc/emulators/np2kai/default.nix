@@ -13,7 +13,7 @@
 , SDL2_ttf
 , SDL2_mixer
 
-, enableX11 ? stdenv.hostPlatform.isLinux
+, enableX11 ? stdenv.isLinux
 , automake
 , autoconf
 , autoconf-archive
@@ -59,8 +59,8 @@ let
   sdlDepsBuildonly = if isSDL2 then sdlDeps1 else sdlDeps2;
   sdlDepsTarget = if isSDL2 then sdlDeps2 else sdlDeps1;
   sdlMakefileSuffix =
-    if stdenv.hostPlatform.isWindows then "win"
-    else if stdenv.hostPlatform.isDarwin then "mac"
+    if stdenv.isWindows then "win"
+    else if stdenv.isDarwin then "mac"
     else "unix";
   sdlMakefiles = concatMapStringsSep " " (x: x + "." + sdlMakefileSuffix)
     (optionals enable16Bit [

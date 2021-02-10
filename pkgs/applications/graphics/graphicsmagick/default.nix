@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     ];
 
   nativeBuildInputs = [ xz ]
-    ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
   postInstall = ''
     sed -i 's/-ltiff.*'\'/\'/ $out/bin/*

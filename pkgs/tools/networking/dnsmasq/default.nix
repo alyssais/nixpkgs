@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     sha256 = "1sjamz1v588qf35m8z6wcqkjk5w12bqhj7d7p48dj8jyn3lgghgz";
   };
 
-  postPatch = lib.optionalString stdenv.hostPlatform.isLinux ''
+  postPatch = lib.optionalString stdenv.isLinux ''
     sed '1i#include <linux/sockios.h>' -i src/dhcp.c
   '';
 

@@ -3,9 +3,9 @@
 , fetchurl
 , pkg-config
 , libsidplayfp
-, alsaSupport ? stdenv.hostPlatform.isLinux
+, alsaSupport ? stdenv.isLinux
 , alsaLib
-, pulseSupport ? stdenv.hostPlatform.isLinux
+, pulseSupport ? stdenv.isLinux
 , libpulseaudio
 }:
 

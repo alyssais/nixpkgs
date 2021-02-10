@@ -21,11 +21,11 @@ buildGoPackage rec {
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ trousers gtk3 gtkspell3 ]
-    ++ lib.optional stdenv.hostPlatform.isx86_64 dclxvi
+    ++ lib.optional stdenv.isx86_64 dclxvi
     ++ lib.optionals gui [ wrapGAppsHook ];
   buildFlags = lib.optionals (!gui) [ "-tags" "nogui" ];
   excludedPackages = "\\(appengine\\|bn256cgo\\)";
-  postPatch = lib.optionalString stdenv.hostPlatform.isx86_64 ''
+  postPatch = lib.optionalString stdenv.isx86_64 ''
     grep -r 'bn256' | awk -F: '{print $1}' | xargs sed -i \
       -e "s,golang.org/x/crypto/bn256,github.com/agl/pond/bn256cgo,g" \
       -e "s,bn256\.,bn256cgo.,g"

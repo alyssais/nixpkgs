@@ -20,7 +20,7 @@ rustPlatform.buildRustPackage rec {
     maintainers = with maintainers; [ dywedir ];
   };
 
-  buildInputs = lib.optional stdenv.hostPlatform.isDarwin [
+  buildInputs = lib.optional stdenv.isDarwin [
     Security
   ];
 

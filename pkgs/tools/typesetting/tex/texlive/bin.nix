@@ -56,7 +56,7 @@ let
     '';
   };
 
-  withLuaJIT = !(stdenv.hostPlatform.isPower && stdenv.hostPlatform.is64bit);
+  withLuaJIT = !(stdenv.isPower && stdenv.is64bit);
 in rec { # un-indented
 
 inherit (common) cleanBrokenLinks;

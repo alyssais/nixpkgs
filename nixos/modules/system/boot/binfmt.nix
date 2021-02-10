@@ -263,7 +263,7 @@ in {
     }) cfg.emulatedSystems);
     # TODO: add a nix.extraPlatforms option to NixOS!
     nix.extraOptions = lib.mkIf (cfg.emulatedSystems != []) ''
-      extra-platforms = ${toString (cfg.emulatedSystems ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 "i686-linux")}
+      extra-platforms = ${toString (cfg.emulatedSystems ++ lib.optional pkgs.stdenv.isx86_64 "i686-linux")}
     '';
     nix.sandboxPaths = lib.mkIf (cfg.emulatedSystems != [])
       ([ "/run/binfmt" "${pkgs.bash}" ] ++ (map (system: dirOf (dirOf (getEmulator system))) cfg.emulatedSystems));

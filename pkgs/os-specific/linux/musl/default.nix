@@ -26,9 +26,9 @@ let
     sha256 = "1mzxnc2ncq8lw9x6n7p00fvfklc9p3wfv28m68j0dfz5l8q2k6pp";
   };
 
-  arch = if stdenv.hostPlatform.isx86_64
+  arch = if stdenv.isx86_64
     then "x86_64"
-    else if stdenv.hostPlatform.isx86_32
+    else if stdenv.isx86_32
       then "i386"
       else null;
 
@@ -70,7 +70,7 @@ stdenv.mkDerivation rec {
     })
   ];
   CFLAGS = [ "-fstack-protector-strong" ]
-    ++ lib.optional stdenv.hostPlatform.isPower "-mlong-double-64";
+    ++ lib.optional stdenv.isPower "-mlong-double-64";
 
   configureFlags = [
     "--enable-shared"

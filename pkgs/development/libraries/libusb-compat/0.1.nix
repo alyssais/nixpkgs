@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     sha256 = "1nybccgjs14b3phhaycq2jx1gym4nf6sghvnv9qdfmlqxacx0jz5";
   };
 
-  patches = lib.optional stdenv.hostPlatform.isMusl ./fix-headers.patch;
+  patches = lib.optional stdenv.isMusl ./fix-headers.patch;
 
   # without this, libusb-compat is unable to find libusb1
   postFixup = ''

@@ -6,7 +6,7 @@ in stdenv.mkDerivation {
   inherit version;
 
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = lib.optional (stdenv.hostPlatform.isLinux) libseccomp;
+  buildInputs = lib.optional (stdenv.isLinux) libseccomp;
 
   src = fetchurl {
     url =
@@ -29,7 +29,7 @@ in stdenv.mkDerivation {
     export DESTDIR=$out
     export PREFIX=$out
     make install-tools
-    ${lib.optionalString stdenv.hostPlatform.isLinux "make ${
+    ${lib.optionalString stdenv.isLinux "make ${
       (lib.concatMapStringsSep " " (x: "install-opam-${x}") [ "hvt" "spt" ])
     }"}
     runHook postInstall
@@ -37,7 +37,7 @@ in stdenv.mkDerivation {
 
   doCheck = true;
   checkInputs = [ util-linux qemu ];
-  checkPhase = if stdenv.hostPlatform.isLinux then
+  checkPhase = if stdenv.isLinux then
     ''
     patchShebangs tests
     ./tests/bats-core/bats ./tests/tests.bats

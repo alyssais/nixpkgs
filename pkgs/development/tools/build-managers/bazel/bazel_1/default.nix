@@ -48,7 +48,7 @@ let
       srcs.bazel_skylib
       srcs.io_bazel_rules_sass
       srcs.platforms
-      (if stdenv.hostPlatform.isDarwin
+      (if stdenv.isDarwin
        then srcs."java_tools_javac11_darwin-v6.1.zip"
        else srcs."java_tools_javac11_linux-v6.1.zip")
       srcs."coverage_output_generator-v2.0.zip"
@@ -105,7 +105,7 @@ let
   # however it contains prebuilt java binaries, with wrong interpreter
   # and libraries path.
   # We prefetch it, patch it, and override it in a global bazelrc.
-  system = if stdenv.hostPlatform.isDarwin then "darwin" else "linux";
+  system = if stdenv.isDarwin then "darwin" else "linux";
 
   remote_java_tools = stdenv.mkDerivation {
     name = "remote_java_tools_${system}";
@@ -225,7 +225,7 @@ stdenv'.mkDerivation rec {
           be = extracted bazelPkg;
         in runLocal name { inherit buildInputs; } (
           # skip extraction caching on Darwin, because nobody knows how Darwin works
-          (lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
+          (lib.optionalString (!stdenv.isDarwin) ''
             # set up home with pre-unpacked bazel
             export HOME=$(mktemp -d)
             mkdir -p ${be.install_dir}
@@ -258,7 +258,7 @@ stdenv'.mkDerivation rec {
         sha256 = "03c1bwlq5bs3hg96v4g4pg2vqwhqq6w538h66rcpw02f83yy7fs8";
       };
 
-    in (if !stdenv.hostPlatform.isDarwin then {
+    in (if !stdenv.isDarwin then {
       # `extracted` doesn’t work on darwin
       shebang = callPackage ../shebang-test.nix { inherit runLocal extracted bazelTest distDir; };
     } else {}) // {
@@ -454,7 +454,7 @@ stdenv'.mkDerivation rec {
 
       patchShebangs .
     '';
-    in lib.optionalString stdenv.hostPlatform.isDarwin darwinPatches
+    in lib.optionalString stdenv.isDarwin darwinPatches
      + genericPatches;
 
   buildInputs = [

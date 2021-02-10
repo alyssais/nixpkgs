@@ -40,7 +40,7 @@ mkDerivation rec {
     "--enable-sdl"
   ];
 
-  fixupPhase = lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
+  fixupPhase = lib.optionalString (!stdenv.isDarwin) ''
     # NOTE: 2019-10-05: Upstream inserts the src path buring build into ELF rpath, so must delete it out
     # upstream report: https://github.com/projectM-visualizer/projectm/issues/245
     for entry in $out/bin/* ; do

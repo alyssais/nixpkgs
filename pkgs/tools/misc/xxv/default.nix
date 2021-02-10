@@ -2,7 +2,7 @@
 , ncurses ? null
 , darwin ? null }:
 
-let useNcurses = !stdenv.hostPlatform.isWindows; in
+let useNcurses = !stdenv.isWindows; in
 
 assert useNcurses -> ncurses != null;
 

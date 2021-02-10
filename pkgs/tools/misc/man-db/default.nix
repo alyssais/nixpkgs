@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     "--with-systemdtmpfilesdir=${placeholder "out"}/lib/tmpfiles.d"
     "--with-systemdsystemunitdir=${placeholder "out"}/lib/systemd/system"
     "--with-pager=less"
-  ] ++ lib.optional stdenv.hostPlatform.isDarwin [
+  ] ++ lib.optional stdenv.isDarwin [
     "ac_cv_func__set_invalid_parameter_handler=no"
     "ac_cv_func_posix_fadvise=no"
     "ac_cv_func_mempcpy=no"
@@ -70,7 +70,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = !stdenv.hostPlatform.isMusl /* iconv binary */ && !stdenv.hostPlatform.isDarwin;
+  doCheck = !stdenv.isMusl /* iconv binary */ && !stdenv.isDarwin;
 
   meta = with lib; {
     homepage = "http://man-db.nongnu.org";

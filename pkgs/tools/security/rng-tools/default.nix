@@ -41,7 +41,7 @@ stdenv.mkDerivation rec {
 
   # argp-standalone is only used when libc lacks argp parsing (musl)
   buildInputs = [ sysfsutils ]
-    ++ optionals stdenv.hostPlatform.isx86_64 [ argp-standalone ]
+    ++ optionals stdenv.isx86_64 [ argp-standalone ]
     ++ optionals withGcrypt        [ libgcrypt ]
     ++ optionals withJitterEntropy [ jitterentropy ]
     ++ optionals withNistBeacon    [ curl libxml2 openssl ]

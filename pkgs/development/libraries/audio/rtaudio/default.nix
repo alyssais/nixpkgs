@@ -5,13 +5,13 @@
 , fetchpatch
 , cmake
 , pkg-config
-, alsaSupport ? stdenv.hostPlatform.isLinux
+, alsaSupport ? stdenv.isLinux
 , alsaLib
-, pulseaudioSupport ? config.pulseaudio or stdenv.hostPlatform.isLinux
+, pulseaudioSupport ? config.pulseaudio or stdenv.isLinux
 , libpulseaudio
 , jackSupport ? true
 , jack
-, coreaudioSupport ? stdenv.hostPlatform.isDarwin
+, coreaudioSupport ? stdenv.isDarwin
 , CoreAudio
 }:
 

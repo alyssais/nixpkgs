@@ -147,7 +147,7 @@ self: super: builtins.intersectAttrs super {
   # Prevents needing to add `security_tool` as a run-time dependency for
   # everything using x509-system to give access to the `security` executable.
   x509-system =
-    if pkgs.stdenv.hostPlatform.isDarwin && !pkgs.stdenv.cc.nativeLibc
+    if pkgs.stdenv.isDarwin && !pkgs.stdenv.cc.nativeLibc
     then
       # darwin.security_tool is broken in Mojave (#45042)
 

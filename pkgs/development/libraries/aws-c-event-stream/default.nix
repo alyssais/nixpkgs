@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ cmake ];
 
   buildInputs = [ aws-c-cal aws-c-common aws-c-io aws-checksums s2n ]
-    ++ lib.optional stdenv.hostPlatform.isMusl libexecinfo;
+    ++ lib.optional stdenv.isMusl libexecinfo;
 
   cmakeFlags = [
     "-DBUILD_SHARED_LIBS:BOOL=ON"

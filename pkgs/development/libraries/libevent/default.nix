@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
     ;
 
   nativeBuildInputs = []
-    ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames
+    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames
     ;
 
   buildInputs = []

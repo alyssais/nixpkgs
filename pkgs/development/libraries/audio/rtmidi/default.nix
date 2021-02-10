@@ -4,11 +4,11 @@
 , fetchpatch
 , cmake
 , pkg-config
-, alsaSupport ? stdenv.hostPlatform.isLinux
+, alsaSupport ? stdenv.isLinux
 , alsaLib
 , jackSupport ? true
 , jack
-, coremidiSupport ? stdenv.hostPlatform.isDarwin
+, coremidiSupport ? stdenv.isDarwin
 , CoreMIDI
 , CoreAudio
 , CoreServices

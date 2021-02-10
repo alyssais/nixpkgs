@@ -28,7 +28,7 @@ in stdenv.mkDerivation rec {
   # Fix __BEGIN_DECLS usage (even if it wasn't non-standard, this doesn't include sys/cdefs.h)
   patches = [ ./cdecls.patch ];
 
-  postPatch = lib.optionalString stdenv.hostPlatform.isMusl ''
+  postPatch = lib.optionalString stdenv.isMusl ''
     substituteInPlace Makefile \
       --replace '-DNETGROUP' '-DUSE_GETDOMAIN'
   '';

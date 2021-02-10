@@ -63,6 +63,6 @@ stdenv.mkDerivation rec {
     license = licenses.gpl3;
     maintainers = with maintainers; [ petabyteboy ];
     platforms = platforms.all;
-    broken = stdenv.hostPlatform.isAarch64; # produces build failure on aarch64-linux
+    broken = stdenv.isAarch64; # produces build failure on aarch64-linux
   };
 }

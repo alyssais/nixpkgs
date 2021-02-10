@@ -11,7 +11,7 @@ stdenv.mkDerivation {
   # build. We need to also include OpenGL.framework, and some
   # extra tricks to go along with. We add mesa’s libGLX to support
   # the X extensions to OpenGL.
-  buildCommand = if stdenv.hostPlatform.isDarwin then ''
+  buildCommand = if stdenv.isDarwin then ''
     mkdir -p $out/nix-support $dev
     echo ${OpenGL} >> $out/nix-support/propagated-build-inputs
     ln -s ${mesa.out}/lib $out/lib

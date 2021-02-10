@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
       "--localstatedir=/var"
     ];
 
-  patches = lib.optional stdenv.hostPlatform.isMusl
+  patches = lib.optional stdenv.isMusl
     (
       fetchpatch
       {

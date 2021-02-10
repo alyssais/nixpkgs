@@ -21,7 +21,7 @@ buildPythonPackage rec {
 
   # iterable = range(10 ** 10)  # Is efficiently reversible
   # OverflowError: Python int too large to convert to C long
-  doCheck = !stdenv.hostPlatform.is32bit;
+  doCheck = !stdenv.is32bit;
 
   meta = {
     homepage = "https://more-itertools.readthedocs.org";

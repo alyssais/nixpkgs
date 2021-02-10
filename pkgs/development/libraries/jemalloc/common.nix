@@ -5,7 +5,7 @@
 # option should remove the prefix and give us a working jemalloc.
 # Causes segfaults with some software (ex. rustc), but defaults to true for backward
 # compatibility.
-, stripPrefix ? stdenv.hostPlatform.isDarwin
+, stripPrefix ? stdenv.isDarwin
 , disableInitExecTls ? false
 }:
 

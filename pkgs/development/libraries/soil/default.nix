@@ -13,7 +13,7 @@ stdenv.mkDerivation {
     sha256 = "1c05nwbnfdgwaz8ywn7kg2xrcvrcbpdyhcfkkiiwk69zvil0pbgd";
   };
 
-  buildInputs = if stdenv.hostPlatform.isDarwin then [
+  buildInputs = if stdenv.isDarwin then [
     Carbon
   ] else [
     libGL

@@ -1,13 +1,13 @@
 { lib, stdenv, fetchFromGitLab, rustPlatform, cmake, pkg-config, openssl
 , darwin, installShellFiles
 
-, x11Support ? stdenv.isLinux || stdenv.hostPlatform.isBSD
+, x11Support ? stdenv.isLinux || stdenv.isBSD
 , xclip ? null, xsel ? null
 , preferXsel ? false # if true and xsel is non-null, use it instead of xclip
 }:
 
 let
-  usesX11 = stdenv.isLinux || stdenv.hostPlatform.isBSD;
+  usesX11 = stdenv.isLinux || stdenv.isBSD;
 in
 
 assert (x11Support && usesX11) -> xclip != null || xsel != null;

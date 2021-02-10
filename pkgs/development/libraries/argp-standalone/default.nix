@@ -28,12 +28,12 @@ stdenv.mkDerivation {
   };
 
   patches =
-       lib.optionals stdenv.hostPlatform.isDarwin [ patch-argp-fmtstream ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [ patch-throw-in-funcdef patch-shared ];
+       lib.optionals stdenv.isDarwin [ patch-argp-fmtstream ]
+    ++ lib.optionals stdenv.isLinux [ patch-throw-in-funcdef patch-shared ];
 
-  patchFlags = lib.optional stdenv.hostPlatform.isDarwin "-p0";
+  patchFlags = lib.optional stdenv.isDarwin "-p0";
 
-  preConfigure = lib.optionalString stdenv.hostPlatform.isLinux "export CFLAGS='-fgnu89-inline'";
+  preConfigure = lib.optionalString stdenv.isLinux "export CFLAGS='-fgnu89-inline'";
 
   postInstall = ''
     mkdir -p $out/lib $out/include

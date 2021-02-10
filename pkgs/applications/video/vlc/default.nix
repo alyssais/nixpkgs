@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
     xorg.xlibsWrapper xorg.libXv xorg.libXvMC xorg.libXpm xorg.xcbutilkeysyms
     libdc1394 libraw1394 libopus libebml libmatroska libvdpau libsamplerate
     fluidsynth wayland wayland-protocols
-  ] ++ optional (!stdenv.hostPlatform.isAarch64) live555
+  ] ++ optional (!stdenv.isAarch64) live555
     ++ optionals withQt5    [ qtbase qtsvg qtx11extras ]
     ++ optionals skins2Support (with xorg; [ libXpm freetype libXext libXinerama ])
     ++ optional jackSupport libjack2
@@ -54,7 +54,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  LIVE555_PREFIX = if (!stdenv.hostPlatform.isAarch64) then live555 else null;
+  LIVE555_PREFIX = if (!stdenv.isAarch64) then live555 else null;
 
   # vlc depends on a c11-gcc wrapper script which we don't have so we need to
   # set the path to the compiler

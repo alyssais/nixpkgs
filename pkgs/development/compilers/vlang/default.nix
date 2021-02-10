@@ -1,6 +1,6 @@
 { lib, stdenv, fetchFromGitHub, glfw, freetype, openssl, upx ? null }:
 
-assert stdenv.hostPlatform.isUnix -> upx != null;
+assert stdenv.isUnix -> upx != null;
 
 stdenv.mkDerivation rec {
   pname = "vlang";
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
   propagatedBuildInputs = [ glfw freetype openssl ]
-    ++ lib.optional stdenv.hostPlatform.isUnix upx;
+    ++ lib.optional stdenv.isUnix upx;
 
   buildPhase = ''
     runHook preBuild

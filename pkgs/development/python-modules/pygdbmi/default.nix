@@ -19,7 +19,7 @@ buildPythonPackage rec {
   checkInputs = [ gdb ];
 
   # tests require gcc for some reason
-  doCheck = !stdenv.hostPlatform.isDarwin;
+  doCheck = !stdenv.isDarwin;
 
   postPatch = ''
     # tries to execute flake8,

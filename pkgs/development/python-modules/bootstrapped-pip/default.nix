@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
 
   buildPhase = ":";
 
-  installPhase = lib.strings.optionalString (!stdenv.hostPlatform.isWindows) ''
+  installPhase = lib.strings.optionalString (!stdenv.isWindows) ''
     export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
   '' + ''
     # Give folders a known name

@@ -16,7 +16,7 @@ buildPythonPackage rec {
    rm test/asizeof/test_asizeof.py
   '';
 
-  doCheck = stdenv.hostPlatform.isLinux;
+  doCheck = stdenv.isLinux;
 
   meta = with lib; {
     description = "Tool to measure, monitor and analyze memory behavior";

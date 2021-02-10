@@ -45,9 +45,9 @@ mkDerivation rec {
 
   escaped_pyqt5_dir = builtins.replaceStrings ["/"] ["\\/"] (toString python3Packages.pyqt5);
   platform_tag =
-    if stdenv.hostPlatform.isDarwin then
+    if stdenv.isDarwin then
       "WS_MACX"
-    else if stdenv.hostPlatform.isWindows then
+    else if stdenv.isWindows then
       "WS_WIN"
     else
       "WS_X11";

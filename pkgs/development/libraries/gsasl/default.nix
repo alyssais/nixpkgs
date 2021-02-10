@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   preCheck = ''
     export LOCALDOMAIN="dummydomain"
   '';
-  doCheck = !stdenv.hostPlatform.isDarwin;
+  doCheck = !stdenv.isDarwin;
 
   meta = {
     description = "GNU SASL, Simple Authentication and Security Layer library";

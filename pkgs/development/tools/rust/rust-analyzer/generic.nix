@@ -22,7 +22,7 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = lib.optional useMimalloc cmake;
 
-  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin
+  buildInputs = lib.optionals stdenv.isDarwin
     [ darwin.apple_sdk.frameworks.CoreServices ];
 
   RUST_ANALYZER_REV = rev;

@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoconf pkg-config ];
   buildInputs = [ cairo opencv ];
 
-  postInstall = lib.optionalString stdenv.hostPlatform.isDarwin ''
+  postInstall = lib.optionalString stdenv.isDarwin ''
     for f in $out/lib/frei0r-1/*.so* ; do
       ln -s $f "''${f%.*}.dylib"
     done

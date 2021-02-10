@@ -17,26 +17,26 @@ stdenv.mkDerivation rec {
   # glib-2.62 deprecations
   NIX_CFLAGS_COMPILE = "-DGLIB_DISABLE_DEPRECATION_WARNINGS";
 
-  preConfigure = lib.optionalString stdenv.hostPlatform.isUnix ''
+  preConfigure = lib.optionalString stdenv.isUnix ''
     perl mkfiles.pl
     ( cd doc ; make );
     ./mkauto.sh
     cd unix
-  '' + lib.optionalString stdenv.hostPlatform.isWindows ''
+  '' + lib.optionalString stdenv.isWindows ''
     cd windows
   '';
 
   TOOLPATH = stdenv.cc.targetPrefix;
-  makefile = if stdenv.hostPlatform.isWindows then "Makefile.mgw" else null;
+  makefile = if stdenv.isWindows then "Makefile.mgw" else null;
 
-  installPhase = if stdenv.hostPlatform.isWindows then ''
+  installPhase = if stdenv.isWindows then ''
     for exe in *.exe; do
        install -D $exe $out/bin/$exe
     done
   '' else null;
 
   nativeBuildInputs = [ autoconf automake halibut libtool perl pkg-config ];
-  buildInputs = lib.optionals stdenv.hostPlatform.isUnix [
+  buildInputs = lib.optionals stdenv.isUnix [
     gtk2 ncurses
   ] ++ lib.optional stdenv.isDarwin darwin.apple_sdk.libs.utmp;
   enableParallelBuilding = true;

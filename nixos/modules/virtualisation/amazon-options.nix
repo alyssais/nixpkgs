@@ -10,7 +10,7 @@
         '';
       };
       efi = lib.mkOption {
-        default = pkgs.stdenv.hostPlatform.isAarch64;
+        default = pkgs.stdenv.isAarch64;
         internal = true;
         description = ''
           Whether the EC2 instance is using EFI.

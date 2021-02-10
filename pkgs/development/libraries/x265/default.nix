@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromBitbucket, cmake, nasm, numactl
-, numaSupport ? stdenv.hostPlatform.isLinux && (stdenv.hostPlatform.isx86 || stdenv.hostPlatform.isAarch64)  # Enabled by default on NUMA platforms
+, numaSupport ? stdenv.isLinux && (stdenv.isx86 || stdenv.isAarch64)  # Enabled by default on NUMA platforms
 , debugSupport ? false # Run-time sanity checks (debugging)
 , werrorSupport ? false # Warnings as errors
 , ppaSupport ? false # PPA profiling instrumentation
@@ -21,7 +21,7 @@ let
     (mkFlag custatsSupport "DETAILED_CU_STATS")
     (mkFlag unittestsSupport "ENABLE_TESTS")
     (mkFlag werrorSupport "WARNINGS_AS_ERRORS")
-  ] ++ lib.optionals stdenv.hostPlatform.isPower [
+  ] ++ lib.optionals stdenv.isPower [
     "-DENABLE_ALTIVEC=OFF"
   ];
 

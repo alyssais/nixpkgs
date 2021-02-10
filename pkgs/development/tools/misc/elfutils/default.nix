@@ -18,11 +18,11 @@ stdenv.mkDerivation rec {
   # as the host-bzip2 will be in the path.
   nativeBuildInputs = [ m4 bison flex gettext bzip2 ];
   buildInputs = [ zlib bzip2 xz ]
-    ++ lib.optional stdenv.hostPlatform.isMusl argp-standalone;
+    ++ lib.optional stdenv.isMusl argp-standalone;
 
   propagatedNativeBuildInputs = [ setupDebugInfoDirs ];
 
-  preConfigure = lib.optionalString stdenv.hostPlatform.isMusl ''
+  preConfigure = lib.optionalString stdenv.isMusl ''
     NIX_CFLAGS_COMPILE+=" -fgnu89-inline"
   '';
 
