@@ -15887,6 +15887,8 @@ in
 
   ndpi = callPackage ../development/libraries/ndpi { };
 
+  netbsd-curses = callPackage ../development/libraries/netbsd-curses { };
+
   nifticlib = callPackage ../development/libraries/science/biology/nifticlib { };
 
   notify-sharp = callPackage ../development/libraries/notify-sharp { };
