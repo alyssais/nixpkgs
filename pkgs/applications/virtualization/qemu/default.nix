@@ -119,7 +119,7 @@ stdenv.mkDerivation rec {
       "--enable-guest-agent"
     ]
     # disable sysctl check on darwin.
-    ++ optional stdenv.isDarwin "--cpu=x86_64"
+    ++ optional stdenv.isDarwin "--cpu=${stdenv.targetPlatform.qemuArch}"
     ++ optional numaSupport "--enable-numa"
     ++ optional seccompSupport "--enable-seccomp"
     ++ optional smartcardSupport "--enable-smartcard"
