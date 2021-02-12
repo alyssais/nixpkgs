@@ -30,7 +30,7 @@
 , libpthreadstubs
 , libsndfile
 , libtiff
-, libungif
+, giflib
 , libxcb
 , mkfontdir
 , pcre
@@ -76,7 +76,7 @@ stdenv.mkDerivation rec {
     libpthreadstubs
     libsndfile
     libtiff
-    libungif
+    giflib
     libxcb
     mkfontdir
     pcre

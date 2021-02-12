@@ -15530,8 +15530,6 @@ in
 
   libunarr = callPackage ../development/libraries/libunarr { };
 
-  libungif = callPackage ../development/libraries/giflib/libungif.nix { };
-
   libunibreak = callPackage ../development/libraries/libunibreak { };
 
   libuninameslist = callPackage ../development/libraries/libuninameslist { };
