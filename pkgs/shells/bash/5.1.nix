@@ -1,6 +1,7 @@
 { lib, stdenv
 , buildPackages
 , fetchurl
+, autoconf
 , binutils ? null
 , bison
 , util-linux
@@ -68,9 +69,10 @@ stdenv.mkDerivation rec {
     "--disable-nls"
   ];
 
-  # Note: Bison is needed because the patches above modify parse.y.
+  # Note: autoconf and bison are needed because the patches above
+  # modify configure.ac and parse.y, respectively.
   depsBuildBuild = [ buildPackages.stdenv.cc ];
-  nativeBuildInputs = [ bison ]
+  nativeBuildInputs = [ autoconf bison ]
     ++ optional withDocs texinfo
     ++ optional stdenv.hostPlatform.isDarwin binutils;
 
