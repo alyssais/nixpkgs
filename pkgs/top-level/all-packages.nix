@@ -13822,6 +13822,8 @@ in
 
   puppeteer-cli = callPackage ../tools/graphics/puppeteer-cli {};
 
+  inherit (python3Packages) pylint;
+
   pyrseas = callPackage ../development/tools/database/pyrseas { };
 
   qtcreator = libsForQt5.callPackage ../development/tools/qtcreator { };
