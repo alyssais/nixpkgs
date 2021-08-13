@@ -1,0 +1,31 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    docurium (0.6.0)
+      ffi-clang (~> 0.5)
+      gli (~> 2.5)
+      mustache (~> 1.1)
+      redcarpet (~> 3.0)
+      rocco (~> 0.8)
+      rugged (~> 0.21)
+      version_sorter (~> 2.0)
+    ffi (1.15.3)
+    ffi-clang (0.6.0)
+      ffi
+    gli (2.20.1)
+    mustache (1.1.1)
+    redcarpet (3.5.1)
+    rocco (0.8.2)
+      mustache
+      redcarpet
+    rugged (0.99.0)
+    version_sorter (2.2.4)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  docurium
+
+BUNDLED WITH
+   2.2.20

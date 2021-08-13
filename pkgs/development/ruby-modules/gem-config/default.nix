@@ -26,6 +26,7 @@
 , file, libvirt, glib, vips, taglib, libopus, linux-pam, libidn, protobuf, fribidi, harfbuzz
 , bison, flex, pango, python3, patchelf, binutils, freetds, wrapGAppsHook, atk
 , bundler, libsass, libexif, libselinux, libsepol, shared-mime-info, libthai, libdatrie
+, libclang
 , CoreServices, DarwinTools, cctools
 }@args:
 
@@ -150,6 +151,17 @@ in
         rm {$out/bin,bin,../../bin}/{setup,console}
       '';
     };
+
+  ffi-clang = attrs: let
+    libPath = "${libclang.lib}/lib/libclang.${stdenv.hostPlatform.extensions.sharedLibrary}";
+  in {
+    dontBuild = false;
+    postPatch = ''
+      echo "s@^[[:space:]]*ffi_lib libs[[:space:]]\$@ffi_lib %q{${libPath}}@" \
+          lib/ffi/clang/lib.rb
+      exit 1
+    '';
+  };
 
   redis-rack = attrs: {
     dontBuild = false;

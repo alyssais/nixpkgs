@@ -1495,6 +1495,8 @@ with pkgs;
 
   dpt-rp1-py = callPackage ../tools/misc/dpt-rp1-py { };
 
+  docurium = callPackage ../tools/text/docurium { };
+
   dot-http = callPackage ../development/tools/dot-http {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
