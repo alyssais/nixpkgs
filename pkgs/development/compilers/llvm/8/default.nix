@@ -42,7 +42,7 @@ let
       ln -s "${cc.lib}/lib/clang/${release_version}/include" "$rsrc"
       echo "-resource-dir=$rsrc" >> $out/nix-support/cc-cflags
     '';
-    mkExtraBuildCommands = cc: mkExtraBuildCommands0 cc + ''
+    mkExtraBuildCommands = cc: mkExtraBuildCommands0 cc + lib.optionalString (targetLlvmLibraries ? compiler-rt) ''
       ln -s "${targetLlvmLibraries.compiler-rt.out}/lib" "$rsrc/lib"
       ln -s "${targetLlvmLibraries.compiler-rt.out}/share" "$rsrc/share"
     '';
@@ -147,15 +147,14 @@ let
 
     clangUseLLVM = wrapCCWith rec {
       cc = tools.clang-unwrapped;
-      libcxx = targetLlvmLibraries.libcxx;
+      libcxx = targetLlvmLibraries.libcxx or null;
       bintools = bintools';
       extraPackages = [
-        targetLlvmLibraries.libcxxabi
-        targetLlvmLibraries.compiler-rt
-      ] ++ lib.optionals (!stdenv.targetPlatform.isWasm) [
-        targetLlvmLibraries.libunwind
+        targetLlvmLibraries.libcxxabi or null
+        targetLlvmLibraries.compiler-rt or null
+        targetLlvmLibraries.libunwind or null
       ];
-      extraBuildCommands = ''
+      extraBuildCommands = lib.optionalString (targetLlvmLibraries ? compiler-rt) ''
         echo "-rtlib=compiler-rt -Wno-unused-command-line-argument" >> $out/nix-support/cc-cflags
         echo "-B${targetLlvmLibraries.compiler-rt}/lib" >> $out/nix-support/cc-cflags
       '' + lib.optionalString (!stdenv.targetPlatform.isWasm) ''
@@ -172,9 +171,9 @@ let
       libcxx = null;
       bintools = bintools';
       extraPackages = [
-        targetLlvmLibraries.compiler-rt
+        targetLlvmLibraries.compiler-rt or null
       ];
-      extraBuildCommands = ''
+      extraBuildCommands = lib.optionalString (targetLlvmLibraries ? compiler-rt) ''
         echo "-rtlib=compiler-rt" >> $out/nix-support/cc-cflags
         echo "-B${targetLlvmLibraries.compiler-rt}/lib" >> $out/nix-support/cc-cflags
         echo "-nostdlib++" >> $out/nix-support/cc-cflags
@@ -216,7 +215,7 @@ let
 
   libraries = lib.makeExtensible (libraries: let
     callPackage = newScope (libraries // buildLlvmTools // { inherit stdenv cmake libxml2 python3 isl release_version version fetch; });
-  in {
+  in lib.optionalAttrs (!stdenv.targetPlatform.isWasm || stdenv.targetPlatform.isWasi) {
 
     compiler-rt-libc = callPackage ./compiler-rt {
       inherit llvm_meta;

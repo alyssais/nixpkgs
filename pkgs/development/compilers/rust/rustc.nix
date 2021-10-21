@@ -91,9 +91,13 @@ in stdenv.mkDerivation rec {
     "--enable-llvm-link-shared"
     "${setBuild}.llvm-config=${llvmSharedForBuild.dev}/bin/llvm-config"
     "${setHost}.llvm-config=${llvmSharedForHost.dev}/bin/llvm-config"
+  ] ++ optionals (!withBundledLLVM && !stdenv.targetPlatform.isWasi && stdenv.targetPlatform.isWasm) [
     "${setTarget}.llvm-config=${llvmSharedForTarget.dev}/bin/llvm-config"
-  ] ++ optionals (stdenv.isLinux && !stdenv.targetPlatform.isRedox) [
+  ] ++ optionals (stdenv.isLinux && !stdenv.targetPlatform.isRedox && (stdenv.targetPlatform.isWasi || !stdenv.targetPlatform.isWasm)) [
     "--enable-profiler" # build libprofiler_builtins
+  ] ++ optionals (stdenv.targetPlatform.isWasm && !stdenv.targetPlatform.isWasi) [
+    # https://github.com/rust-lang/rust/issues/76526
+    "--disable-docs"
   ] ++ optionals stdenv.buildPlatform.isMusl [
     "${setBuild}.musl-root=${pkgsBuildBuild.targetPackages.stdenv.cc.libc}"
   ] ++ optionals stdenv.hostPlatform.isMusl [
