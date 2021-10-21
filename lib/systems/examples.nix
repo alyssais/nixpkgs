@@ -294,6 +294,16 @@ rec {
   # WASM
   #
 
+  wasm32 = {
+    config = "wasm32-unknown-none";
+    useLLVM = true;
+  };
+
+  wasm64 = {
+    config = "wasm64-unknown-none";
+    useLLVM = true;
+  };
+
   wasi32 = {
     config = "wasm32-unknown-wasi";
     useLLVM = true;

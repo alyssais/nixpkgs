@@ -299,6 +299,7 @@ rec {
     none     = { execFormat = unknown; families = { }; };
     openbsd  = { execFormat = elf;     families = { inherit bsd; }; };
     solaris  = { execFormat = elf;     families = { }; };
+    unknown  = { execFormat = unknown; families = { }; };
     wasi     = { execFormat = wasm;    families = { }; };
     redox    = { execFormat = elf;     families = { }; };
     windows  = { execFormat = pe;      families = { }; };
@@ -421,6 +422,8 @@ rec {
         then { cpu = elemAt l 0; vendor = elemAt l 1; kernel = "mmixware";                   }
       else if hasPrefix "netbsd" (elemAt l 2)
         then { cpu = elemAt l 0; vendor = elemAt l 1;    kernel = elemAt l 2;                }
+      else if (elemAt l 0 == "wasm32" && elemAt l 2 == "none")
+        then { cpu = elemAt l 0; vendor = elemAt l 1; kernel = "unknown";                    }
       else if (elem (elemAt l 2) ["eabi" "eabihf" "elf"])
         then { cpu = elemAt l 0; vendor = "unknown"; kernel = elemAt l 1; abi = elemAt l 2; }
       else if (elemAt l 2 == "ghcjs")

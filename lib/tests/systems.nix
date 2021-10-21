@@ -20,6 +20,8 @@ with lib.systems.doubles; lib.runTests {
   testmips = mseteq mips [ "mipsel-linux" "mipsel-netbsd" ];
   testmmix = mseteq mmix [ "mmix-mmixware" ];
   testx86_64 = mseteq x86_64 [ "x86_64-linux" "x86_64-darwin" "x86_64-freebsd" "x86_64-genode" "x86_64-redox" "x86_64-openbsd" "x86_64-netbsd" "x86_64-cygwin" "x86_64-solaris" "x86_64-windows" "x86_64-none" ];
+  testwasm32 = mseteq wasm32 [ "wasm32-none" "wasm32-wasi" ];
+  testwasm64 = mseteq wasm32 [ "wasm64-none" "wasm64-wasi" ];
 
   testcygwin = mseteq cygwin [ "i686-cygwin" "x86_64-cygwin" ];
   testdarwin = mseteq darwin [ "x86_64-darwin" "i686-darwin" "aarch64-darwin" "armv7a-darwin" ];

@@ -42,7 +42,7 @@ let
     "aarch64-none" "arm-none" "armv6l-none" "avr-none" "i686-none"
     "msp430-none" "or1k-none" "m68k-none" "powerpc-none"
     "riscv32-none" "riscv64-none" "s390-none" "s390x-none" "vc4-none"
-    "x86_64-none"
+    "wasm32-none" "wasm64-none" "x86_64-none"
 
     # OpenBSD
     "i686-openbsd" "x86_64-openbsd"
@@ -51,7 +51,7 @@ let
     "x86_64-redox"
 
     # WASI
-    "wasm64-wasi" "wasm32-wasi"
+    "wasm32-wasi" "wasm64-wasi"
 
     # Windows
     "x86_64-windows" "i686-windows"
@@ -79,6 +79,9 @@ in {
   m68k          = filterDoubles predicates.isM68k;
   s390          = filterDoubles predicates.isS390;
   js            = filterDoubles predicates.isJavaScript;
+  wasm          = filterDoubles predicates.isWasm;
+  wasm32        = filterDoubles predicates.isWasm32;
+  wasm64        = filterDoubles predicates.isWasm64;
 
   bigEndian     = filterDoubles predicates.isBigEndian;
   littleEndian  = filterDoubles predicates.isLittleEndian;
