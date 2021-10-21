@@ -32778,7 +32778,7 @@ with pkgs;
 
   yabasic = callPackage ../development/interpreters/yabasic { };
 
-  wasm-pack = callPackage ../development/tools/wasm-pack {
+  wasm-pack = pkgsCross.wasm32.buildPackages.callPackage ../development/tools/wasm-pack {
     inherit (darwin.apple_sdk.frameworks) Security;
     libressl = libressl_3_2;
   };

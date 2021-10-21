@@ -1,8 +1,11 @@
 { lib, stdenv
 , fetchFromGitHub
 , rustPlatform
+, makeWrapper
 , pkg-config
 , libressl
+, cargo
+, rustc
 , curl
 , Security
 }:
@@ -20,7 +23,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "sha256-MmbQb2JYaDpLijKRAxzD9pR4gh+Eoem0MtfdiuRC7Tg=";
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ makeWrapper pkg-config ];
 
   buildInputs = [
     # LibreSSL works around segfault issues caused by OpenSSL being unable to
@@ -35,6 +38,10 @@ rustPlatform.buildRustPackage rec {
   # Most tests rely on external resources and build artifacts.
   # Disabling check here to work with build sandboxing.
   doCheck = false;
+
+  postInstall = ''
+    wrapProgram $out/bin/wasm-pack --prefix PATH : ${lib.makeBinPath [ cargo rustc ]}
+  '';
 
   meta = with lib; {
     description = "A utility that builds rust-generated WebAssembly package";
