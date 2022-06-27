@@ -254,6 +254,27 @@ let
   transportFile = pkgs.writeText "postfix-transport" cfg.transport;
   headerChecksFile = pkgs.writeText "postfix-header-checks" headerChecks;
 
+  linkPostfixConfig = pkgs.writeShellScript "link-postfix-config.sh" ''
+    rm -rf /var/lib/postfix/conf
+    mkdir -p /var/lib/postfix/conf
+    chmod 0755 /var/lib/postfix/conf
+    ln -sf ${pkgs.postfix}/etc/postfix/postfix-files /var/lib/postfix/conf/postfix-files
+    ln -sf ${mainCfFile} /var/lib/postfix/conf/main.cf
+    ln -sf ${masterCfFile} /var/lib/postfix/conf/master.cf
+
+    ${concatStringsSep "\n" (mapAttrsToList (to: from: ''
+      ln -sf ${from} /var/lib/postfix/conf/${to}
+      ${pkgs.postfix}/bin/postalias /var/lib/postfix/conf/${to}
+    '') cfg.aliasFiles)}
+    ${concatStringsSep "\n" (mapAttrsToList (to: from: ''
+      ln -sf ${from} /var/lib/postfix/conf/${to}
+      ${pkgs.postfix}/bin/postmap /var/lib/postfix/conf/${to}
+    '') cfg.mapFiles)}
+
+    #Finally delegate to postfix checking remain directories in /var/lib/postfix and set permissions on them
+    ${pkgs.postfix}/bin/postfix set-permissions config_directory=/var/lib/postfix/conf
+  '';
+
 in
 
 {
@@ -725,6 +746,8 @@ in
 
       systemd.services.postfix-setup =
         { description = "Setup for Postfix mail server";
+          reloadIfChanged = true;
+          serviceConfig.ExecReload = linkPostfixConfig;
           serviceConfig.RemainAfterExit = true;
           serviceConfig.Type = "oneshot";
           script = ''
@@ -739,29 +762,12 @@ in
             chmod 0755 /var/lib/postfix
             chown root:root /var/lib/postfix
 
-            rm -rf /var/lib/postfix/conf
-            mkdir -p /var/lib/postfix/conf
-            chmod 0755 /var/lib/postfix/conf
-            ln -sf ${pkgs.postfix}/etc/postfix/postfix-files /var/lib/postfix/conf/postfix-files
-            ln -sf ${mainCfFile} /var/lib/postfix/conf/main.cf
-            ln -sf ${masterCfFile} /var/lib/postfix/conf/master.cf
-
-            ${concatStringsSep "\n" (mapAttrsToList (to: from: ''
-              ln -sf ${from} /var/lib/postfix/conf/${to}
-              ${pkgs.postfix}/bin/postalias /var/lib/postfix/conf/${to}
-            '') cfg.aliasFiles)}
-            ${concatStringsSep "\n" (mapAttrsToList (to: from: ''
-              ln -sf ${from} /var/lib/postfix/conf/${to}
-              ${pkgs.postfix}/bin/postmap /var/lib/postfix/conf/${to}
-            '') cfg.mapFiles)}
-
             mkdir -p /var/spool/mail
             chown root:root /var/spool/mail
             chmod a+rwxt /var/spool/mail
             ln -sf /var/spool/mail /var/
 
-            #Finally delegate to postfix checking remain directories in /var/lib/postfix and set permissions on them
-            ${pkgs.postfix}/bin/postfix set-permissions config_directory=/var/lib/postfix/conf
+            ${linkPostfixConfig}
           '';
         };
 
@@ -780,6 +786,10 @@ in
             ExecStart = "${pkgs.postfix}/bin/postfix start";
             ExecStop = "${pkgs.postfix}/bin/postfix stop";
             ExecReload = "${pkgs.postfix}/bin/postfix reload";
+          };
+
+          unitConfig = {
+            ReloadPropagatedFrom = "postfix-setup.service";
           };
         };
 
