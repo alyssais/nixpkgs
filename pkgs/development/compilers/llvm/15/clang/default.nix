@@ -38,7 +38,9 @@ let
       "-DSPHINX_WARNINGS_AS_ERRORS=OFF"
     ] ++ lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
       "-DLLVM_TABLEGEN_EXE=${buildLlvmTools.llvm}/bin/llvm-tblgen"
+      "-DCLANG_PSEUDO_GEN=${buildLlvmTools.libclang.dev}/bin/clang-pseudo-gen"
       "-DCLANG_TABLEGEN=${buildLlvmTools.libclang.dev}/bin/clang-tblgen"
+      "-DCLANG_TIDY_CONFUSABLE_CHARS_GEN=${buildLlvmTools.libclang.dev}/bin/clang-tidy-confusable-chars-gen"
     ];
 
     patches = [
@@ -83,7 +85,7 @@ let
       patchShebangs $python/bin
 
       mkdir -p $dev/bin
-      cp bin/clang-tblgen $dev/bin
+      cp bin/clang-{pseudo-,tbl,tidy-confusable-chars-}gen $dev/bin
     '';
 
     passthru = {
