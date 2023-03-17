@@ -115,6 +115,20 @@ let
             hash = "sha256-bBOyJcP6jUvozFJU0SPTOf3cmnTQ6ZZ4PlHjiniHXLU=";
           });
 
+      preUnpack = ''
+        # The same preUnpack is used to build the configfile,
+        # which does not have $dev.
+        if [ -n "$dev" ]; then
+            mkdir -p $dev/lib/modules/${modDirVersion}
+            cd $dev/lib/modules/${modDirVersion}
+        fi
+      '';
+
+      postUnpack = ''
+        mv -Tv "$sourceRoot" source 2>/dev/null || :
+        sourceRoot=$PWD/source
+      '';
+
       postPatch = ''
         sed -i Makefile -e 's|= depmod|= ${buildPackages.kmod}/bin/depmod|'
 
@@ -261,7 +275,6 @@ let
       ];
 
       postInstall = optionalString isModular ''
-        mkdir -p $dev
         cp vmlinux $dev/
         if [ -z "''${dontStrip-}" ]; then
           installFlagsArray+=("INSTALL_MOD_STRIP=1")
@@ -271,12 +284,7 @@ let
         unlink $out/lib/modules/${modDirVersion}/build
         unlink $out/lib/modules/${modDirVersion}/source
 
-        mkdir -p $dev/lib/modules/${modDirVersion}/{build,source}
-
-        # To save space, exclude a bunch of unneeded stuff when copying.
-        (cd "$NIX_BUILD_TOP" && cd "$sourceRoot" &&
-         rsync --archive --prune-empty-dirs \
-            * $dev/lib/modules/${modDirVersion}/source/)
+        mkdir $dev/lib/modules/${modDirVersion}/build
 
         cd $dev/lib/modules/${modDirVersion}/source
 
