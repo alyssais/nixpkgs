@@ -393,6 +393,7 @@ with pkgs;
     ../build-support/setup-hooks/gog-unpack.sh;
 
   buildEnv = callPackage ../build-support/buildenv { }; # not actually a package
+  buildEnvIncludeClosures = callPackage ../build-support/buildenvIncludeClosures { }; # not actually a package
 
   buildFHSEnv = buildFHSEnvBubblewrap;
   buildFHSEnvChroot = callPackage ../build-support/build-fhsenv-chroot { }; # Deprecated; use buildFHSEnv/buildFHSEnvBubblewrap

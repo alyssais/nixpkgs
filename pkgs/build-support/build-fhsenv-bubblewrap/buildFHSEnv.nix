@@ -1,7 +1,7 @@
 { lib
 , stdenv
 , runCommandLocal
-, buildEnv
+, buildEnvIncludeClosures
 , writeText
 , writeShellScriptBin
 , pkgs
@@ -136,7 +136,7 @@ let
   '';
 
   # Composes a /usr-like directory structure
-  staticUsrProfileTarget = buildEnv {
+  staticUsrProfileTarget = buildEnvIncludeClosures {
     name = "${name}-usr-target";
     # ldconfig wrapper must come first so it overrides the original ldconfig
     paths = [ etcPkg ldconfig ] ++ baseTargetPaths ++ targetPaths;
@@ -173,7 +173,7 @@ let
     '';
   };
 
-  staticUsrProfileMulti = buildEnv {
+  staticUsrProfileMulti = buildEnvIncludeClosures {
     name = "${name}-usr-multi";
     paths = baseMultiPaths ++ multiPaths;
     extraOutputsToInstall = [ "out" "lib" ] ++ extraOutputsToInstall;
