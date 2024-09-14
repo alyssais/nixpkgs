@@ -5,7 +5,7 @@
 , writeShellScript
 , glibc
 , pkgsi686Linux
-, pkgsStatic
+, runCommandCC
 , coreutils
 , bubblewrap
 }:
@@ -98,8 +98,6 @@ let
     ];
   in map (path: "/etc/${path}") files;
 
-  # This entire thing is a gigantic hack.
-  #
   # Here's the problem case:
   # - we need to run bash to run the init script
   # - LD_PRELOAD may be set to another dynamic library, requiring us to discover its dependencies
@@ -115,13 +113,12 @@ let
   # first time we see anything dynamically linked at all.
   #
   # Also, the real init is placed strategically at /init, so we don't
-  # have to recompile the Rust every time.
-  containerInit = pkgsStatic.rustPlatform.buildRustPackage {
-    name = "container-init";
-    src = ./container-init;
-    cargoLock.lockFile = ./container-init/Cargo.lock;
-    meta.mainProgram = "container-init";
-  };
+  # have to recompile this every time.
+  containerInit = runCommandCC "container-init" {
+    buildInputs = [ stdenv.cc.libc.static or null ];
+  } ''
+    $CXX -static -o $out ${./container-init.cc}
+  '';
 
   realInit = run: writeShellScript "${name}-init" ''
     source /etc/profile
@@ -269,7 +266,7 @@ let
       "''${auto_mounts[@]}"
       "''${x11_args[@]}"
       ${concatStringsSep "\n  " extraBwrapArgs}
-      ${lib.getExe containerInit} ${initArgs}
+      ${containerInit} ${initArgs}
     )
     exec "''${cmd[@]}"
   '';
