@@ -1,4 +1,5 @@
-{ stdenv, fetchzip, jam, unzip, libX11, libXxf86vm, libXrandr, libXinerama
+{ stdenv, fetchzip, jam, pkg-config, unzip
+, libX11, libXxf86vm, libXrandr, libXinerama
 , libXrender, libXext, libtiff, libjpeg, libpng, libXScrnSaver, writeText
 , libXdmcp, libXau, xorgproto, lib, openssl
 , buildPackages, substituteAll, writeScript
@@ -15,7 +16,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-xpbj15GzpGS0d1UjzvYiZ1nmmTjNIyv0ST2blmi7ZSk=";
   };
 
-  nativeBuildInputs = [ jam unzip ];
+  nativeBuildInputs = [ jam pkg-config unzip ];
 
   patches = lib.optional (!stdenv.buildPlatform.canExecute stdenv.hostPlatform) (
     # Build process generates files by compiling and then invoking an executable.
@@ -48,7 +49,10 @@ stdenv.mkDerivation rec {
       -s HAVE_PNG=true
       -s HAVE_Z=true
       -s HAVE_SSL=true
-      -s LINKFLAGS="-ljpeg -ltiff -lpng -lz -lssl"
+      -s LINKFLAGS="$($PKG_CONFIG --libs libjpeg libtiff-4 libpng zlib libssl)"
+      -s GUILINKFLAGS="$($PKG_CONFIG --libs x11 xext xxf86vm xinerama xrandr xau xdmcp xscrnsaver)"
+    )
+
     export AR="$AR rusc"
   '';
 
