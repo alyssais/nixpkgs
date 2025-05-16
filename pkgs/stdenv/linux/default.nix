@@ -87,6 +87,7 @@
         musl = {
           aarch64-linux = import ./bootstrap-files/aarch64-unknown-linux-musl.nix;
           armv6l-linux = import ./bootstrap-files/armv6l-unknown-linux-musleabihf.nix;
+          riscv64-linux = import ./bootstrap-files/riscv64-unknown-linux-musl.nix;
           x86_64-linux = import ./bootstrap-files/x86_64-unknown-linux-musl.nix;
         };
       };
