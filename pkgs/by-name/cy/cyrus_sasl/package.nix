@@ -13,6 +13,7 @@
   fixDarwinDylibNames,
   autoreconfHook,
   enableLdap ? false,
+  enablePam ? lib.meta.availableOn stdenv.hostPlatform pam && stdenv.isLinux,
   buildPackages,
   pruneLibtoolFiles,
   nixosTests,
@@ -63,7 +64,7 @@ stdenv.mkDerivation rec {
     libxcrypt
   ]
   ++ lib.optional enableLdap openldap
-  ++ lib.optional stdenv.hostPlatform.isLinux pam;
+  ++ lib.optional enablePam pam;
 
   configureFlags = [
     "--with-openssl=${openssl.dev}"
