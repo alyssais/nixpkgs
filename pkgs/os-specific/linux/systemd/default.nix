@@ -245,6 +245,9 @@ stdenv.mkDerivation (finalAttrs: {
     # if the install prefix is not /usr, but that does not work for us
     # because we include the config snippet manually
     ./0017-meson-Don-t-link-ssh-dropins.patch
+
+    # https://github.com/systemd/systemd/pull/41959
+    ./0019-meson-don-t-use-Python-module-for-host-Python.patch
   ]
   ++ lib.optionals (stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isGnu) [
     ./0018-timesyncd-disable-NSCD-when-DNSSEC-validation-is-dis.patch

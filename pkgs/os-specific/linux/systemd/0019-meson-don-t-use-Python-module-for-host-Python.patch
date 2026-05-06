@@ -1,0 +1,38 @@
+From f64612a0464e55f07ead6d25686c9d5b63774868 Mon Sep 17 00:00:00 2001
+From: Alyssa Ross <hi@alyssa.is>
+Date: Wed, 6 May 2026 13:38:31 +0200
+Subject: [PATCH] meson: don't use Python module for host Python
+
+Checking for pefile required that module to be made available for the Python
+used to build systemd, even though it's only used at runtime, potentially via a
+different Python installation.
+
+Furthermore, Meson's Python module doesn't do the right thing when cross
+compiling and looking up a Python for the host system, so this would end up
+uselessly checking whether the build Python had the pefile module, which is not
+needed.  Even if it were made to check the host Python using find_program, it
+still relies on being able to run its Python, which in a cross scenario it
+probably wouldn't be able to do.
+
+All in all, this check does more harm than good, and prevents building ukify in
+valid configurations, so remove it.
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 3672005d75..26e2ba1b7d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1896,7 +1896,7 @@ if have and efi_arch == 'x64' and cc.links('''
+         efi_cpu_family_alt = 'x86'
+ endif
+ 
+-want_ukify = pymod.find_installation('python3', required: get_option('ukify'), modules : ['pefile']).found()
++want_ukify = get_option('ukify').enabled()
+ conf.set10('ENABLE_UKIFY', want_ukify)
+ 
+ #####################################################################
+-- 
+2.53.0
+
