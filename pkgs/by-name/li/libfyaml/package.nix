@@ -51,6 +51,8 @@ stdenv.mkDerivation (finalAttrs: {
     patchShebangs test
   '';
 
+  enableParallelBuilding = true;
+
   passthru.tests.pkg-config = testers.hasPkgConfigModules {
     package = finalAttrs.finalPackage;
   };
