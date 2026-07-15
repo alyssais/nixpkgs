@@ -11,7 +11,6 @@
   llvmSharedForHost,
   llvmSharedForTarget,
   llvmPackages,
-  runCommandLocal,
   fetchurl,
   file,
   python3,
